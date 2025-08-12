@@ -5,13 +5,14 @@ $data = [];
 
 if(empty($_POST['fName']) || empty($_POST['lName']) || empty($_POST['email']) || empty($_POST['pwd']) || empty($_POST['pwd2'])) {
     header('Location: /register?invalidInput');
-    echo "Bitte fülle alle Felder aus!";
     exit;
-}else if($_POST['pwd'] != $_POST['pwd2']) {
+}else if($_POST['pwd'] != $_POST['pwd2']){
     header('Location: /register?invalidPsswrd');
     exit;
+} else if(strlen($_POST['pwd']) < 8){
+    header('Location: /register?passwordTooShort');
+    exit;
 }else{
-    //header('Location: /register');
     $username = $_POST['email'];
     $newUser = [
       'first_Name' => $_POST['fName'],
