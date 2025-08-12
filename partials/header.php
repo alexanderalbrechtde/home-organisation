@@ -6,13 +6,22 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/style/style.css">
-    <title>Document</title>
+    <title>Home‑Organizer</title>
 </head>
-<body>
-<header>
-    <a href="/">Dashboard</a>
-    <a href="/register">Registrieren</a>
-    <a href="/login">LogIn</a>
-    <a href="/impressum">Impressum</a>
-    <a href="/faq">FAQ</a>
-</header>
+<body class="dashboard-body">
+  <header class="topbar">
+    <div class="container">
+      <div class="brand">Home‑Organizer</div>
+      <nav class="nav-links">
+        <a href="/">Dashboard</a>
+        <a href="/register">Registrieren</a>
+        <a href="/login">LogIn</a>
+        <a href="/impressum">Impressum</a>
+        <a href="/faq">FAQ</a>
+      </nav>
+      <form action="" method="post" class="logout topbar-actions">
+        <input type="hidden" name="destroySession" value="1">
+        <input type="submit" value="Logout" class="btn btn-outline">
+      </form>
+    </div>
+  </header>
