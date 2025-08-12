@@ -8,4 +8,5 @@ return [
     '/impressum' =>  __DIR__ . '/../src/pages/impressum.php',
     '/faq' =>  __DIR__ . '/../src/pages/faq.php',
     '/user_exist' => __DIR__ . '/../src/logging/log/user_exist.php',
+    '/style' => __DIR__ . '/../public/style/style.css',
     ];
