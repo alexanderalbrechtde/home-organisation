@@ -7,10 +7,10 @@ echo'<!Doctype html>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Registrierung</title>
+    <link rel="stylesheet" href="/style/style.css">
 </head>
 <body>
     <h1>Registrierung</h1>
-    <p>Herzlich willkommen! Bitte registrieren Sie sich.</p>
 <h2>Ihre Angaben:</h2>
 <form action="/reg_controller" method="POST">
     

@@ -7,10 +7,12 @@ echo '<!doctype html>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="/style/style.css">
     <title>Login</title>
 </head>
 <body>
 <h1>Login</h1>
+<body class="login-overlay">
 <p> Bitte loggen Sie sich ein!
 <form action="/login_controller" method="POST">
     <label for="email">Email:</label><br>
