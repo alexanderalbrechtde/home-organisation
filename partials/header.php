@@ -17,7 +17,6 @@
         <a href="/register">Registrieren</a>
         <a href="/login">LogIn</a>
         <a href="/impressum">Impressum</a>
-        <a href="/faq">FAQ</a>
       </nav>
       <form action="" method="post" class="logout topbar-actions">
         <input type="hidden" name="destroySession" value="1">
