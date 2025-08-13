@@ -17,8 +17,8 @@ echo '<!doctype html>
 <form action="/login_controller" method="POST">
     <label for="email">Email:</label><br>
     <input type="text" id="email" name="email"><br>
-    <label for="passwort">Passwort:</label><br>
-    <input type="text" id="passwort" name="passwort"><br>
+    <label for="pwd">Passwort:</label><br>
+    <input type="text" id="pwd" name="pwd"><br>
     <br>
     <input type="submit" value="Abschicken">
     <br>

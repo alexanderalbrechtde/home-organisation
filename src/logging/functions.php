@@ -96,10 +96,50 @@ if (array_key_exists($mail, $data)) {
  */
 //dashboard-------------------------------------------------------------------------------------------------------------
 
-function session_delete(){
+function session_delete()
+{
     $destroySessionFlag = filter_input(INPUT_POST, 'destroySession');
     if ($destroySessionFlag == 1) {
         session_destroy();
         header('Location: /login');
+    }
+}
+
+//log_controller--------------------------------------------------------------------------------------------------------
+
+function empty_data($email, $passwort)
+{
+    if (empty($email) || empty($passwort)) {
+        header('Location: /login?invalidInput');
+        exit;
+    }else{
+        return true;
+    }
+}
+
+function user_found($data,$email)
+{
+    if (is_array($data)) {
+        $found = false;
+        foreach ($data as $entry) {
+            if (isset($entry['email']) && $entry['email'] === $email) {
+                $found = true;
+                break;
+            }
+        }
+        if ($found) {
+            $_SESSION['is_login'] = true;
+            header('Location: /');
+            exit;
+        } else {
+            if (!isset($_SESSION['is_login']) && $_SESSION['is_login']) {
+                header('Location: /login?login=false');
+                exit;
+            } else {
+               // header('Location: /');
+               // exit;
+                return true;
+            }
+        }
     }
 }
