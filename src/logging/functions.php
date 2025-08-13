@@ -94,3 +94,12 @@ if (array_key_exists($mail, $data)) {
     }
 }
  */
+//dashboard-------------------------------------------------------------------------------------------------------------
+
+function session_delete(){
+    $destroySessionFlag = filter_input(INPUT_POST, 'destroySession');
+    if ($destroySessionFlag == 1) {
+        session_destroy();
+        header('Location: /login');
+    }
+}
