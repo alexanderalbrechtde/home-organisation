@@ -2,17 +2,22 @@
 
 class LoginService
 {
-    function login(string $email, string $password): bool
+    function login(string $username, string $email, string $password): bool
     {
         $UserService = new UserService();
-        $user = $UserService->getUserByEmail($email);
+        $user = $UserService->getUserbyUsername($username);
 
         if (!$user) {
             return false;
         }
-        if ($password !== $user["password"]) {
+        if ($user->password !== $password) {
             return false;
         }
+
+        if ($user->email != $email) {
+            return false;
+        }
+
         $_SESSION['logged_in'] = true;
 
         return true;

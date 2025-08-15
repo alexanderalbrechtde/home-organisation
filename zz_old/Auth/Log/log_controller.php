@@ -2,7 +2,7 @@
 
 //$email = $_POST['email'] ?? '';
 //$passwort = $_POST['pwd'] ?? '';
-$path = __DIR__ . '/../../../data/user.json';
+$path = __DIR__ . '/../../../data/users.json';
 $json = file_get_contents($path);
 $data = json_decode($json, true);
 

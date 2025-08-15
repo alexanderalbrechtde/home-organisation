@@ -143,42 +143,11 @@ function user_found($data, $email)
         }
     }
 }
-//Header, Footer
-function headder(){
-return '<!doctype html>
-<html lang="de-DE">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/style/style.css">
-    <title>Home‑Organizer</title>
-</head>
-<body class="dashboard-body">
-  <header class="topbar">
-    <div class="container">
-      <div class="brand">Home‑Organizer</div>
-      <nav class="nav-links">
-        <a href="/">Dashboard</a>
-        <a href="/register">Registrieren</a>
-        <a href="/login">LogIn</a>
-        <a href="/impressum">Impressum</a>
-      </nav>
-      <form action="" method="post" class="logout topbar-actions">
-        <input type="hidden" name="destroySession" value="1">
-        <input type="submit" value="Logout" class="btn btn-outline">
-      </form>
-    </div>
-  </header>';
-}
-function footer(){
-    return '
-<footer class="page-footer">
-  <div class="container">
-    <small>© 2025 by Alexander Albrecht</small>
-  </div>
-</footer>
-</body>
-</html>';
+
+
+function dd(mixed $var): void
+{
+    echo '<pre>';
+    var_dump($var);
+    exit;
 }
