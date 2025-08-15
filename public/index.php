@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 require __DIR__ . '/../boot/boot.php';
-//require __DIR__ . '/../src/Controller/HeaderController.php';
 
 $routes = require_once('../config/routes.php');
 $path = $_SERVER['PATH_INFO'] ?? '/';

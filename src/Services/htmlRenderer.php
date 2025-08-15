@@ -5,7 +5,7 @@ class htmlRenderer{
         ob_start();
         extract($data);
         unset ($data);
-        require(__DIR__ . '/../../view/' . $view);
+        require(__DIR__ . '/../../View/' . $view);
         $html = ob_get_clean();
         return $html;
     }

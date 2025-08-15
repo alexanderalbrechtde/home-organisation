@@ -1,12 +1,13 @@
 <?php
 
-class DashboardController implements ControllerInterface
+
+class KitchenController implements ControllerInterface
 {
 
     function handle($post, $get, $server, &$session): string
     {
         $htmlRenderer = new htmlRenderer();
-        return $htmlRenderer->render('home.phtml', $_POST);
+        return $htmlRenderer->render('category_kitchen.phtml', $_POST);
     }
 
 }

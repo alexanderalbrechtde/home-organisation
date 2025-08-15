@@ -5,8 +5,12 @@ return [
     //'/footer' => 'FooterController',
     '/login' => 'LoginController',
     '/register' => 'RegisterController',
-    '/impressum' => 'ImpressumController',
+    '/impressum' => 'ImprintController',
     '/404' => 'ErrorController',
+
+    '/kitchen' => 'KitchenController',
+    '/bathroom' => 'BathroomController',
+    '/bedroom' => 'BedroomController',
 
 
 //    '/login' => __DIR__ . '/../src/Auth/Log/log_Overlay.php',
