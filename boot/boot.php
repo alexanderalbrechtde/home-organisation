@@ -21,6 +21,8 @@ require_once __DIR__ . '/../src/Controller/RegisterController.php';
 require_once __DIR__ . '/../src/Controller/RegisterSubmitController.php';
 require_once __DIR__ . '/../src/Controller/LogoutController.php';
 require_once __DIR__ . '/../src/Controller/LogoutSubmitController.php';
+require_once __DIR__ . '/../src/Controller/KontoController.php';
+require_once __DIR__ . '/../src/Controller/KontoSubmitController.php';
 
 require_once __DIR__ . '/../src/Controller/BedroomController.php';
 require_once __DIR__ . '/../src/Controller/BathroomController.php';
@@ -32,6 +34,8 @@ require_once __DIR__ . '/../src/Services/htmlRenderer.php';
 require_once __DIR__ . '/../src/Services/LoginService.php';
 require_once __DIR__ . '/../src/Services/UserService.php';
 require_once __DIR__ . '/../src/Services/RegisterService.php';
+require_once __DIR__ . '/../src/Services/LogoutService.php';
+require_once __DIR__ . '/../src/Services/KontoService.php';
 
 
 //Dtos

@@ -9,6 +9,7 @@ return [
     '/logout' => 'LogoutController',
     '/impressum' => 'ImprintController',
     '/404' => 'ErrorController',
+    '/konto' => 'KontoController',
 
     '/kitchen' => 'KitchenController',
     '/bathroom' => 'BathroomController',

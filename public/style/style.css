@@ -100,7 +100,7 @@ body.dashboard-body{
   box-shadow: 0 10px 30px rgba(0,0,0,.25);
 }
 .card__header{ padding:16px 18px; border-bottom:1px solid var(--border); background: rgba(255,255,255,.015); }
-.card__header h2{ margin:0; font-size: 18px; }
+.card__header h2{ margin:0; font-size: 22px; line-height: 1.25; letter-spacing: .2px; }
 .card__body{ padding: 16px 18px; }
 
 /* Lists */
@@ -431,7 +431,8 @@ body.legal-page{
 }
 .category-header h1{
     margin: 0;
-    font-size: clamp(28px, 4vw, 36px);
+    font-size: clamp(32px, 5vw, 40px);
+    line-height: 1.2;
 }
 .category-header p{
     margin: 6px 0 0 0;
@@ -442,8 +443,8 @@ body.legal-page{
 .category-sections{
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
-    margin-top: 20px;
+    gap: 24px;
+    margin-top: 24px;
 }
 @media (min-width: 720px){
     .category-sections{ grid-template-columns: 1fr 1fr; }
@@ -457,8 +458,9 @@ body.legal-page{
     padding: 18px;
 }
 .category-panel h2{
-    margin: 0 0 10px 0;
-    font-size: 18px;
+    margin: 0 0 12px 0;
+    font-size: 20px;
+    line-height: 1.25;
     color: var(--text);
 }
 .category-panel p{
@@ -476,3 +478,44 @@ body.legal-page{
 .category-panel a:hover{
     color: var(--primary);
 }
+
+/* Titel in Karten */
+.card-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+/* Read-only Felder dezenter darstellen */
+.field input[readonly] {
+    background: #f8f8f8;
+    color: #555;
+    border-color: rgba(0,0,0,.12);
+    pointer-events: none; /* keine Focus-Styles */
+}
+
+/* Optional: Passwort-Hinweis enger anbinden */
+.field input + .help {
+    margin-top: .35rem;
+}
+
+/* ---------------------
+   Spacing & Form Layout
+   --------------------- */
+/* Mehr Abstand zwischen Feldern */
+.field + .field{ margin-top: 14px; }
+
+/* Standard-Formgrid falls vorhanden (z.B. Konto-Seite) */
+.form-grid{ display: grid; grid-template-columns: 1fr; gap: 18px; }
+@media (min-width: 720px){
+  .form-grid{ gap: 20px; }
+}
+
+/* Mehr Abstand zwischen Abschnitten/Karten */
+.card + .card{ margin-top: 24px; }
+
+/* Größere, klarere Überschriften in Overlays und Legal-Pages */
+body:not(.dashboard-body) > h1{ font-size: clamp(32px, 5vw, 40px); }
+.legal-page h1{ font-size: clamp(32px, 5vw, 40px); }
+.legal-page h2{ font-size: 20px; }
