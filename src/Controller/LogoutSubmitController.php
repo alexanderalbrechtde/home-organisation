@@ -5,11 +5,11 @@ class LogoutSubmitController implements ControllerInterface
 {
     function handle($post, $get, $server, &$session): string
     {
-
-        if ($post['destroySession']) {
+        if (!empty($post['destroySession'])) {
+            $_SESSION = [];
             session_destroy();
             header('Location: /login');
-            return '';
+            exit;
         }
         return '';
     }

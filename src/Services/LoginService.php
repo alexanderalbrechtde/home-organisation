@@ -11,9 +11,6 @@ class LoginService
         $UserService = new UserService();
         $user = $UserService->getUserbyEmail($email);
 
-       // if (session_status() !== PHP_SESSION_ACTIVE) {
-       //     session_start();
-       // }
 
         if (!$user) {
             return false;
