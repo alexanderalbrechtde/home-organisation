@@ -1,8 +1,6 @@
 <?php
 
 
-use Dtos\RoomDto;
-
 class RoomsService
 {
     public function getRoombyName(string $name): ?RoomDto
@@ -11,7 +9,7 @@ class RoomsService
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $stmt = $pdo->prepare(
-            'SELECT owner_user_id,name, description  FROM room WHERE name = :name LIMIT 1'
+            'SELECT name, description  FROM room WHERE name = :name LIMIT 1'
         );
         $stmt->execute(['name' => $name]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -28,7 +26,7 @@ class RoomsService
         $pdo = new PDO('sqlite:' . __DIR__ . '/../../data/home-organisation.sqlite');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $pdo->query('SELECT owner_user_id, name, description FROM room');
+        $stmt = $pdo->query('SELECT  name, description FROM room');
         $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $rooms;
@@ -37,7 +35,7 @@ class RoomsService
     private function createRoomDto(array $room): RoomDto
     {
         return new RoomDto(
-            $room['ownerUserId'],
+            $userDtos,
             $room['name'],
             $room['description'],
         );

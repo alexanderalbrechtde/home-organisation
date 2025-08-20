@@ -1,7 +1,5 @@
 <?php
 //user transfer object
-namespace Dtos;
-
 readonly class UserDto
 {
     //__construct = Objekt initialisieren

@@ -1,7 +1,5 @@
 <?php
 
-use Dtos\UserDto;
-
 class UserService
 {
 

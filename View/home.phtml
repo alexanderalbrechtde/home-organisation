@@ -1,56 +1,64 @@
 <?php
+
 require_once(__DIR__ . '/header.phtml');
 ?>
 
-<section class="hero">
-    <div class="container hero__content">
-        <div class="hero__text">
-            <h1>Dashboard</h1>
-            <p>Behalte Erinnerungen, Kategorien und FAQs im Blick.</p>
+    <section class="hero">
+        <div class="container hero__content">
+            <div class="hero__text">
+                <h1>Dashboard</h1>
+                <p>Behalte Erinnerungen, Kategorien und FAQs im Blick.</p>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<main class="container grid">
-    <article class="card">
-        <header class="card__header">
-            <h2>Nächste Erinnerungen</h2>
-        </header>
-        <div class="card__body">
-            <ul class="list" id="reminders-list">
-                <li class="list__item is-empty">Noch keine Erinnerungen eingetragen.</li>
-            </ul>
-        </div>
-    </article>
+    <main class="container grid">
+        <article class="card">
+            <header class="card__header">
+                <h2>Nächste Erinnerungen</h2>
+            </header>
+            <div class="card__body">
+                <ul class="list" id="reminders-list">
+                    <li class="list__item is-empty">Noch keine Erinnerungen eingetragen.</li>
+                </ul>
+            </div>
+        </article>
 
-    <article class="card">
-        <header class="card__header">
-            <a href = /rooms >meine Räume</a>
-        </header>
-    </article>
+        <article class="card card--cta">
+            <header class="card__header">
+                <h2>Aktionen</h2>
+            </header>
+            <div class="card__body">
+                <a class="cta-link" href="/rooms">Raum erstellen</a>
 
-    <article class="card">
-        <header class="card__header">
-            <h2>FAQ</h2>
-        </header>
-        <div class="card__body">
-            <h3>Küche</h3>
-            <details class="faq">
-                <summary>Wie oft muss ich was wechseln?</summary>
-                <p>
-                    - Küchenschwamm: nach ca. 7 Tagen<br>
-                    - Waschlappen: nach 7 Tagen<br>
-                </p>
-            </details>
+                <ul class="quick-actions">
 
-            <h3>Badezimmer</h3>
-            <details class="faq">
-                <summary>Sauberkeitsregeln(individuell anpassbar):</summary>
-                <p></p>
-            </details>
-        </div>
-    </article>
-</main>
+                </ul>
+            </div>
+        </article>
+
+        <article class="card">
+            <header class="card__header">
+                <h2>FAQ</h2>
+            </header>
+            <div class="card__body">
+                <h3>Küche</h3>
+                <details class="faq">
+                    <summary>Wie oft muss ich was wechseln?</summary>
+                    <p>
+                        - Küchenschwamm: nach ca. 7 Tagen<br>
+                        - Waschlappen: nach 7 Tagen<br>
+                    </p>
+                </details>
+
+                <h3>Badezimmer</h3>
+                <details class="faq">
+                    <summary>Sauberkeitsregeln(individuell anpassbar):</summary>
+                    <p></p>
+                </details>
+            </div>
+        </article>
+    </main>
 
 
 <?php
