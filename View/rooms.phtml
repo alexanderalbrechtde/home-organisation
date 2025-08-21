@@ -1,4 +1,5 @@
 <?php
+
 require_once(__DIR__ . '/header.phtml');
 ?>
 
@@ -26,12 +27,12 @@ require_once(__DIR__ . '/header.phtml');
                         <article class="room-card">
                             <h2>
                                 <a href="/room?id=<?= urlencode($room['id'] ?? '') ?>">
-                                    <?= htmlspecialchars($room['room_name'] ?? $room['name'] ?? '') ?>
+                                    <?= htmlspecialchars($room['name'] ?? '') ?>
                                 </a>
                             </h2>
                             <p><?= nl2br(
                                         htmlspecialchars(
-                                                $room['room_description'] ?? $room['description'] ?? '',
+                                                $room['description'] ?? '',
                                         )
                                 ) ?></p>
                         </article>

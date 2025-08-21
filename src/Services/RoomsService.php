@@ -25,7 +25,7 @@ class RoomsService
         $pdo = new PDO('sqlite:' . __DIR__ . '/../../data/home-organisation.sqlite');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $pdo->query('SELECT  name, description FROM room');
+        $stmt = $pdo->query('SELECT  id, name, description FROM room');
         $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $rooms;
@@ -37,5 +37,20 @@ class RoomsService
             $room['name'],
             $room['description']
         );
+    }
+
+    public function getRoom(int $id): ?array
+    {
+        $pdo = new PDO('sqlite:' . __DIR__ . '/../../data/home-organisation.sqlite');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $pdo->query('SELECT  id, name, description FROM room WHERE id = ' . $id . ' LIMIT 1');
+        $room = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$room) {
+            return null;
+        }
+
+        return $room;
     }
 }

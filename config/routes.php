@@ -12,6 +12,8 @@ return [
     //'/konto' => 'KontoController',
     '/rooms' => 'RoomsController',
 
+    '/room' => 'RoomController',
+
     '/login-submit' => 'LoginSubmitController',
     '/register-submit' => 'RegisterSubmitController',
     '/logout-submit' => 'LogoutSubmitController',

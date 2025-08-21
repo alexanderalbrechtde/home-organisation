@@ -25,6 +25,7 @@ require_once __DIR__ . '/../src/Controller/LogoutSubmitController.php';
 
 require_once __DIR__ . '/../src/Controller/RoomsController.php';
 require_once __DIR__ . '/../src/Controller/RoomsSubmitController.php';
+require_once __DIR__ . '/../src/Controller/RoomController.php';
 
 
 //Services
