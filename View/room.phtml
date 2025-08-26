@@ -19,20 +19,37 @@ require_once(__DIR__ . '/header.phtml');
             <h2>Aktuelle Timer</h2>
             <?php
             if (!empty($items)): ?>
-                <ul class="list">
+                <ul class="reminder-list">
                     <?php
                     foreach ($items as $t): ?>
-                        <li>
-                            <div class="title">
-                                <?= htmlspecialchars($t['title'] ?? '') ?>
+                        <li class="reminder-card">
+                            <div class="reminder-header">
+                                <h3><?= htmlspecialchars($t['title'] ?? '') ?></h3>
+                                <form action="/reminder-delete" method="post" class="delete-form">
+                                    <input type="hidden" name="reminder_id" value="<?= $t['id'] ?>">
+                                    <button type="submit" class="delete-btn">✕</button>
+                                </form>
                             </div>
 
-                            <div class="date">
-                                endet am <?= htmlspecialchars($t['due_at'] ?? '') ?>
-                            </div>
-
-                            <div class="desc">
-                                <?= nl2br(htmlspecialchars($t['notes'] ?? '')) ?>
+                            <div class="reminder-body">
+                                <p><strong>Endet in:</strong>
+                                    <?php
+                                    if (!empty($t['due_at'])) {
+                                        $now = new DateTime();
+                                        $dt = $t['due_at'] instanceof DateTime ? $t['due_at'] : new DateTime(
+                                                $t['due_at']
+                                        );
+                                        if ($dt > $now) {
+                                            $difference = $now->diff($dt);
+                                            echo $difference->format('%a Tage, %h Std, %i Min');
+                                        } else {
+                                            echo 'abgelaufen';
+                                        }
+                                        echo ' (am ' . htmlspecialchars($dt->format('d.m.Y H:i')) . ')';
+                                    }
+                                    ?>
+                                </p>
+                                <p><?= nl2br(htmlspecialchars($t['notes'] ?? '')) ?></p>
                             </div>
                         </li>
                     <?php

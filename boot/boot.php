@@ -34,6 +34,8 @@ require_once __DIR__ . '/../src/Controller/RoomsSubmitController.php';
 
 require_once __DIR__ . '/../src/Controller/ReminderSubmitController.php';
 
+require_once __DIR__ . '/../src/Controller/ReminderDeleteController.php';
+
 
 //Services
 require_once __DIR__ . '/../src/Services/htmlRenderer.php';

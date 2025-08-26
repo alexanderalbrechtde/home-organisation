@@ -23,7 +23,6 @@ class ReminderSubmitController implements ControllerInterface
             header("Location: /room?id=" . urlencode((string)$roomId) . "&status=creation_failed");
             return '';
         }
-        //header("Location: /room?status=creation_success");
         header("Location: /room?id=" . urlencode((string)$roomId) . "&status=creation_success");
         return '';
     }

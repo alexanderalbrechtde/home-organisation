@@ -15,10 +15,10 @@ return [
     'reminder' => 'ReminderController',
 
 
-
     '/login-submit' => 'LoginSubmitController',
     '/register-submit' => 'RegisterSubmitController',
     '/logout-submit' => 'LogoutSubmitController',
     '/rooms-submit' => 'RoomsSubmitController',
     '/reminder-submit' => 'ReminderSubmitController',
+    '/reminder-delete' => 'ReminderDeleteController',
 ];
