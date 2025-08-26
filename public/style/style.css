@@ -13,12 +13,12 @@
     border-radius: 14px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
     padding: 32px 28px;
-    width: min(560px, 92vw);
+    width: min(900px, 92vw);
 }
 
 .page-404 h1 {
     margin: 0 0 8px 0;
-    font-size: clamp(64px, 12vw, 120px);
+    font-size: clamp(48px, 10vw, 96px);
     line-height: .85;
     letter-spacing: .5px;
     background: linear-gradient(90deg, var(--primary-strong), var(--primary));
@@ -26,6 +26,8 @@
     background-clip: text;
     color: transparent;
     text-shadow: 0 10px 30px rgba(59, 130, 246, .25);
+    white-space: nowrap;
+    padding-right: .1em; /* ensures gradient-clip doesn't hide the last glyph when tight */
 }
 
 .page-404 p {
@@ -767,6 +769,40 @@ body:not(.dashboard-body) > h1 {
 .rooms h1 {
     margin: 0 0 12px 0;
     font-size: clamp(28px, 4vw, 36px);
+}
+
+/* Inline Titlebar with back link */
+.room-detail .room-titlebar {
+    display: flex;
+    align-items: baseline; /* aligns with the h1 baseline */
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 12px 0; /* keep same spacing as original h1 */
+}
+
+.room-detail .room-titlebar h1 {
+    margin: 0; /* override default .rooms h1 margin inside titlebar */
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.02);
+    color: var(--text);
+    text-decoration: none; /* button-like */
+    transition: border-color .2s ease, color .2s ease, transform .1s ease;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+    border-color: var(--primary);
+    color: var(--primary);
+    outline: none;
+    transform: translateY(-1px);
 }
 
 .rooms form label {

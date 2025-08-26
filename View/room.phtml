@@ -5,7 +5,10 @@ require_once(__DIR__ . '/header.phtml');
 
     <div class="rooms-wrapper">
         <div class="rooms room-detail">
-            <h1>Raum: <?= htmlspecialchars($room['name']) ?></h1>
+            <div class="room-titlebar">
+                <h1>Raum: <?= htmlspecialchars($room['name']) ?></h1>
+                <a href="/rooms" class="back-link" aria-label="Zurück zu den Räumen">← Zurück zu den Räumen</a>
+            </div>
             <?php
             if (!empty($room['description'])): ?>
                 <p class="room-desc"><?= htmlspecialchars($room['description']) ?></p>
