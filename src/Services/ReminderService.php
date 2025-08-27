@@ -90,7 +90,7 @@ class ReminderService
     }
 
     //remaining = verbleibend
-    //rechnet anhand der gesetzten Variable due_at die verbleibende Zeit aus und bestimmt daran, ob abgelaufen oder nicht
+    //rechnet anhand der gesetzten Variable due_at die verbleibende Zeit aus
     public function showTimer($dueAt): string
     {
         if (empty($dueAt)) {

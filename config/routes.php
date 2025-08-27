@@ -2,17 +2,15 @@
 
 return [
     '/' => 'DashboardController',
-    //'/header' => 'HeaderController',
-    //'/footer' => 'FooterController',
     '/login' => 'LoginController',
     '/register' => 'RegisterController',
     '/logout' => 'LogoutController',
     '/impressum' => 'ImprintController',
     '/404' => 'ErrorController',
-    //'/konto' => 'KontoController',
     '/rooms' => 'RoomsController',
     '/room' => 'RoomController',
-    'reminder' => 'ReminderController',
+    '/warehouse' => 'WarehouseController',
+
 
 
     '/login-submit' => 'LoginSubmitController',
@@ -21,4 +19,6 @@ return [
     '/rooms-submit' => 'RoomsSubmitController',
     '/reminder-submit' => 'ReminderSubmitController',
     '/reminder-delete' => 'ReminderDeleteController',
+    'lager-submit' => 'LagerSubmitController',
+    '/warehouse-submit' => 'WarehouseSubmitController',
 ];

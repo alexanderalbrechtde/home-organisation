@@ -34,7 +34,7 @@ require_once(__DIR__ . '/homheader.phtml');
                             <li class="reminder-card">
                                 <div class="reminder-header">
                                     <h3>
-                                        <?= htmlspecialchars($t['title'] ?? '') ?>x
+                                        <?= htmlspecialchars($t['title'] ?? '') ?>
                                         <?php
                                         if (!empty($t['rooms'])): ?>
                                             <small class="tag">(Raum: <?= htmlspecialchars($t['rooms']) ?>)</small>
@@ -76,7 +76,7 @@ require_once(__DIR__ . '/homheader.phtml');
             </div>
         </article>
 
-        <article class="card">
+        <article class="card card--faq">
             <header class="card__header">
                 <h2>FAQ</h2>
             </header>
@@ -95,6 +95,15 @@ require_once(__DIR__ . '/homheader.phtml');
                     <summary>Sauberkeitsregeln(individuell anpassbar):</summary>
                     <p></p>
                 </details>
+            </div>
+        </article>
+        <article class="card card--lager">
+            <header class="card__header">
+                <h2>Lager</h2>
+            </header>
+            <div class="card__body">
+                <p class="muted">Schneller Zugriff auf deinen Lagerbestand und Notizen.</p>
+                <a class="lager-link" href="/warehouse">Zum Lager</a>
             </div>
         </article>
     </main>

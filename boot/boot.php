@@ -36,6 +36,9 @@ require_once __DIR__ . '/../src/Controller/ReminderSubmitController.php';
 
 require_once __DIR__ . '/../src/Controller/ReminderDeleteController.php';
 
+require_once __DIR__ . '/../src/Controller/WarehouseController.php';
+require_once __DIR__ . '/../src/Controller/WarehouseSubmitController.php';
+
 
 //Services
 require_once __DIR__ . '/../src/Services/htmlRenderer.php';
@@ -47,9 +50,11 @@ require_once __DIR__ . '/../src/Services/RoomsCreateService.php';
 require_once __DIR__ . '/../src/Services/RoomsService.php';
 require_once __DIR__ . '/../src/Services/ReminderService.php';
 require_once __DIR__ . '/../src/Services/ReminderCreateService.php';
+require_once __DIR__ . '/../src/Services/WarehouseService.php';
 
 
 //Dtos
 require_once __DIR__ . '/../src/Dtos/UserDto.php';
 require_once __DIR__ . '/../src/Dtos/RoomDto.php';
 require_once __DIR__ . '/../src/Dtos/ReminderDto.php';
+require_once __DIR__ . '/../src/Dtos/ItemDto.php';

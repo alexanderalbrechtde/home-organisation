@@ -7,6 +7,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $pdo->exec("DROP TABLE IF EXISTS user");
 $pdo->exec("DROP TABLE IF EXISTS room");
 $pdo->exec("DROP TABLE IF EXISTS reminder");
+$pdo->exec("DROP TABLE IF EXISTS item");
 $pdo->exec("DROP TABLE IF EXISTS user_to_room");
 $pdo->exec("DROP TABLE IF EXISTS room_to_reminder");
 $pdo->exec("DROP TABLE IF EXISTS user_to_reminder");
@@ -41,6 +42,12 @@ $pdo->exec("
         created_for INTEGER NOT NULL,
         FOREIGN KEY (created_by) REFERENCES user(id),
         FOREIGN KEY (created_for) REFERENCES room(id)
+);
+    CREATE TABLE item(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT(30) NOT NULL,
+        category TEXT(30) NOT NULL,
+        amount INTEGER NOT NULL
 );
     CREATE TABLE user_to_room(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
