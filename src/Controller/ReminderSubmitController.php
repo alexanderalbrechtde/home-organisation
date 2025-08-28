@@ -21,7 +21,7 @@ class ReminderSubmitController implements ControllerInterface
         );
 
         $service = new RoomsService();
-        $htmlRenderer = new htmlRenderer();
+        $htmlRenderer = new HtmlRenderer();
 
         if (!$create) {
             // Fehler beim Anlegen: rendere die Raumansicht mit Fehlerstatus

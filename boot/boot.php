@@ -40,7 +40,7 @@ require_once __DIR__ . '/../src/Controller/WarehouseSubmitController.php';
 
 
 //Services
-require_once __DIR__ . '/../src/Services/htmlRenderer.php';
+require_once __DIR__ . '/../src/Services/HtmlRenderer.php';
 require_once __DIR__ . '/../src/Services/LoginService.php';
 require_once __DIR__ . '/../src/Services/UserService.php';
 require_once __DIR__ . '/../src/Services/RegisterService.php';

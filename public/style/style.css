@@ -1118,3 +1118,38 @@ body:not(.dashboard-body) > h1 {
     background: var(--primary-strong);
     transform: translateY(-1px);
 }
+
+/* ---------------------
+   Warehouse page tweaks
+   --------------------- */
+.card--warehouse-stock {
+    margin-top: 24px;
+}
+
+.section-title {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: var(--text);
+}
+
+/* Stock table styling to match cards */
+.stock-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stock-table thead th {
+    text-align: left;
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+}
+
+.stock-table tbody td {
+    padding: 10px 6px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.stock-table tbody tr:last-child td {
+    border-bottom: none; /* cleaner end of list */
+}

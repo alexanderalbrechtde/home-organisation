@@ -1,6 +1,6 @@
 <?php
 
-class htmlRenderer
+class HtmlRenderer
 {
     function render(string $view, array $data = []): string
     {

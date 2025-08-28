@@ -4,7 +4,11 @@ class WarehouseController implements ControllerInterface
 {
     function handle($post, $get, $server, &$session): string
     {
-        $htmlRenderer = new htmlRenderer();
-        return $htmlRenderer->render('warehouse.phtml');
+        $service = new WarehouseService();
+        $htmlRenderer = new HtmlRenderer();
+        return $htmlRenderer->render('warehouse.phtml', [
+            'error' => $get['message'] ?? null,
+            'items' => $service->getItems(),
+        ]);
     }
 }

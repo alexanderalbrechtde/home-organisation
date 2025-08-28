@@ -5,7 +5,7 @@ class RoomController implements ControllerInterface
     function handle($post, $get, $server, &$session): string
     {
         $service = new RoomsService();
-        $htmlRenderer = new htmlRenderer();
+        $htmlRenderer = new HtmlRenderer();
 
         $id = isset($get['id']) && ctype_digit((string)$get['id']) ? (int)$get['id'] : null;
 

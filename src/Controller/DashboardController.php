@@ -10,7 +10,7 @@ class DashboardController implements ControllerInterface
         }
 
 
-        $htmlRenderer = new htmlRenderer();
+        $htmlRenderer = new HtmlRenderer();
         return $htmlRenderer->render('home.phtml', $_POST);
     }
 

@@ -8,7 +8,7 @@ class RoomsController implements ControllerInterface
         $service = new RoomsService();
         $rooms = $service->getRooms();
 
-        $htmlRenderer = new htmlRenderer();
+        $htmlRenderer = new HtmlRenderer();
         return $htmlRenderer->render('rooms.phtml', [
             'rooms' => $rooms
         ]);

@@ -12,14 +12,14 @@ class RoomsSubmitController implements ControllerInterface
             $post['room_description']
         );
         if (!$create) {
-            $htmlRenderer = new htmlRenderer();
+            $htmlRenderer = new HtmlRenderer();
             return $htmlRenderer->render('rooms.phtml', [
                 'rooms' => (new RoomsService())->getRooms(),
                 'error' => 'creation_failed'
             ]);
         }
 
-        $htmlRenderer = new htmlRenderer();
+        $htmlRenderer = new HtmlRenderer();
         return $htmlRenderer->render('rooms.phtml', [
             'rooms' => (new RoomsService())->getRooms(),
             'success' => 'creation_success'

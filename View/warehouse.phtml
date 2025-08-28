@@ -3,63 +3,76 @@
 require_once(__DIR__ . '/header.phtml');
 ?>
 
-    <div class="page-warehous-wrapper">
-        <div class="Lager">
-            <h1>Lager</h1>
-            <h2>zum Lager hinzufügen:</h2>
-            <form action="/warehouse-submit" method="post" class="item-form">
+    <div class="container">
 
-                <div class="form-group">
-                    <label for="name">Titel</label>
-                    <input type="text" id="name" name="name" maxlength="30" required>
-                </div>
+        <section class="card card--warehouse-form">
+            <div class="card__header">
+                <h1>Lager</h1>
+                <p class="muted">Behalte den Überblick über deine Vorräte und füge neue Artikel hinzu.</p>
+            </div>
 
-                <div class="form-group">
-                    <label for="category">Kategorie</label>
-                    <input type="text" id="category" name="category" maxlength="30" required>
-                </div>
+            <div class="card__body">
+                <h2 class="section-title">Zum Lager hinzufügen</h2>
 
-                <div class="form-group">
-                    <label for="amount">Anzahl</label>
-                    <input type="number" id="amount" name="amount" min="1" required>
-                </div>
+                <form action="/warehouse-submit" method="post" class="item-form">
+                    <div class="form-group">
+                        <label for="name">Titel</label>
+                        <input type="text" id="name" name="name" maxlength="30">
+                    </div>
 
-                <button type="submit" class="btn">Speichern</button>
+                    <div class="form-group">
+                        <label for="category">Kategorie</label>
+                        <input type="text" id="category" name="category" maxlength="30">
+                    </div>
 
-            </form>
+                    <div class="form-group">
+                        <label for="amount">Anzahl</label>
+                        <input type="number" id="amount" name="amount" min="1">
+                    </div>
 
-            <h2>aktueller Bestand</h2>
-            <table class="stock-table">
-                <thead>
-                <tr>
-                    <th>Titel</th>
-                    <th>Kategorie</th>
-                    <th>Menge</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                if (!empty($items) && is_array($items)): ?>
+                    <button type="submit" class="btn">Speichern</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="card card--warehouse-stock">
+            <div class="card__header">
+                <h2>Aktueller Bestand</h2>
+            </div>
+
+            <div class="card__body">
+                <table class="stock-table">
+                    <thead>
+                    <tr>
+                        <th>Titel</th>
+                        <th>Kategorie</th>
+                        <th>Menge</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <?php
-                    foreach ($items as $row): ?>
+                    if (!empty($items) && is_array($items)): ?>
+                        <?php
+                        foreach ($items as $row): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($row['name']) ?></td>
+                                <td><?= htmlspecialchars($row['category']) ?></td>
+                                <td><?= (int)$row['amount'] ?></td>
+                            </tr>
+                        <?php
+                        endforeach; ?>
+                    <?php
+                    else: ?>
                         <tr>
-                            <td><?= htmlspecialchars($row['name']) ?></td>
-                            <td><?= htmlspecialchars($row['category']) ?></td>
-                            <td><?= (int)$row['amount'] ?></td>
+                            <td colspan="3" class="is-empty">Keine Einträge vorhanden</td>
                         </tr>
                     <?php
-                    endforeach; ?>
-                <?php
-                else: ?>
-                    <tr>
-                        <td colspan="3">Keine Einträge vorhanden</td>
-                    </tr>
-                <?php
-                endif; ?>
-                </tbody>
-            </table>
+                    endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-        </div>
     </div>
 
 <?php
