@@ -72,6 +72,20 @@ CREATE UNIQUE INDEX IF NOT EXISTS uniq_item_name_category
         FOREIGN KEY (room_id) REFERENCES room(id),
         FOREIGN KEY (reminder_id) REFERENCES reminder(id)  
     );
+    CREATE TABLE item_to_room(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        item_id INTEGER NOT NULL,
+        room_id INTEGER NOT NULL,
+        FOREIGN KEY (item_id) REFERENCES item(id),
+        FOREIGN KEY (room_id) REFERENCES room(id)
+    );
+    CREATE TABLE item_to_reminder(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        item_id INTEGER NOT NULL,
+        reminder_id INTEGER NOT NULL,
+        FOREIGN KEY (item_id) REFERENCES item(id),
+        FOREIGN KEY (reminder_id) REFERENCES reminder(id)
+    );
 "
 );
 

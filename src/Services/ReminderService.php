@@ -4,13 +4,14 @@ use Dtos\ReminderDto;
 
 class ReminderService
 {
+    // eventuell rausnehmen(ungenutzt)
     public function getReminderbyName(string $title): ?ReminderDto
     {
         $pdo = new PDO('sqlite:' . __DIR__ . '/../../data/home-organisation.sqlite');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $stmt = $pdo->prepare(
-            "SELECT title, notes, due_at, repeat_rules, priority, status, created_at FROM reminder WHERE title = :title"
+            "SELECT title, notes, due_at, priority, status, created_at FROM reminder WHERE title = :title"
         );
         $stmt->execute(['title' => $title]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
