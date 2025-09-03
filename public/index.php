@@ -17,7 +17,6 @@ if ($path = $_SERVER['PATH_INFO'] ?? '/') {
 
     /** @var ControllerInterface $controller */
     $controller = $objectManagerService->get($controllerName);
-    dump($objectManagerService);
 
     echo $controller->handle($_POST, $_GET, $_SERVER, $_SESSION);
 }

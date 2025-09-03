@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use PDO;
+
 class RegisterService
 {
     public function __construct(private PDO $pdo){

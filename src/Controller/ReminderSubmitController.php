@@ -3,15 +3,17 @@ namespace App\Controller;
 
 use App\Interfaces\ControllerInterface;
 use App\Services\HtmlRenderer;
+use App\Services\ReminderCreateService;
 use App\Services\ReminderService;
 use App\Services\RoomsService;
 
 class ReminderSubmitController implements ControllerInterface
 {
     public function __construct(
-        private ReminderService $reminderService,
+        private ReminderCreateService $reminderCreateService,
         private RoomsService $roomsService,
-        private HtmlRenderer $htmlRenderer
+        private HtmlRenderer $htmlRenderer,
+        private ReminderService $reminderService,
     ) {
     }
 
@@ -19,7 +21,7 @@ class ReminderSubmitController implements ControllerInterface
     {
         $roomId = isset($post['room_id']) ? (int)$post['room_id'] : null;
 
-        $create = $this->reminderService->create(
+        $create = $this->reminderCreateService->create(
             $session['user_id'],
             $post['room_id'],
             $post['reminder_title'],

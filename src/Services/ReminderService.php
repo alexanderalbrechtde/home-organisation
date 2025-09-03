@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use Dtos\ReminderDto;
+use DateTime;
+use DateTimeInterface;
 use PDO;
 
 class ReminderService
@@ -26,19 +27,6 @@ class ReminderService
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
-   // private function createReminderDto(array $reminder): ReminderDto
-   // {
-   //     return new ReminderDto(
-   //         $reminder['users'],
-   //         $reminder['rooms'],
-   //         $reminder['title'],
-   //         $reminder['notes'],
-   //         $reminder['due_at'],
-   //         $reminder['priority'],
-   //         $reminder['status'],
-   //         $reminder['created_at']
-   //     );
-   // }
 
     public function deleteReminderbyId(int $id): bool
     {
