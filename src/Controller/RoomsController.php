@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+use App\Services\HtmlRenderer;
+use App\Services\RoomsService;
+
 class RoomsController implements ControllerInterface
 {
     public function __construct(

@@ -3,20 +3,14 @@
 session_start();
 
 spl_autoload_register(function (string $class) {
-    $directories = [
-        __DIR__ . '/../src/Controller',
-        __DIR__ . '/../src/Dtos',
-        __DIR__ . '/../src/Interfaces',
-        __DIR__ . '/../src/Services',
-        __DIR__ . '/../src/Factories'
-    ];
-    foreach ($directories as $directory) {
-        $filePath = $directory . '/' . $class . '.php';
+
+    $class = str_replace('App' , 'src', $class);
+    $class = str_replace('\\' , '/', $class);
+    $filePath = __DIR__ .  '/../' . $class . '.php';
         if (file_exists($filePath)) {
             require_once($filePath);
             return '';
         }
-    }
 });
 
 

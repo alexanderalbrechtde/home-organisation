@@ -2,7 +2,14 @@
 
 namespace App\Factories;
 
-class ReminderDeleteFactory implements FactoryInterface
+use App\Controller\ReminderDeleteController;
+use App\Interfaces\FactoryInterface;
+use App\Services\HtmlRenderer;
+use App\Services\ObjectManagerService;
+use App\Services\ReminderService;
+use App\Services\RoomsService;
+
+class ReminderDeleteControllerFactory implements FactoryInterface
 {
     public function __construct(private ObjectManagerService $objectManagerService)
     {

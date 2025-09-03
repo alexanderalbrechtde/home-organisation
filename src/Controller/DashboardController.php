@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+use App\Services\DashboardService;
+use App\Services\HtmlRenderer;
+
 class DashboardController implements ControllerInterface
 {
 

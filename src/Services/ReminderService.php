@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Dtos\ReminderDto;
+use PDO;
 
 class ReminderService
 {

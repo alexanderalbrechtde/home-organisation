@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+
 class LogoutSubmitController implements ControllerInterface
 {
 

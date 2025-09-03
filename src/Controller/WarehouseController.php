@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+use App\Services\HtmlRenderer;
+use App\Services\WarehouseService;
+
 class WarehouseController implements ControllerInterface
 {
     public function __construct(

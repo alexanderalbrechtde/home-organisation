@@ -2,6 +2,11 @@
 
 namespace App\Factories;
 
+use App\Controller\RegisterSubmitController;
+use App\Interfaces\FactoryInterface;
+use App\Services\ObjectManagerService;
+use App\Services\RegisterService;
+
 class RegisterSubmitControllerFactory implements FactoryInterface
 {
     public function __construct(private ObjectManagerService $objectManagerService)

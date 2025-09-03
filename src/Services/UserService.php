@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Dtos\UserDto;
+use PDO;
+
 class UserService
 {
 

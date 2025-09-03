@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Dtos\ItemDto;
+use PDO;
+
 class WarehouseService
 {
     public function __construct(private PDO $pdo)

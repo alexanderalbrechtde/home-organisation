@@ -2,9 +2,16 @@
 
 namespace App\Services;
 
+use App\Interfaces\FactoryInterface;
+use RuntimeException;
+
 class ObjectManagerService
 {
     private array $objects = [];
+
+    public function __construct(private array $factories)
+    {
+    }
 
     public function get(string $className)
     {
@@ -18,13 +25,17 @@ class ObjectManagerService
 
     public function build(string $className)
     {
-        $factoryName = $className . 'Factory';
+        $factoryName = $this->factories[$className];
         $factory = new $factoryName($this);
 
         if (!$factory instanceof FactoryInterface) {
-            throw new RuntimeException('Missing Factoryinterface' . $factoryName);
+            throw new RuntimeException('Missing FactoryInterface' . $factoryName);
         }
 
         return $factory->produce();
     }
 }
+
+
+
+//function string

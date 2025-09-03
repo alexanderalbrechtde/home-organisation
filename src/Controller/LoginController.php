@@ -1,6 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+use App\Services\HtmlRenderer;
+
 class LoginController implements ControllerInterface
 {
     public function __construct(private HtmlRenderer $htmlRenderer)

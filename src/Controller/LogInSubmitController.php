@@ -1,6 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+use App\Services\LoginService;
+
 class LogInSubmitController implements ControllerInterface
 {
     public function __construct(private LoginService $loginService)

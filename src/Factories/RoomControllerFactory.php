@@ -2,6 +2,13 @@
 
 namespace App\Factories;
 
+use App\Controller\RoomController;
+use App\Interfaces\FactoryInterface;
+use App\Services\HtmlRenderer;
+use App\Services\ObjectManagerService;
+use App\Services\ReminderService;
+use App\Services\RoomsService;
+
 class RoomControllerFactory implements FactoryInterface
 {
     public function __construct(private ObjectManagerService $objectManagerService)

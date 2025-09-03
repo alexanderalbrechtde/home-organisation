@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+use App\Services\WarehouseService;
+
 class WarehouseSubmitController implements ControllerInterface
 {
     public function __construct(private WarehouseService $warehouseService)

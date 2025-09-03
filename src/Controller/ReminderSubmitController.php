@@ -1,6 +1,11 @@
 <?php
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+use App\Services\HtmlRenderer;
+use App\Services\ReminderService;
+use App\Services\RoomsService;
+
 class ReminderSubmitController implements ControllerInterface
 {
     public function __construct(
@@ -28,8 +33,7 @@ class ReminderSubmitController implements ControllerInterface
         if (!$create) {
             // Fehler beim Anlegen: rendere die Raumansicht mit Fehlerstatus
             $room = $this->roomsService->getRoom($roomId);
-            $reminderService2 = new ReminderService();
-            $reminders = $reminderService2->getRemindersByRoomId($roomId);
+            $reminders = $this->reminderService->getRemindersByRoomId($roomId);
 
             return $this->htmlRenderer->render('room.phtml', [
                 'room' => $room,
@@ -41,8 +45,7 @@ class ReminderSubmitController implements ControllerInterface
 
         // Erfolgreich angelegt: rendere Raumansicht mit success-Status
         $room = $this->roomsService->getRoom($roomId);
-        $reminderService2 = new ReminderService();
-        $reminders = $reminderService2->getRemindersByRoomId($roomId);
+        $reminders = $this->reminderService->getRemindersByRoomId($roomId);
 
         return $this->htmlRenderer->render('room.phtml', [
             'room' => $room,

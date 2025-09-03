@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Interfaces\ControllerInterface;
+use App\Services\RegisterService;
+
 class RegisterSubmitController implements ControllerInterface
 {
     public function __construct(private RegisterService $registerService)

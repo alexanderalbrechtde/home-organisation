@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Dtos\RoomDto;
+use PDO;
+
 class RoomsService
 {
     public function __construct(private PDO $pdo)
