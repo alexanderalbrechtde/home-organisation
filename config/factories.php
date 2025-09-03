@@ -19,14 +19,12 @@ use App\Controller\WarehouseSubmitController;
 use App\Factories\DashboardControllerFactory;
 use App\Factories\DashboardServiceFactory;
 use App\Factories\ErrorControllerFactory;
-use App\Factories\HtmlRendererFactory;
 use App\Factories\ImprintControllerFactory;
 use App\Factories\LoginControllerFactory;
 use App\Factories\LoginServiceFactory;
 use App\Factories\LogInSubmitControllerFactory;
 use App\Factories\LogoutControllerFactory;
 use App\Factories\LogoutServiceFactory;
-use App\Factories\LogoutSubmitControllerFactory;
 use App\Factories\PDOFactory;
 use App\Factories\RegisterControllerFactory;
 use App\Factories\RegisterServiceFactory;
@@ -55,6 +53,8 @@ use App\Services\RoomsCreateService;
 use App\Services\RoomsService;
 use App\Services\UserService;
 use App\Services\WarehouseService;
+use App\Factories\InvokableFactory;
+
 
 return [
     DashboardController::class => DashboardControllerFactory::class,
@@ -63,7 +63,7 @@ return [
     LoginController::class => LoginControllerFactory::class,
     LogInSubmitController::class => LogInSubmitControllerFactory::class,
     LogoutController::class => LogoutControllerFactory::class,
-    LogoutSubmitController::class => LogoutSubmitControllerFactory::class,
+    LogoutSubmitController::class => InvokableFactory::class,
     RegisterController::class => RegisterControllerFactory::class,
     RegisterSubmitController::class => RegisterSubmitControllerFactory::class,
     ReminderDeleteController::class => ReminderDeleteControllerFactory::class,
@@ -74,9 +74,9 @@ return [
     WarehouseController::class => WarehouseControllerFactory::class,
     WarehouseSubmitController::class => WarehouseSubmitControllerFactory::class,
     DashboardService::class => DashboardServiceFactory::class,
-    HtmlRenderer::class  => HtmlRendererFactory::class,
+    HtmlRenderer::class  => InvokableFactory::class,
     LoginService::class => LoginServiceFactory::class,
-    LogoutService::class => LogoutServiceFactory::class,
+    LogoutService::class => InvokableFactory::class,
     RegisterService::class => RegisterServiceFactory::class,
     ReminderService::class => ReminderServiceFactory::class,
     ReminderCreateService::class => ReminderCreateServiceFactory::class,

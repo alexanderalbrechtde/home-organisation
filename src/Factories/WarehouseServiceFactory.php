@@ -13,7 +13,7 @@ class WarehouseServiceFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new WarehouseService($this->objectManagerService->get(PDO::class));
     }

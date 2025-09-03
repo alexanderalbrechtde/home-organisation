@@ -13,7 +13,7 @@ class LoginControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new LoginController($this->objectManagerService->get(HtmlRenderer::class));
     }

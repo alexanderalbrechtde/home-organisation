@@ -14,7 +14,7 @@ class DashboardControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new DashboardController(
             $this->objectManagerService->get(HtmlRenderer::class),

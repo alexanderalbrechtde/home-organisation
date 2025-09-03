@@ -13,7 +13,7 @@ class LogoutControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new LogoutController($this->objectManagerService->get(HtmlRenderer::class));
     }

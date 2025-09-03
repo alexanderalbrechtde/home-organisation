@@ -13,7 +13,7 @@ class RegisterControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new RegisterController($this->objectManagerService->get(HtmlRenderer::class));
     }

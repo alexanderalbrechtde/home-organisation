@@ -14,7 +14,7 @@ class WarehouseControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new WarehouseController(
             $this->objectManagerService->get(WarehouseService::class),

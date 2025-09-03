@@ -4,5 +4,5 @@ namespace App\Interfaces;
 
 interface FactoryInterface
 {
-    public function produce(): object;
+    public function produce(string $className): object;
 }

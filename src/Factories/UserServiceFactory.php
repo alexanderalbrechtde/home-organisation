@@ -13,7 +13,7 @@ class UserServiceFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new UserService($this->objectManagerService->get(PDO::class));
     }

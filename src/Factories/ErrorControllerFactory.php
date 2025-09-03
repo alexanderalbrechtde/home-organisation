@@ -12,7 +12,7 @@ class ErrorControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new ErrorController($this->objectManagerService->get(HtmlRenderer::class));
     }

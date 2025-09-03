@@ -13,7 +13,7 @@ class WarehouseSubmitControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new WarehouseSubmitController(
             $this->objectManagerService->get(WarehouseService::class),

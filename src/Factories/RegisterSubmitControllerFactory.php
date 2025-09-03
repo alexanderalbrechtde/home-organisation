@@ -13,7 +13,7 @@ class RegisterSubmitControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new RegisterSubmitController($this->objectManagerService->get(RegisterService::class));
     }

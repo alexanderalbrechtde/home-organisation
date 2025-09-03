@@ -16,7 +16,7 @@ class ReminderSubmitControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new ReminderSubmitController(
             $this->objectManagerService->get(ReminderCreateService::class),

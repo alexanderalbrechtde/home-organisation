@@ -13,7 +13,7 @@ class LoginServiceFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new LoginService($this->objectManagerService->get(UserService::class));
     }

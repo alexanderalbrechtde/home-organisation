@@ -13,7 +13,7 @@ class ReminderCreateServiceFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new ReminderCreateService($this->objectManagerService->get(PDO::class));
     }

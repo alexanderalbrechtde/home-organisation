@@ -13,7 +13,7 @@ class LogInSubmitControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new LogInSubmitController($this->objectManagerService->get(LoginService::class));
     }

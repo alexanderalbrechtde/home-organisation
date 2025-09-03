@@ -15,7 +15,7 @@ class ReminderDeleteControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new ReminderDeleteController(
             $this->objectManagerService->get(ReminderService::class),

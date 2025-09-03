@@ -13,7 +13,7 @@ class ImprintControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new ImprintController($this->objectManagerService->get(HtmlRenderer::class));
     }

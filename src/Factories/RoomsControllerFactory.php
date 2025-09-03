@@ -14,7 +14,7 @@ class RoomsControllerFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new RoomsController(
             $this->objectManagerService->get(RoomsService::class),

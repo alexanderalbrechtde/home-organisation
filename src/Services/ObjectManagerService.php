@@ -31,8 +31,7 @@ class ObjectManagerService
         if (!$factory instanceof FactoryInterface) {
             throw new RuntimeException('Missing FactoryInterface' . $factoryName);
         }
-
-        return $factory->produce();
+        return $factory->produce($className);
     }
 }
 

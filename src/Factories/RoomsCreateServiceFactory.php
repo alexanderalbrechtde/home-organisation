@@ -13,7 +13,7 @@ class RoomsCreateServiceFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new RoomsCreateService($this->objectManagerService->get(PDO::class));
     }

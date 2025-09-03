@@ -13,7 +13,7 @@ class RegisterServiceFactory implements FactoryInterface
     {
     }
 
-    public function produce(): object
+    public function produce(string $className): object
     {
         return new RegisterService($this->objectManagerService->get(PDO::class));
     }
