@@ -3,15 +3,18 @@ namespace App\Controller;
 
 
 use App\Interfaces\ControllerInterface;
+use App\Interfaces\HtmlRespose;
+use App\Interfaces\ResponseInterface;
 use App\Services\HtmlRenderer;
-
-class RegisterController implements ControllerInterface
+use App\Responses\HtmlResponse;class RegisterController implements ControllerInterface
 {
     public function __construct(private HtmlRenderer $htmlRenderer)
     {
     }
-    function handle($post, $get, $server, &$session): string
+    function handle($post, $get, $server, &$session): ResponseInterface
     {
-        return $this->htmlRenderer->render('register.phtml', $_POST);
+        //return $this->htmlRenderer->render('register.phtml', $_POST);
+        return new HtmlResponse($this->htmlRenderer->render('register.phtml', $_POST));
+
     }
 }

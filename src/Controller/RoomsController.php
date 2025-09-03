@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Interfaces\ControllerInterface;
+use App\Interfaces\ResponseInterface;
 use App\Services\HtmlRenderer;
 use App\Services\RoomsService;
+use App\Responses\HtmlResponse;
 
 class RoomsController implements ControllerInterface
 {
@@ -14,12 +16,12 @@ class RoomsController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): string
+    function handle($post, $get, $server, &$session): ResponseInterface
     {
         $rooms = $this->roomsService->getRooms();
 
-        return $this->htmlRenderer->render('rooms.phtml', [
+        return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
             'rooms' => $rooms
-        ]);
+        ]));
     }
 }

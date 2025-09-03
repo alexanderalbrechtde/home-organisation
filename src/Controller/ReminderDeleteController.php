@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Interfaces\ControllerInterface;
+use App\Interfaces\ResponseInterface;
 use App\Services\HtmlRenderer;
 use App\Services\ReminderService;
 use App\Services\RoomsService;
+use App\Responses\HtmlResponse;
 
 class ReminderDeleteController implements ControllerInterface
 {
@@ -16,7 +18,7 @@ class ReminderDeleteController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): string
+    function handle($post, $get, $server, &$session): ResponseInterface
     {
         $reminderId = isset($post['reminder_id']) && ctype_digit((string)$post['reminder_id'])
             ? (int)$post['reminder_id']
@@ -28,10 +30,14 @@ class ReminderDeleteController implements ControllerInterface
         if ($reminderId === null || $roomId === null) {
             $rooms = $this->roomsService->getRooms();
             $htmlRenderer = new HtmlRenderer();
-            return $htmlRenderer->render('rooms.phtml', [
+            //return $htmlRenderer->render('rooms.phtml', [
+            //    'rooms' => $rooms,
+            //    'error' => 'missing_parameters'
+            //]);
+            return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
                 'rooms' => $rooms,
                 'error' => 'missing_parameters'
-            ]);
+            ]));
         }
 
 
@@ -39,15 +45,15 @@ class ReminderDeleteController implements ControllerInterface
 
         $room = $this->roomsService->getRoom($roomId);
         if (!$room) {
-            return $this->htmlRenderer->render('404.phtml', []);
+            return new HtmlResponse($this->htmlRenderer->render('404.phtml'));
         }
 
         $reminders = $this->reminderService->getRemindersByRoomId($roomId);
 
-        return $this->htmlRenderer->render('room.phtml', [
+        return new HtmlResponse($this->htmlRenderer->render('home.phtml', [
             'room' => $room,
             'reminders' => $reminders,
             'timers' => $reminders,
-        ]);
+        ]));
     }
 }

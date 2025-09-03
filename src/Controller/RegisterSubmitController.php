@@ -3,15 +3,16 @@
 namespace App\Controller;
 
 use App\Interfaces\ControllerInterface;
+use App\Interfaces\ResponseInterface;
+use App\Responses\RedirectResponse;
 use App\Services\RegisterService;
-
-class RegisterSubmitController implements ControllerInterface
+use App\Responses\HtmlResponse;class RegisterSubmitController implements ControllerInterface
 {
     public function __construct(private RegisterService $registerService)
     {
     }
 
-    function handle($post, $get, $server, &$session): string
+    function handle($post, $get, $server, &$session): ResponseInterface
     {
         $register = $this->registerService->register(
             $post['fName'],
@@ -22,10 +23,8 @@ class RegisterSubmitController implements ControllerInterface
         );
 
         if (!$register) {
-            header('location: /register?error=register_failed');
-            exit;
+            return new RedirectResponse('/register?error=register_failed');
         }
-        header('location: /login?register=success');
-        return '';
+        return new RedirectResponse('/login?register=success');
     }
 }

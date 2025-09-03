@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Interfaces\ControllerInterface;
+use App\Interfaces\HtmlRespose;
+use App\Interfaces\ResponseInterface;
 use App\Services\HtmlRenderer;
 use App\Services\RoomsCreateService;
 use App\Services\RoomsService;
-
-class RoomsSubmitController implements ControllerInterface
+use App\Responses\HtmlResponse;class RoomsSubmitController implements ControllerInterface
 {
     public function __construct(
         private RoomsCreateService $roomsCreateService,
@@ -16,7 +17,7 @@ class RoomsSubmitController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): string
+    function handle($post, $get, $server, &$session): ResponseInterface
     {
         $create = $this->roomsCreateService->create(
             $session['user_id'],
@@ -24,15 +25,17 @@ class RoomsSubmitController implements ControllerInterface
             $post['room_description']
         );
         if (!$create) {
-            return $this->htmlRenderer->render('rooms.phtml', [
+            return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
                 'rooms' => $this->roomsService->getRooms(),
                 'error' => 'creation_failed'
-            ]);
+            ]));
+
+
         }
 
-        return $this->htmlRenderer->render('rooms.phtml', [
+        return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
             'rooms' => $this->roomsService->getRooms(),
-            'success' => 'creation_success'
-        ]);
+            'error' => 'creation_success'
+        ]));
     }
 }

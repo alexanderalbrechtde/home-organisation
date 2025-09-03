@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Interfaces\ControllerInterface;
+use App\Interfaces\ResponseInterface;
 use App\Services\HtmlRenderer;
 use App\Services\ReminderService;
 use App\Services\RoomsService;
+use App\Responses\HtmlResponse;
 
 class RoomController implements ControllerInterface
 {
@@ -16,28 +18,26 @@ class RoomController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): string
+    function handle($post, $get, $server, &$session): ResponseInterface
     {
         $id = isset($get['id']) && ctype_digit((string)$get['id']) ? (int)$get['id'] : null;
 
         if ($id === null) {
             $rooms = $this->roomsService->getRooms();
-            return $this->htmlRenderer->render('rooms.phtml', [
-                'rooms' => $rooms
-            ]);
+            return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', ['rooms' => $rooms]));
         }
 
         $room = $this->roomsService->getRoom($id);
         if (!$room) {
-            return $this->htmlRenderer->render('404.phtml', []);
+            return new HtmlResponse($this->htmlRenderer->render('404.phtml', []));
         }
 
         $reminders = $this->reminderService->getRemindersByRoomId($id);
 
-        return $this->htmlRenderer->render('room.phtml', [
+        return new HtmlResponse($this->htmlRenderer->render('room.phtml', [
             'room' => $room,
             'reminders' => $reminders,
             'timers' => $reminders
-        ]);
+        ]));
     }
 }
