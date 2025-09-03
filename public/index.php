@@ -14,8 +14,10 @@ if ($path = $_SERVER['PATH_INFO'] ?? '/') {
 
     $objectManagerService = new ObjectManagerService(require_once('../config/factories.php'));
 
+
     /** @var ControllerInterface $controller */
     $controller = $objectManagerService->get($controllerName);
+    dump($objectManagerService);
 
     echo $controller->handle($_POST, $_GET, $_SERVER, $_SESSION);
 }
