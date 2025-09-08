@@ -11,6 +11,8 @@ $pdo->exec("DROP TABLE IF EXISTS item");
 $pdo->exec("DROP TABLE IF EXISTS user_to_room");
 $pdo->exec("DROP TABLE IF EXISTS room_to_reminder");
 $pdo->exec("DROP TABLE IF EXISTS user_to_reminder");
+$pdo->exec("DROP TABLE IF EXISTS item_to_user");
+$pdo->exec("DROP TABLE IF EXISTS item_to_room");
 
 
 $pdo->exec("
@@ -46,7 +48,13 @@ $pdo->exec("
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT(30) NOT NULL,
         category TEXT(30) NOT NULL,
-        amount INTEGER NOT NULL CHECk(amount >=0)
+        amount INTEGER NOT NULL CHECk(amount >=0),
+        room_name TEXT(30) NOT NULL,
+        created_by INTEGER NOT NULL,
+        created_for INTEGER NOT NULL,
+        FOREIGN KEY (room_name) REFERENCES room(name),
+        FOREIGN KEY (created_by) REFERENCES user(id),
+        FOREIGN KEY (created_for) REFERENCES room(id)
 );
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_item_name_category
   ON item(name, category);
@@ -79,12 +87,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS uniq_item_name_category
         FOREIGN KEY (item_id) REFERENCES item(id),
         FOREIGN KEY (room_id) REFERENCES room(id)
     );
-    CREATE TABLE item_to_reminder(
+    CREATE TABLE item_to_user(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         item_id INTEGER NOT NULL,
-        reminder_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
         FOREIGN KEY (item_id) REFERENCES item(id),
-        FOREIGN KEY (reminder_id) REFERENCES reminder(id)
+        FOREIGN KEY (user_id) REFERENCES user(id)
     );
 "
 );

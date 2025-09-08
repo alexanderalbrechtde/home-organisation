@@ -26,7 +26,8 @@ class ReminderCreateService
 
 
         $statement = $this->pdo->prepare(
-            'INSERT INTO reminder (created_by, created_for, title, notes, due_at, priority, status, created_at) VALUES (:created_by, :created_for, :title, :notes, :due_at, :priority, :status, :created_at)'
+            'INSERT INTO reminder (created_by, created_for, title, notes, due_at, priority, status, created_at) 
+                    VALUES (:created_by, :created_for, :title, :notes, :due_at, :priority, :status, :created_at)'
         );
         $statement->execute([
             'created_by' => $userId,

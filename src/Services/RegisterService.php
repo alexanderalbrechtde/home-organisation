@@ -6,15 +6,12 @@ use PDO;
 
 class RegisterService
 {
-    public function __construct(private PDO $pdo){
-
+    public function __construct(private PDO $pdo)
+    {
     }
+
     function register(string $first_Name, string $last_Name, string $email, string $password, string $password2): bool
     {
-        // if ($user) {
-        //     return false;
-        // }
-
         if (empty($first_Name) || empty($last_Name) || empty($email) || empty($password) || empty($password2)) {
             return false;
         }

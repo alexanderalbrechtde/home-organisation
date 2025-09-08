@@ -30,6 +30,11 @@ require_once(__DIR__ . '/header.phtml');
                         <input type="number" id="amount" name="amount" min="1">
                     </div>
 
+                    <div class="form-group">
+                        <label for="room">Raum</label>
+                        <input type="text" id="room" name="room" maxlength="30">
+                    </div>
+
                     <button type="submit" class="btn">Speichern</button>
                 </form>
             </div>
@@ -47,6 +52,7 @@ require_once(__DIR__ . '/header.phtml');
                         <th>Titel</th>
                         <th>Kategorie</th>
                         <th>Menge</th>
+                        <th>Raum</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -58,6 +64,7 @@ require_once(__DIR__ . '/header.phtml');
                                 <td><?= htmlspecialchars($row['name']) ?></td>
                                 <td><?= htmlspecialchars($row['category']) ?></td>
                                 <td><?= (int)$row['amount'] ?></td>
+                                <td><?= htmlspecialchars($row['room_name']) ?></td>
                             </tr>
                         <?php
                         endforeach; ?>
