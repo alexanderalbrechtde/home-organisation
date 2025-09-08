@@ -8,7 +8,6 @@ use PDO;
 
 class ReminderService
 {
-    //noch anpassen
     public function __construct(private PDO $pdo)
     {
     }
@@ -32,8 +31,6 @@ class ReminderService
     {
         $stmt = $this->pdo->prepare("DELETE FROM reminder WHERE id = :id");
         return $stmt->execute(['id' => $id]);
-
-
     }
 
     public function getReminder(int $limit = 3, bool $descending = true): array

@@ -2,7 +2,7 @@
 
 namespace Framework\Responses;
 
-use App\Interfaces\ResponseInterface;
+use Framework\Interfaces\ResponseInterface;
 
 class EmptyResponse implements ResponseInterface
 {

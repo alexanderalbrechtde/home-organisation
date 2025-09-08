@@ -2,7 +2,7 @@
 
 namespace Framework\Responses;
 
-use App\Interfaces\ResponseInterface;
+use Framework\Interfaces\ResponseInterface;
 
 readonly class HtmlResponse implements ResponseInterface
 {

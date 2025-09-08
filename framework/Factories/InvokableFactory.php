@@ -5,7 +5,7 @@
 //PDO_Factory
 namespace Framework\Factories;
 
-use App\Interfaces\FactoryInterface;
+use Framework\Interfaces\FactoryInterface;
 
 class InvokableFactory implements FactoryInterface
 {

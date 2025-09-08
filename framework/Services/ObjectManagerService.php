@@ -2,7 +2,7 @@
 
 namespace Framework\Services;
 
-use App\Interfaces\FactoryInterface;
+use Framework\Interfaces\FactoryInterface;
 use RuntimeException;
 
 class ObjectManagerService

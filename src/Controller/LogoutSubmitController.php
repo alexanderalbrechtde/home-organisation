@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Interfaces\ControllerInterface;
-use App\Interfaces\ResponseInterface;
+use Framework\Interfaces\ControllerInterface;
+use Framework\Interfaces\ResponseInterface;
 use Framework\Responses\RedirectResponse;
 
 class LogoutSubmitController implements ControllerInterface

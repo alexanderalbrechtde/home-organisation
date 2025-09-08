@@ -2,7 +2,7 @@
 
 namespace App\Factories;
 
-use App\Interfaces\FactoryInterface;
+use Framework\Interfaces\FactoryInterface;
 use PDO;
 
 class PDOFactory implements FactoryInterface

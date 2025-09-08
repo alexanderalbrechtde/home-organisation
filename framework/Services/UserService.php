@@ -8,13 +8,24 @@ use PDO;
 class UserService
 {
 
-    public function __construct(private PDO $pdo){
+    public function __construct(private PDO $pdo)
+    {
+    }
 
+    public function userExist(string $email): bool
+    {
+        $stmt = $this->pdo->prepare('SELECT email FROM user WHERE email = :email');
+        $stmt->execute(['email' => $email]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return false;
+        }
+        return true;
     }
 
     public function getUserbyEmail(string $email): ?UserDto
     {
-
         $stmt = $this->pdo->prepare(
             'SELECT *  FROM user WHERE email = :email LIMIT 1'
         );

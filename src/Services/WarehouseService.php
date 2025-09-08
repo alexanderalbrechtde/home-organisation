@@ -68,7 +68,7 @@ class WarehouseService
     public function getItems(): array
     {
         $stmt = $this->pdo->prepare(
-            "SELECT name, category, amount
+            "SELECT name, category, amount, room_name
                FROM item
            ORDER BY name COLLATE NOCASE, category COLLATE NOCASE"
         );

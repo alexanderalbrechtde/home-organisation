@@ -26,6 +26,10 @@ use App\Services\ReminderService;
 use App\Services\RoomsCreateService;
 use App\Services\RoomsService;
 use App\Services\WarehouseService;
+use App\Validators\EmailValidator;
+use App\Validators\EmptyValidator;
+use App\Validators\PasswordLengthValidator;
+use App\Validators\PasswordSpecialCharValidator;
 use Framework\Factories\AutoWireFactory;
 use Framework\Factories\InvokableFactory;
 use Framework\Services\HtmlRenderer;
@@ -60,5 +64,9 @@ return [
     RoomsCreateService::class => AutoWireFactory::class,
     UserService::class => AutoWireFactory::class,
     WarehouseService::class => AutoWireFactory::class,
-    PDO::class => PDOFactory::class
+    PDO::class => PDOFactory::class,
+    EmptyValidator::class => InvokableFactory::class,
+    EmailValidator::class => InvokableFactory::class,
+    PasswordLengthValidator::class => InvokableFactory::class,
+    PasswordSpecialCharValidator::class => InvokableFactory::class,
 ];

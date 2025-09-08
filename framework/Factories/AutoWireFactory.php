@@ -11,7 +11,7 @@ namespace Framework\Factories;
  *
  * */
 
-use App\Interfaces\FactoryInterface;
+use Framework\Interfaces\FactoryInterface;
 use Framework\Services\ObjectManagerService;
 use Framework\Services\ResolveParametersService;
 

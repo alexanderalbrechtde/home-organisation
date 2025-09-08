@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Interfaces\ControllerInterface;
-use Framework\Services\ObjectManagerService;
 use App\Controller\ErrorController;
+use Framework\Interfaces\ControllerInterface;
+use Framework\Services\ObjectManagerService;
 
 require __DIR__ . '/../boot/boot.php';
 

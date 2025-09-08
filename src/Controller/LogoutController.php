@@ -2,9 +2,9 @@
 namespace App\Controller;
 
 
-use App\Interfaces\ControllerInterface;
 use App\Interfaces\HtmlRespose;
-use App\Interfaces\ResponseInterface;
+use Framework\Interfaces\ControllerInterface;
+use Framework\Interfaces\ResponseInterface;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
