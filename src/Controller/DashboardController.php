@@ -19,7 +19,7 @@ class DashboardController implements ControllerInterface
 
     function handle($post, $get, $server, &$session): ResponseInterface
     {
-        if (!$_SESSION['logged_in']) {
+        if (!isset($_SESSION['logged_in'])||$_SESSION['logged_in']!==true) {
             header('Location: /login');
         }
 

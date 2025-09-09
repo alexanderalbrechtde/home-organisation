@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Services\RegisterService;
+//use App\Validators\PasswordIdentValidator;
 use App\Validators\PasswordLengthValidator;
 use App\Validators\EmptyValidator;
 use App\Validators\PasswordSpecialCharValidator;
@@ -20,6 +21,7 @@ class RegisterSubmitController implements ControllerInterface
         private UserService $userService,
         private PasswordLengthValidator $passwordLengthValidator,
         private PasswordSpecialCharValidator $passwordSpecialCharValidator,
+        //private PasswordIdentValidator $passwordIdentValidator
     ) {
     }
 
@@ -51,15 +53,14 @@ class RegisterSubmitController implements ControllerInterface
             return new RedirectResponse('/register?error=failed_password_specialchar');
         }
 
+        //ausgesetzt wegen Unklarheit mit $input
+        //if(!$this->passwordIdentValidator->validate($post['password'], $post['password2'])) {
+        //    return new RedirectResponse('/register?error=failed_passwords_not_identical');
+        //}
+
         $this->registerService->register(...$inputs);
 
 
         return new RedirectResponse('/login?register=success');
-
-
-        // if (!$register) {
-        //     return new RedirectResponse('/register?error=register_failed');
-        // }
-        // return new RedirectResponse('/login?register=success');
     }
 }
