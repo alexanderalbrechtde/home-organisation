@@ -21,8 +21,13 @@ class RouterService
     public function route(array $post, array $get, array $server, array $session)
     {
         $path = $server['PATH_INFO'] ?? '/';
-        //sucht passenden Controller
-        $controllerName = $this->routes[$path] ?? ErrorController::class;
+        $method = strtoupper($server['REQUEST_METHOD'] ?? 'GET');
+
+        //Routen für die aktuelle Methode
+        $methodRoutes = $this->routes[$method] ?? [];
+
+        // Versuche passenden Controller zu finden
+        $controllerName = $methodRoutes[$path] ?? ErrorController::class;
 
         //erstellt Controller mit Dependencies
         /** @var ControllerInterface $controller */

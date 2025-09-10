@@ -17,7 +17,7 @@ class WarehouseService
         string $name,
         string $category,
         int $amount,
-        string $room_name,
+        //string $room_name,
     ): bool {
         if ($name === '' || $category === '' || !is_numeric($amount) || filter_var(
                 $amount,
@@ -29,8 +29,8 @@ class WarehouseService
 
 
         $statement = $this->pdo->prepare(
-            'INSERT INTO item (name, category, amount, room_name, created_by, created_for)
-             VALUES(:name, :category, :amount, :room_name, :created_by, :created_for)
+            'INSERT INTO item (name, category, amount,  created_by, created_for)
+             VALUES(:name, :category, :amount,  :created_by, :created_for)
              ON CONFLICT(name, category)
              DO UPDATE SET amount = item.amount + excluded.amount'
         );
@@ -38,7 +38,7 @@ class WarehouseService
             ':name' => $name,
             ':category' => $category,
             ':amount' => $amount,
-            ':room_name' => $room_name,
+            /*':room_name' => $room_name,*/
             ':created_by' => $userId,
             ':created_for' => $roomId
         ]);
@@ -68,9 +68,10 @@ class WarehouseService
     public function getItems(): array
     {
         $stmt = $this->pdo->prepare(
-            "SELECT name, category, amount, room_name
-               FROM item
-           ORDER BY name COLLATE NOCASE, category COLLATE NOCASE"
+            "SELECT i.name, i.category, i.amount, r.name AS room_name
+               FROM item i
+               LEFT JOIN room r ON r.id = i.created_for
+           ORDER BY i.name COLLATE NOCASE, i.category COLLATE NOCASE"
         );
         $stmt->execute();
 
@@ -80,13 +81,13 @@ class WarehouseService
     public function getRoomNames(int $userId): array
     {
         $stmt = $this->pdo->prepare(
-            "SELECT room.name
-            FROM room 
-            WHERE created_by = :userId"
+            "SELECT room.id AS id, room.name AS name
+             FROM room 
+             WHERE created_by = :userId
+             ORDER BY room.name COLLATE NOCASE"
         );
         $stmt->execute([':userId' => $userId]);
-        $name = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $name;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
 }

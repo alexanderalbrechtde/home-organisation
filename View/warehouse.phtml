@@ -40,7 +40,7 @@ require_once(__DIR__ . '/header.phtml');
                             if (!empty($rooms)): ?>
                                 <?php
                                 foreach ($rooms as $r): ?>
-                                    <option value="<?= $r['name'] ?>">
+                                    <option value="<?= htmlspecialchars($r['name']) ?>">
                                         <?= htmlspecialchars($r['name']) ?>
                                     </option>
                                 <?php
@@ -82,7 +82,7 @@ require_once(__DIR__ . '/header.phtml');
                                 <td><?= htmlspecialchars($row['name']) ?></td>
                                 <td><?= htmlspecialchars($row['category']) ?></td>
                                 <td><?= (int)$row['amount'] ?></td>
-                                <td><?= htmlspecialchars($row['room_name']) ?></td>
+                                <td><?= htmlspecialchars($row['room_name'] ?? ($row['room'] ?? ($row['room_id'] ?? '—'))) ?></td>
                             </tr>
                         <?php
                         endforeach; ?>

@@ -18,21 +18,24 @@ use App\Controller\WarehouseController;
 use App\Controller\WarehouseSubmitController;
 
 return [
-    '/' => DashboardController::class,
-    '/login' => LoginController::class,
-    '/register' => RegisterController::class,
-    '/logout' => LogoutController::class,
-    '/impressum' => ImprintController::class,
-    '/404' => ErrorController::class,
-    '/rooms' => RoomsController::class,
-    '/room' => RoomController::class,
-    '/warehouse' => WarehouseController::class,
-
-    '/login-submit' => LoginSubmitController::class,
-    '/register-submit' => RegisterSubmitController::class,
-    '/logout-submit' => LogoutSubmitController::class,
-    '/rooms-submit' => RoomsSubmitController::class,
-    '/reminder-submit' => ReminderSubmitController::class,
-    '/reminder-delete' => ReminderDeleteController::class,
-    '/warehouse-submit' => WarehouseSubmitController::class
+    'GET' => [
+        '/' => DashboardController::class,
+        '/login' => LoginController::class,
+        '/register' => RegisterController::class,
+        '/logout' => LogoutController::class,
+        '/impressum' => ImprintController::class,
+        '/404' => ErrorController::class,
+        '/rooms' => RoomsController::class,
+        '/room' => RoomController::class,
+        '/warehouse' => WarehouseController::class,
+    ],
+    'POST' => [
+        '/login-submit' => LoginSubmitController::class,
+        '/register-submit' => RegisterSubmitController::class,
+        '/logout-submit' => LogoutSubmitController::class,
+        '/rooms-submit' => RoomsSubmitController::class,
+        '/reminder-submit' => ReminderSubmitController::class,
+        '/reminder-delete' => ReminderDeleteController::class,
+        '/warehouse-submit' => WarehouseSubmitController::class
+    ]
 ];
