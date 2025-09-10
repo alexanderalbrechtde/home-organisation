@@ -50,9 +50,9 @@ $pdo->exec("
         category TEXT(30) NOT NULL,
         amount INTEGER NOT NULL CHECk(amount >=0),
         created_by INTEGER NOT NULL,
-        created_for INTEGER NOT NULL,
+        room_id INTEGER NOT NULL,
         FOREIGN KEY (created_by) REFERENCES user(id),
-        FOREIGN KEY (created_for) REFERENCES room(id)
+        FOREIGN KEY (room_id) REFERENCES room(id)
 );
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_item_name_category
   ON item(name, category);

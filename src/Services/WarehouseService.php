@@ -24,8 +24,8 @@ class WarehouseService
 
 
         $statement = $this->pdo->prepare(
-            'INSERT INTO item (name, category, amount,  created_by, created_for)
-             VALUES(:name, :category, :amount,  :created_by, :created_for)
+            'INSERT INTO item (name, category, amount,  created_by, room_id)
+             VALUES(:name, :category, :amount,  :created_by, :room_id)
              ON CONFLICT(name, category)
              DO UPDATE SET amount = item.amount + excluded.amount'
         );
@@ -34,7 +34,7 @@ class WarehouseService
             ':category' => $category,
             ':amount' => $amount,
             ':created_by' => $userId,
-            ':created_for' => $roomId
+            ':room_id' => $roomId
         ]);
 
         $itemId = $this->pdo->lastInsertId();
@@ -64,7 +64,7 @@ class WarehouseService
         $stmt = $this->pdo->prepare(
             "SELECT i.name, i.category, i.amount, r.name AS room_name
                FROM item i
-               LEFT JOIN room r ON r.id = i.created_for
+               LEFT JOIN room r ON r.id = i.room_id
            ORDER BY i.name COLLATE NOCASE, i.category COLLATE NOCASE"
         );
         $stmt->execute();
@@ -75,7 +75,7 @@ class WarehouseService
     public function getRoomNames($userId): array
     {
         $stmt = $this->pdo->prepare(
-            "SELECT name
+            "SELECT name, id
          FROM room
          WHERE created_by = :user_id;"
         );

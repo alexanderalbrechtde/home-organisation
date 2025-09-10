@@ -38,7 +38,7 @@ require_once(__DIR__ . '/header.phtml');
                             if (!empty($rooms)): ?>
                                 <?php
                                 foreach ($rooms as $r): ?>
-                                    <option value="<?= htmlspecialchars($r['name']) ?>">
+                                    <option value="<?= htmlspecialchars($r['id']) ?>">
                                         <?= htmlspecialchars($r['name']) ?>
                                     </option>
                                 <?php

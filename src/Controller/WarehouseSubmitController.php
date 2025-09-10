@@ -17,10 +17,10 @@ class WarehouseSubmitController implements ControllerInterface
     {
         $warehouse = $this->warehouseService->edit(
             $session['user_id'],
+            (int)($post['room_id']),
             $post['name'],
             $post['category'],
             $post['amount'],
-            $session['created_for']
         );
         if (!$warehouse) {
             return new RedirectResponse('Location: /warehouse?message=creation_failed');
