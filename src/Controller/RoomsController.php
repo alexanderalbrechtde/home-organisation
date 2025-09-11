@@ -18,7 +18,7 @@ class RoomsController implements ControllerInterface
 
     function handle($post, $get, $server, &$session): ResponseInterface
     {
-        $rooms = $this->roomsService->getRooms();
+        $rooms = $this->roomsService->getRooms($session['user_id']);
 
         return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
             'rooms' => $rooms

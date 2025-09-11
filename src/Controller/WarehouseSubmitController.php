@@ -35,9 +35,9 @@ class WarehouseSubmitController implements ControllerInterface
         }
 
         return new HtmlResponse($this->htmlRenderer->render('warehouse.phtml', [
-                'error' => 'creation success',
-                'items' => $this->warehouseService->getItems($session['user_id']),
-                'rooms' => $this->warehouseService->getRoomNames($session['user_id'])
-            ]));
+            'error' => 'creation success',
+            'items' => $this->warehouseService->getItems($session['user_id']),
+            'rooms' => $this->warehouseService->getRoomNames($session['user_id'])
+        ]));
     }
 }

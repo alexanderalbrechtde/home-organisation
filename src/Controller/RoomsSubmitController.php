@@ -27,7 +27,7 @@ class RoomsSubmitController implements ControllerInterface
         );
         if (!$create) {
             return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
-                'rooms' => $this->roomsService->getRooms(),
+                'rooms' => $this->roomsService->getRooms($session['user_id']),
                 'error' => 'creation_failed'
             ]));
 
@@ -35,7 +35,7 @@ class RoomsSubmitController implements ControllerInterface
         }
 
         return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
-            'rooms' => $this->roomsService->getRooms(),
+            'rooms' => $this->roomsService->getRooms($session['user_id']),
             'error' => 'creation_success'
         ]));
     }

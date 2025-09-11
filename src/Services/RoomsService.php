@@ -26,12 +26,16 @@ class RoomsService
         return $this->createRoomDto($row);
     }
 
-    public function getRooms(): array
+    public function getRooms(int $userId): array
     {
-        $stmt = $this->pdo->query('SELECT  id, name, description FROM room');
-        $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->pdo->prepare(
+            "SELECT id, name, description
+           FROM room
+          WHERE created_by = :userId"
+        );
+        $stmt->execute([':userId' => $userId]);
 
-        return $rooms;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
     private function createRoomDto(array $room): RoomDto
@@ -45,7 +49,12 @@ class RoomsService
 
     public function getRoom(int $id): ?array
     {
-        $stmt = $this->pdo->query('SELECT  id, name, description FROM room WHERE id = ' . $id . ' LIMIT 1');
+        $stmt = $this->pdo->query(
+            '
+        SELECT  id, name, description 
+        FROM room 
+        WHERE id = ' . $id . ' LIMIT 1'
+        );
         $room = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$room) {
