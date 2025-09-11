@@ -282,8 +282,13 @@ body.dashboard-body {
     }
 
     /* FAQ und Lager nebeneinander */
-    .card.card--faq   { grid-column: span 8; }
-    .card.card--lager { grid-column: span 4; }
+    .card.card--faq {
+        grid-column: span 8;
+    }
+
+    .card.card--lager {
+        grid-column: span 4;
+    }
 }
 
 
@@ -730,8 +735,14 @@ body.legal-page {
     .form-grid {
         gap: 20px;
     }
-    .card.card--faq   { grid-column: span 8; }
-    .card.card--lager { grid-column: span 4; }
+
+    .card.card--faq {
+        grid-column: span 8;
+    }
+
+    .card.card--lager {
+        grid-column: span 4;
+    }
 }
 
 /* Mehr Abstand zwischen Abschnitten/Karten */
@@ -793,7 +804,7 @@ body:not(.dashboard-body) > h1 {
     padding: 6px 10px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: rgba(255,255,255,.02);
+    background: rgba(255, 255, 255, .02);
     color: var(--text);
     text-decoration: none; /* button-like */
     transition: border-color .2s ease, color .2s ease, transform .1s ease;
@@ -981,6 +992,7 @@ body:not(.dashboard-body) > h1 {
     border-radius: 4px;
     cursor: pointer;
 }
+
 .reminder-list {
     list-style: none;
     padding: 0;
@@ -990,7 +1002,7 @@ body:not(.dashboard-body) > h1 {
 }
 
 .reminder-card {
-    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+    background: linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(255, 255, 255, .01));
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 14px 16px;
@@ -1000,7 +1012,7 @@ body:not(.dashboard-body) > h1 {
 
 .reminder-card:hover {
     border-color: var(--primary);
-    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
 }
 
 .reminder-header {
@@ -1027,11 +1039,13 @@ body:not(.dashboard-body) > h1 {
 }
 
 /* Delete button im Stil der Seite */
-.delete-form { margin: 0; }
+.delete-form {
+    margin: 0;
+}
 
 .delete-btn {
     border: 1px solid var(--border);
-    background: rgba(255,255,255,.02);
+    background: rgba(255, 255, 255, .02);
     color: var(--text);
     padding: 6px 10px;
     border-radius: 10px;
@@ -1061,7 +1075,7 @@ body:not(.dashboard-body) > h1 {
     padding: 12px 16px;
     border-radius: 12px;
     border: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+    background: linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(255, 255, 255, .015));
     font-weight: 800;
     text-decoration: none;
     color: var(--text);
@@ -1098,7 +1112,7 @@ body:not(.dashboard-body) > h1 {
 
 .item-form input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, .25);
 }
 
 .item-form .btn {
@@ -1153,3 +1167,35 @@ body:not(.dashboard-body) > h1 {
 .stock-table tbody tr:last-child td {
     border-bottom: none; /* cleaner end of list */
 }
+
+
+/* Base card appearance */
+.reminder-card {
+    border: 1px solid #e5e7eb; /* neutral gray */
+    border-radius: 8px;
+    padding: 10px 12px;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Warnung: Ablauf innerhalb 60 Minuten */
+.reminder-card.is-warning {
+    border: 3px solid #f59e0b; /* deutlicher, aber ohne Hintergrundwechsel */
+}
+
+.reminder-card.is-warning:hover,
+.reminder-card.is-warning:focus-visible {
+    border-color: #f59e0b; /* nicht auf --primary wechseln */
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .35); /* gleicher Hover-Schatten wie normal */
+}
+
+/* Abgelaufen: rot */
+.reminder-card.is-expired {
+    border: 3px solid #e63946; /* deutlicher, aber ohne Hintergrund-/Textwechsel */
+}
+
+.reminder-card.is-expired:hover,
+.reminder-card.is-expired:focus-visible {
+    border-color: #e63946; /* nicht auf --primary wechseln */
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
+}
+

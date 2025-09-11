@@ -27,6 +27,17 @@ class DashboardService
             }
 
             $dueAt = $t['due_at'] ?? null;
+            $dueTs = $dueAt ? strtotime((string)$dueAt) : null;
+            $now = time();
+            $status = 'ok';
+            if ($dueTs !== null) {
+                if ($dueTs < $now) {
+                    $status = 'expired';
+                } elseif (($dueTs - $now) <= 3600) {
+                    $status = 'warning';
+                }
+            }
+
             $dueTextRaw = $this->reminderService->showTimer($dueAt);
             $dueText = (string)$dueTextRaw;
 
@@ -38,6 +49,7 @@ class DashboardService
                 'roomTagHtml' => $roomTagHtml,
                 'dueText' => $dueText,
                 'notesHtml' => $notesHtml,
+                'status' => $status
             ];
         }
 
