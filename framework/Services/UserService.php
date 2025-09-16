@@ -58,4 +58,18 @@ class UserService
         );
     }
 
+    public function getUserbyId(int $id): ?UserDto
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT *  FROM user WHERE id = :id LIMIT 1'
+        );
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return null;
+        }
+        return $this->createUserDto($row);
+    }
+
 }

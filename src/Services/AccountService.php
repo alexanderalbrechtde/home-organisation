@@ -2,12 +2,16 @@
 
 namespace App\Services;
 
+use Framework\Services\UserService;
 use PDO;
 
 class AccountService
 {
-    public function __construct(private PDO $pdo)
-    {
+
+    public function __construct(
+        private PDO $pdo,
+        private UserService $userService
+    ) {
     }
 
     public function showParameters(int $userId): array
@@ -22,8 +26,13 @@ class AccountService
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
-    public function setEmail(string $email, int $userId): bool
+    public function setEmail(string $email, int $userId, string $password): bool
     {
+        $user = $this->userService->getUserbyId($userId);
+
+        if (!isset($user->password) || $user->password !== $password) {
+            return false;
+        }
         $stmt = $this->pdo->prepare(
             'UPDATE user SET email = :email WHERE id = :userId'
         );
@@ -33,6 +42,5 @@ class AccountService
         ]);
         return $stmt->rowCount() === 1;
     }
-
 
 }

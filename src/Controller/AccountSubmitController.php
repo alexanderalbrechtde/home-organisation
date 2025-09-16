@@ -17,16 +17,15 @@ class AccountSubmitController implements ControllerInterface
     {
         $userId = $session['user_id'] ?? null;
         $email = $post['email'] ?? null;
+        $password = $post['password'] ?? null;
         $email = strtolower($email);
 
-        $updated = $this->accountService->setEmail($email, (int)$userId);
+        $updated = $this->accountService->setEmail($email, (int)$userId, (string)$password);
 
-        if($updated) {
-            $session['flash_success'] = 'E-Mail erfolgreich aktualisiert';
-        }else{
-            $session['flash_error'] = 'E-Mail ist nicht aktualisiert';
+        if ($updated) {
+            return new RedirectResponse('/account?changed_successfully');
+        } else {
+            return new RedirectResponse('/account?change_failed');
         }
-
-        return new RedirectResponse('/account');
     }
 }
