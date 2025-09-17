@@ -2,6 +2,7 @@
 
 use App\Controller\AccountController;
 use App\Controller\AccountSubmitController;
+use App\Controller\AllTasksController;
 use App\Controller\DashboardController;
 use App\Controller\ErrorController;
 use App\Controller\ImprintController;
@@ -31,6 +32,7 @@ return [
         '/room' => RoomController::class,
         '/warehouse' => WarehouseController::class,
         '/account' => AccountController::class,
+        '/all-tasks' => AllTasksController::class,
     ],
     'POST' => [
         '/login-submit' => LoginSubmitController::class,

@@ -15,7 +15,13 @@ require_once(__DIR__ . '/homheader.phtml');
     <main class="container grid">
         <article class="card">
             <header class="card__header">
-                <h2>Nächste Task</h2>
+                <h2>
+                    <span class="title-text">Nächste Task</span>
+                    <span class="title-actions">
+                        <a class="cta-link" href="/all-tasks">alle Tasks</a>
+                        <a class="cta-link" href="/archiv">Archiv</a>
+                    </span>
+                </h2>
             </header>
             <div class="card__body">
                 <?php

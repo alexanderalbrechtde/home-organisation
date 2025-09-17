@@ -2,6 +2,7 @@
 
 use App\Controller\AccountController;
 use App\Controller\AccountSubmitController;
+use App\Controller\AllTasksController;
 use App\Controller\DashboardController;
 use App\Controller\ErrorController;
 use App\Controller\ImprintController;
@@ -20,6 +21,7 @@ use App\Controller\WarehouseController;
 use App\Controller\WarehouseSubmitController;
 use App\Factories\PDOFactory;
 use App\Services\AccountService;
+use App\Services\AllTasksService;
 use App\Services\DashboardService;
 use App\Services\LoginService;
 use App\Services\LogoutService;
@@ -77,4 +79,6 @@ return [
     AccountController::class => AutoWireFactory::class,
     AccountSubmitController::class => AutoWireFactory::class,
     AccountService::class => AutoWireFactory::class,
+    AllTasksController::class => AutoWireFactory::class,
+    AllTasksService::class => AutoWireFactory::class,
 ];
