@@ -17,7 +17,8 @@ require_once(__DIR__ . '/header.phtml');
                 </div>
                 <div>
                     <button type="submit">Raum erstellen</button>
-                    <input type="hidden" name="room_id" value="<?= isset($room['id']) ? htmlspecialchars($room['id']) : '' ?>">
+                    <input type="hidden" name="room_id"
+                           value="<?= isset($room['id']) ? htmlspecialchars($room['id']) : '' ?>">
                 </div>
             </form>
             <div class="room-list">
@@ -27,7 +28,7 @@ require_once(__DIR__ . '/header.phtml');
                     foreach ($rooms as $room): ?>
                         <article class="room-card">
                             <h2>
-                                <a href="/room?id=<?= urlencode($room['id'] ?? '') ?>">
+                                <a href="/room/<?= urlencode($room['id'] ?? '') ?>">
                                     <?= htmlspecialchars($room['name'] ?? '') ?>
                                 </a>
                             </h2>

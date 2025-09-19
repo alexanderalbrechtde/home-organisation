@@ -30,8 +30,6 @@ class RoomsSubmitController implements ControllerInterface
                 'rooms' => $this->roomsService->getRooms($session['user_id']),
                 'error' => 'creation_failed'
             ]));
-
-
         }
 
         return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [

@@ -20,8 +20,10 @@ class RoomController implements ControllerInterface
 
     function handle($post, $get, $server, &$session): ResponseInterface
     {
-        $id = isset($get['id']) && ctype_digit((string)$get['id']) ? (int)$get['id'] : null;
+        //$id = isset($get['id']) && ctype_digit((string)$get['id']) ? (int)$get['id'] : null;
 
+        $pathParts = explode('/', $server['PATH_INFO'] ?? '/');
+        $id = $pathParts[2];
 
 
         if ($id === null) {
