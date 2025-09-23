@@ -21,23 +21,20 @@ class RoomController implements ControllerInterface
 
     function handle(httpRequests $httpRequest): ResponseInterface
     {
-        //$id = isset($httpRequest->getQuery()['id']) && ctype_digit((string)$httpRequest->getQuery()['id']) ? (int)$httpRequest->getQuery()['id'] : null;
 
-        $pathParts = explode('/', $httpRequest->getServer()['PATH_INFO'] ?? '/');
-        $id = $pathParts[2];
+        $roomId = $httpRequest->getRouteParameters('id');
 
-
-        if ($id === null) {
+        if ($roomId === null) {
             $rooms = $this->roomsService->getRooms($httpRequest->getSession()['user_id']);
             return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', ['rooms' => $rooms]));
         }
 
-        $room = $this->roomsService->getRoom($id);
+        $room = $this->roomsService->getRoom($roomId);
         if (!$room) {
             return new HtmlResponse($this->htmlRenderer->render('404.phtml', []));
         }
 
-        $task = $this->taskService->getTaskByRoomId($id);
+        $task = $this->taskService->getTaskByRoomId($roomId);
 
         return new HtmlResponse($this->htmlRenderer->render('room.phtml', [
             'room' => $room,
