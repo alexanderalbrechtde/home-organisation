@@ -6,6 +6,7 @@ use App\Services\RoomsCreateService;
 use App\Services\RoomsService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -18,22 +19,22 @@ class RoomsSubmitController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
         $create = $this->roomsCreateService->create(
-            $session['user_id'],
-            $post['room_name'],
-            $post['room_description']
+            $httpRequest->getSession()['user_id'],
+            $httpRequest->getPayload()['room_name'],
+            $httpRequest->getPayload()['room_description']
         );
         if (!$create) {
             return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
-                'rooms' => $this->roomsService->getRooms($session['user_id']),
+                'rooms' => $this->roomsService->getRooms($httpRequest->getSession()['user_id']),
                 'error' => 'creation_failed'
             ]));
         }
 
         return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
-            'rooms' => $this->roomsService->getRooms($session['user_id']),
+            'rooms' => $this->roomsService->getRooms($httpRequest->getSession()['user_id']),
             'error' => 'creation_success'
         ]));
     }

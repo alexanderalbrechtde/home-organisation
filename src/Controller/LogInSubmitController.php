@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Services\LoginService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\RedirectResponse;
 
 class LogInSubmitController implements ControllerInterface
@@ -12,9 +13,9 @@ class LogInSubmitController implements ControllerInterface
     {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        $isLoggedin = $this->loginService->login($post['email'], $post['password']);
+        $isLoggedin = $this->loginService->login($httpRequest->getPayload()['email'], $httpRequest->getPayload()['password']);
 
         if (!$isLoggedin) {
             return new RedirectResponse('/login?error=login_failed');

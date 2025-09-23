@@ -6,6 +6,7 @@ use App\Services\TaskService;
 use App\Services\RoomsService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -18,16 +19,16 @@ class RoomController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        //$id = isset($get['id']) && ctype_digit((string)$get['id']) ? (int)$get['id'] : null;
+        //$id = isset($httpRequest->getQuery()['id']) && ctype_digit((string)$httpRequest->getQuery()['id']) ? (int)$httpRequest->getQuery()['id'] : null;
 
-        $pathParts = explode('/', $server['PATH_INFO'] ?? '/');
+        $pathParts = explode('/', $httpRequest->getServer()['PATH_INFO'] ?? '/');
         $id = $pathParts[2];
 
 
         if ($id === null) {
-            $rooms = $this->roomsService->getRooms($session['user_id']);
+            $rooms = $this->roomsService->getRooms($httpRequest->getSession()['user_id']);
             return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', ['rooms' => $rooms]));
         }
 

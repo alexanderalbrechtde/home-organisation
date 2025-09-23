@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Services\AccountService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\RedirectResponse;
 
 class AccountSubmitController implements ControllerInterface
@@ -13,11 +14,11 @@ class AccountSubmitController implements ControllerInterface
     {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        $userId = $session['user_id'] ?? null;
-        $email = $post['email'] ?? null;
-        $password = $post['password'] ?? null;
+        $userId = $httpRequest->getSession()['user_id'] ?? null;
+        $email = $httpRequest->getPayload()['email'] ?? null;
+        $password = $httpRequest->getPayload()['password'] ?? null;
         $email = strtolower($email);
 
         $updated = $this->accountService->setEmail($email, (int)$userId, (string)$password);

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Framework\Requests\httpRequests;
 use Framework\Services\RouterService;
 use Framework\Services\ObjectManagerService;
 
@@ -15,7 +16,6 @@ $routes    = require __DIR__ . '/../config/routes.php';
 $objectManager = new ObjectManagerService($factories);
 $router = new RouterService($objectManager, $routes);
 
-//eigentliches Routing
-$response = $router->route($_POST, $_GET, $_SERVER, $_SESSION);
-//zurück an den Browser
+$httpRequest = new httpRequests($_GET, $_POST, $_SERVER, $_SESSION);
+$response = $router->route($httpRequest);
 $response->send();

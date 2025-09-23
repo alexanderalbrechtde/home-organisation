@@ -7,6 +7,7 @@ use App\Services\TaskService;
 use App\Services\RoomsService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -20,22 +21,20 @@ class TaskSubmitController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        $roomId = isset($post['room_id']) ? (int)$post['room_id'] : null;
-
-       //dd($post);
+        $roomId = isset($httpRequest->getPayload()['room_id']) ? (int)$httpRequest->getPayload()['room_id'] : null;
 
         $create = $this->taskCreateService->create(
-            $session['user_id'],
-            $post['room_id'],
-            $post['task_title'],
-            $post['task_notes'],
-            $post['task_due_at'],
-            $post['task_priority'],
-            $post['task_repeat'],
-            $post['task_repeat_rule'],
-            $post['task_created_at']
+            $httpRequest->getSession()['user_id'],
+            $httpRequest->getPayload()['room_id'],
+            $httpRequest->getPayload()['task_title'],
+            $httpRequest->getPayload()['task_notes'],
+            $httpRequest->getPayload()['task_due_at'],
+            $httpRequest->getPayload()['task_priority'],
+            $httpRequest->getPayload()['task_repeat'],
+            $httpRequest->getPayload()['task_repeat_rule'],
+            $httpRequest->getPayload()['task_created_at']
         );
 
         if (!$create) {

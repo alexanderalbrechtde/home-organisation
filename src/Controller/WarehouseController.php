@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Services\WarehouseService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -16,10 +17,10 @@ class WarehouseController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        $items = $this->warehouseService->getItems($session['user_id']);
-        $rooms = $this->warehouseService->getRoomNames($session['user_id']);
+        $items = $this->warehouseService->getItems($httpRequest->getSession()['user_id']);
+        $rooms = $this->warehouseService->getRoomNames($httpRequest->getSession()['user_id']);
 
         return new HtmlResponse($this->htmlRenderer->render('warehouse.phtml', [
             'error' => $error ?? null,

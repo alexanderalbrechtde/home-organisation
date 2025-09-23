@@ -6,6 +6,7 @@ use App\Services\TaskService;
 use App\Services\RoomsService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -18,17 +19,17 @@ class TaskDeleteController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        $taskId = isset($post['task_id']) && ctype_digit((string)$post['task_id'])
-            ? (int)$post['task_id']
+        $taskId = isset($httpRequest->getPayload()['task_id']) && ctype_digit((string)$httpRequest->getPayload()['task_id'])
+            ? (int)$httpRequest->getPayload()['task_id']
             : null;
-        $roomId = isset($post['room_id']) && ctype_digit((string)$post['room_id'])
-            ? (int)$post['room_id']
+        $roomId = isset($httpRequest->getPayload()['room_id']) && ctype_digit((string)$httpRequest->getPayload()['room_id'])
+            ? (int)$httpRequest->getPayload()['room_id']
             : null;
 
         if ($taskId === null || $roomId === null) {
-            $rooms = $this->roomsService->getRooms($session['user_id']);
+            $rooms = $this->roomsService->getRooms($httpRequest->getSession()['user_id']);
 
             return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
                 'rooms' => $rooms,

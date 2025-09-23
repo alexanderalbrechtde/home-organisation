@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Services\WarehouseService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Responses\RedirectResponse;
 use Framework\Services\HtmlRenderer;
@@ -17,27 +18,27 @@ class WarehouseSubmitController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
         $warehouse = $this->warehouseService->edit(
-            (int)($session['user_id']),
-            (int)($post['room_id']),
-            $post['name'],
-            $post['category'],
-            $post['amount'],
+            (int)($httpRequest->getSession()['user_id']),
+            (int)($httpRequest->getPayload()['room_id']),
+            $httpRequest->getPayload()['name'],
+            $httpRequest->getPayload()['category'],
+            $httpRequest->getPayload()['amount'],
         );
         if (!$warehouse) {
             return new HtmlResponse($this->htmlRenderer->render('warehouse.phtml', [
                 'error' => 'creation failed',
-                'items' => $this->warehouseService->getItems($session['user_id']),
-                'rooms' => $this->warehouseService->getRoomNames($session['user_id'])
+                'items' => $this->warehouseService->getItems($httpRequest->getSession()['user_id']),
+                'rooms' => $this->warehouseService->getRoomNames($httpRequest->getSession()['user_id'])
             ]));
         }
 
         return new HtmlResponse($this->htmlRenderer->render('warehouse.phtml', [
             'error' => 'creation success',
-            'items' => $this->warehouseService->getItems($session['user_id']),
-            'rooms' => $this->warehouseService->getRoomNames($session['user_id'])
+            'items' => $this->warehouseService->getItems($httpRequest->getSession()['user_id']),
+            'rooms' => $this->warehouseService->getRoomNames($httpRequest->getSession()['user_id'])
         ]));
     }
 }

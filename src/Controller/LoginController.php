@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -12,9 +13,9 @@ class LoginController implements ControllerInterface
     {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        return new HtmlResponse($this->htmlRenderer->render('login.phtml', $_POST));
+        return new HtmlResponse($this->htmlRenderer->render('login.phtml', $httpRequest->getPayload()));
 
     }
 }

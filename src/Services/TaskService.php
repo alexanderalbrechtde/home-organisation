@@ -114,4 +114,29 @@ class TaskService
         }
         return $task;
     }
+
+    public function repeatTask(string $due_at, bool $repeat, string $repeate_rule): bool
+    {
+        if ($repeat === true) {
+            $goal = strtotime($due_at);
+            $now = strtotime("now");
+
+            $diff = $goal - $now;
+
+            if ($diff <= 0) {
+                $stmt = $this->pdo->prepare(
+                    "SELECT t.id, t.title, t.notes, t.due_at, t.priority,t.repeat, t.repeat_rule, t.created_at, t.deleted 
+                    FROM task t
+                    LEFT JOIN room_to_task rt ON rt.task_id = t.id
+                    LEFT JOIN room ro ON ro.id = rt.room_id
+                    WHERE t.repeat is true AND t.deleted = false
+                    GROUP BY t.id"
+                );
+
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

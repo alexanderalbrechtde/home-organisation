@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Services\AccountService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -16,9 +17,9 @@ class AccountController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        $user = $this->accountService->showParameters($session['user_id']);
+        $user = $this->accountService->showParameters($httpRequest->getSession()['user_id']);
 
         return new HtmlResponse($this->htmlRenderer->render('account.phtml', [
             'user' => $user,

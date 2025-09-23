@@ -11,6 +11,7 @@ use App\Validators\EmptyValidator;
 use App\Validators\PasswordSpecialCharValidator;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\RedirectResponse;
 use Framework\Services\UserService;
 
@@ -29,14 +30,14 @@ class RegisterSubmitController implements ControllerInterface
     {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
         $inputs = [
-            $post['fName'],
-            $post['lName'],
-            $post['email'],
-            $post['password'],
-            $post['password2']
+            $httpRequest->getPayload()['fName'],
+            $httpRequest->getPayload()['lName'],
+            $httpRequest->getPayload()['email'],
+            $httpRequest->getPayload()['password'],
+            $httpRequest->getPayload()['password2']
         ];
 
         foreach ($inputs as $input) {
@@ -45,20 +46,20 @@ class RegisterSubmitController implements ControllerInterface
             }
         }
 
-        if ($this->userService->userExist($post['email'])) {
+        if ($this->userService->userExist($httpRequest->getPayload()['email'])) {
             return new RedirectResponse('/register?error=failed_email_already_exists');
         }
 
-        if (!$this->passwordLengthValidator->validate($post['password'])) {
+        if (!$this->passwordLengthValidator->validate($httpRequest->getPayload()['password'])) {
             return new RedirectResponse('/register?error=failed_password_length');
         }
-        if (!$this->passwordSpecialCharValidator->validate($post['password'])) {
+        if (!$this->passwordSpecialCharValidator->validate($httpRequest->getPayload()['password'])) {
             return new RedirectResponse('/register?error=failed_password_specialchar');
         }
-        if (!$this->nameValidator->validate($post['fName'])) {
+        if (!$this->nameValidator->validate($httpRequest->getPayload()['fName'])) {
             return new RedirectResponse('/register?error=failed_name_length');
         }
-        if (!$this->nameValidator->validate($post['lName'])) {
+        if (!$this->nameValidator->validate($httpRequest->getPayload()['lName'])) {
             return new RedirectResponse('/register?error=failed_name_length');
         }
         //ausgesetzt wegen Unklarheit mit $input

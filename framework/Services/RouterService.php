@@ -16,14 +16,14 @@ class RouterService
     }
 
 
-    public function route(array $post, array $get, array $server, array $session)
+    public function route($httpRequest)
     {
-        $method = strtoupper($server['REQUEST_METHOD'] ?? 'GET');
+        $method = strtoupper($httpRequest->getServer()['REQUEST_METHOD'] ?? 'GET');
 
         $methodRoutes = $this->routes[$method] ?? [];
 
-        $Path = $server['PATH_INFO'] ?? (isset($server['REQUEST_URI']) ? parse_url(
-            $server['REQUEST_URI'],
+        $Path = $server['PATH_INFO'] ?? (isset($httpRequest->getServer()['REQUEST_URI']) ? parse_url(
+            $httpRequest->getServer()['REQUEST_URI'],
             PHP_URL_PATH
         ) : '/');
         $path = $this->matchRoute($Path, $methodRoutes);
@@ -43,7 +43,7 @@ class RouterService
         /** @var ControllerInterface $controller */
         $controller = $this->objectManager->get($controllerName);
 
-        return $controller->handle($post, $get, $server, $session);
+        return $controller->handle($httpRequest);
     }
 
     private function matchRoute(string $path, array $methodRoutes): ?string
@@ -57,8 +57,8 @@ class RouterService
             }
 
             $status = true;
-            foreach ($routeParts as $num => $part) {
-                $seg = $pathParts[$num];
+            foreach ($routeParts as $index => $part) {
+                $seg = $pathParts[$index];
 
                 if ($part === $seg) {
                     continue;

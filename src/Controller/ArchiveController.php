@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Services\ArchiveService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -15,7 +16,7 @@ class ArchiveController implements ControllerInterface
     {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
         $items = $this->archiveService->getTaskItems();
 
@@ -23,7 +24,7 @@ class ArchiveController implements ControllerInterface
         return new HtmlResponse($this->htmlRenderer->render('archive.phtml', [
             'items' => $items,
             'allTasksService' => $this->archiveService,
-            'post' => $post
+            'post' => $httpRequest->getPayload()
         ]));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Services\DashboardService;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
+use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
 
@@ -17,16 +18,16 @@ class DashboardController implements ControllerInterface
     ) {
     }
 
-    function handle($post, $get, $server, &$session): ResponseInterface
+    function handle(httpRequests $httpRequest): ResponseInterface
     {
-        if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+        if (!isset($httpRequest->getSession()['logged_in']) || $httpRequest->getSession()['logged_in'] !== true) {
             header('Location: /login');
         }
 
         $items = $this->dashboardService->getTaskItems();
 
         return new HtmlResponse($this->htmlRenderer->render('home.phtml', [
-            'post' => $_POST,
+            'post' => $httpRequest->getPayload(),
             'dashboardService' => $this->dashboardService,
             'items' => $items
         ]));

@@ -2,8 +2,10 @@
 
 namespace Framework\Interfaces;
 
+use Framework\Requests\httpRequests;
+
 interface ControllerInterface
 {
-    function handle($post, $get, $server, &$session): ResponseInterface;
+    function handle(httpRequests $httpRequest): ResponseInterface;
 
 }
