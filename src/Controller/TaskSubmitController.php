@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Services\TaskCreateService;
 use App\Services\TaskService;
 use App\Services\RoomsService;
+use App\Validators\TaskSubmitValidator;
 use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
 use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
+use Framework\Validators\PayloadValidator;
 
 class TaskSubmitController implements ControllerInterface
 {
@@ -18,12 +20,29 @@ class TaskSubmitController implements ControllerInterface
         private RoomsService $roomsService,
         private HtmlRenderer $htmlRenderer,
         private TaskService $taskService,
+        private TaskSubmitValidator $payloadValidator,
     ) {
     }
 
     function handle(httpRequests $httpRequest): ResponseInterface
     {
         $roomId = isset($httpRequest->getPayload()['room_id']) ? (int)$httpRequest->getPayload()['room_id'] : null;
+        $valid = $this->payloadValidator->validate($httpRequest->getPayload());
+        //dd($valid);
+
+        if (!$valid) {
+            $errors = $this->payloadValidator->getMessages();
+            //dd($errors);
+            $room = $this->roomsService->getRoom($roomId);
+            $task = $this->taskService->getTaskByRoomId($roomId);
+            $html = $this->htmlRenderer->render('room.phtml', [
+                'errors' => $errors,
+                'room' => $room,
+                'task' => $task,
+                'timers' => $task,
+            ]);
+            return new HtmlResponse($html);
+        }
 
         $create = $this->taskCreateService->create(
             $httpRequest->getSession()['user_id'],

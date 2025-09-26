@@ -74,33 +74,13 @@ $room = is_array($room ?? null) ? $room : []; ?>
 
                 <div>
                     <label for="task_title">Titel</label>
-                    <input type="text" id="task_title" name="task_title" required>
+                    <input type="text" id="task_title" name="task_title" >
                 </div>
 
                 <div>
                     <label for="task_notes">Notizen</label>
                     <textarea id="task_notes" name="task_notes" rows="4"></textarea>
                 </div>
-
-                <?php
-                if (!empty($errors)): ?>
-                    <div class="error-messages">
-                        <?php
-                        foreach ($errors as $field => $messages): ?>
-                            <h3><?= htmlspecialchars(ucfirst($field)) ?></h3>
-                            <ul>
-                                <?php
-                                foreach ($messages as $message): ?>
-                                    <li><?= htmlspecialchars($message) ?></li>
-                                <?php
-                                endforeach; ?>
-                            </ul>
-                        <?php
-                        endforeach; ?>
-                    </div>
-                <?php
-                endif; ?>
-
                 <div>
                     <label for="task_due_at">Fällig am</label>
                     <input type="datetime-local" id="task_due_at" name="task_due_at"
@@ -145,6 +125,25 @@ $room = is_array($room ?? null) ? $room : []; ?>
             </form>
         </div>
     </div>
+
+<?php
+if (!empty($errors)): ?>
+    <div class="error-messages">
+        <?php
+        foreach ($errors as $field => $messages): ?>
+            <h3><?= htmlspecialchars(ucfirst($field)) ?></h3>
+            <ul>
+                <?php
+                foreach ($messages as $message): ?>
+                    <li><?= htmlspecialchars($message) ?></li>
+                <?php
+                endforeach; ?>
+            </ul>
+        <?php
+        endforeach; ?>
+    </div>
+<?php
+endif; ?>
 
 <?php
 require_once(__DIR__ . '/footer.phtml');
