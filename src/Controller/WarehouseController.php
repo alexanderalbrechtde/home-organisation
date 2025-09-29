@@ -19,6 +19,11 @@ class WarehouseController implements ControllerInterface
 
     function handle(httpRequests $httpRequest): ResponseInterface
     {
+        if (!$httpRequest->getSessionLoggedIn()) {
+            header('Location: /login');
+            exit;
+        }
+
         $items = $this->warehouseService->getItems($httpRequest->getSession()['user_id']);
         $rooms = $this->warehouseService->getRoomNames($httpRequest->getSession()['user_id']);
 
@@ -26,7 +31,6 @@ class WarehouseController implements ControllerInterface
             'error' => $error ?? null,
             'items' => $items,
             'rooms' => $rooms,
-
         ]));
     }
 }

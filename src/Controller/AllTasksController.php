@@ -19,6 +19,10 @@ class AllTasksController implements ControllerInterface
 
     function handle(httpRequests $httpRequest): ResponseInterface
     {
+        if (!$httpRequest->getSessionLoggedIn()) {
+            header('Location: /login');
+            exit;
+        }
 
         $items = $this->allTasksService->getTaskItems();
 

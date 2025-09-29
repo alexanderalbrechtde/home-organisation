@@ -68,4 +68,9 @@ class httpRequests
     {
         $this->routeParameters = $routeParameters;
     }
+
+    public function getSessionLoggedIn(): bool
+    {
+        return $this->session['logged_in'] ?? false;
+    }
 }

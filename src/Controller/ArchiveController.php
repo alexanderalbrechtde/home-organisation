@@ -11,15 +11,19 @@ use Framework\Services\HtmlRenderer;
 
 class ArchiveController implements ControllerInterface
 {
-    public function __construct(private HtmlRenderer $htmlRenderer,
-    private ArchiveService $archiveService,)
-    {
+    public function __construct(
+        private HtmlRenderer $htmlRenderer,
+        private ArchiveService $archiveService,
+    ) {
     }
 
     function handle(httpRequests $httpRequest): ResponseInterface
     {
+        if (!$httpRequest->getSessionLoggedIn()) {
+            header('Location: /login');
+            exit;
+        }
         $items = $this->archiveService->getTaskItems();
-
 
         return new HtmlResponse($this->htmlRenderer->render('archive.phtml', [
             'items' => $items,
