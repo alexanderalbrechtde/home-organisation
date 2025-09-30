@@ -57,23 +57,23 @@ require_once(__DIR__ . '/header.phtml');
         </section>
 
         <?php
-        if (!empty($errors)): ?>
+        $errors = $_SESSION['flashMessages'] ?? [];
+        unset($_SESSION['flashMessages']);
+        ?>
+
+        <?php if (!empty($errors)): ?>
             <div class="error-messages">
-                <?php
-                foreach ($errors as $field => $messages): ?>
-                    <h3><?= htmlspecialchars(ucfirst($field)) ?></h3>
+
+                <?php foreach ($errors as $field => $messages): ?>
+                    <h3><?= htmlspecialchars($field) ?></h3>
                     <ul>
-                        <?php
-                        foreach ($messages as $message): ?>
-                            <li><?= htmlspecialchars($message) ?></li>
-                        <?php
-                        endforeach; ?>
+                        <?php foreach ($messages as $msg): ?>
+                            <li><?= htmlspecialchars($msg) ?></li>
+                        <?php endforeach; ?>
                     </ul>
-                <?php
-                endforeach; ?>
+                <?php endforeach; ?>
             </div>
-        <?php
-        endif; ?>
+        <?php endif; ?>
 
         <section class="card card--warehouse-stock">
             <div class="card__header">

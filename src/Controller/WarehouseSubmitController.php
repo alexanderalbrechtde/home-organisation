@@ -24,17 +24,15 @@ class WarehouseSubmitController implements ControllerInterface
     {
         $valid = $this->payloadValidator->validate($httpRequest->getPayload());
         if (!$valid) {
-            $errors = $this->payloadValidator->getMessages();
-            $items = $this->warehouseService->getItems($httpRequest->getSession()['user_id']);
-            $rooms = $this->warehouseService->getRoomNames($httpRequest->getSession()['user_id']);
+            $allErrors = $this->payloadValidator->getMessages();
 
-            $html = $this->htmlRenderer->render('warehouse.phtml', [
-                'errors' => $errors,
-                'items' => $items,
-                'rooms' => $rooms,
+            foreach ($allErrors as $field => $messages) {
+                foreach ($messages as $message) {
+                    $_SESSION['flashMessages'][$field][] = $message;
+                }
+            }
 
-            ]);
-            return new HtmlResponse($html);
+            return new RedirectResponse("/warehouse");
         }
 
         $warehouse = $this->warehouseService->edit(
@@ -45,17 +43,9 @@ class WarehouseSubmitController implements ControllerInterface
             $httpRequest->getPayload()['amount'],
         );
         if (!$warehouse) {
-            return new HtmlResponse($this->htmlRenderer->render('warehouse.phtml', [
-                'error' => 'creation failed',
-                'items' => $this->warehouseService->getItems($httpRequest->getSession()['user_id']),
-                'rooms' => $this->warehouseService->getRoomNames($httpRequest->getSession()['user_id'])
-            ]));
+            return new RedirectResponse("/warehouse");
         }
 
-        return new HtmlResponse($this->htmlRenderer->render('warehouse.phtml', [
-            'error' => 'creation success',
-            'items' => $this->warehouseService->getItems($httpRequest->getSession()['user_id']),
-            'rooms' => $this->warehouseService->getRoomNames($httpRequest->getSession()['user_id'])
-        ]));
+        return new RedirectResponse("/warehouse");
     }
 }
