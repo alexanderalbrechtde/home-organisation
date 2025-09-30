@@ -23,18 +23,25 @@
     <br>
     <a href="/register">Registrieren</a>
 </form>
+<?php
+$errors = $_SESSION['flashMessages'] ?? [];
+unset($_SESSION['flashMessages']);
+?>
+
 <?php if (!empty($errors)): ?>
     <div class="error-messages">
+
         <?php foreach ($errors as $field => $messages): ?>
-            <h3><?= htmlspecialchars(ucfirst($field)) ?></h3>
+            <h3><?= htmlspecialchars($field) ?></h3>
             <ul>
-                <?php foreach ($messages as $message): ?>
-                    <li><?= htmlspecialchars($message) ?></li>
+                <?php foreach ($messages as $msg): ?>
+                    <li><?= htmlspecialchars($msg) ?></li>
                 <?php endforeach; ?>
             </ul>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
+
 </body>
 </html>
 

@@ -19,7 +19,6 @@ class RegisterSubmitController implements ControllerInterface
     public function __construct(
         private RegisterService $registerService,
         private RegisterSubmitValidator $payloadValidator,
-        private HtmlRenderer $htmlRenderer
     ) {
     }
 

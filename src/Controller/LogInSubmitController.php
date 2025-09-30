@@ -17,21 +17,22 @@ class LogInSubmitController implements ControllerInterface
     public function __construct(
         private LoginService $loginService,
         private LogInSubmitValidator $payloadValidator,
-        private HtmlRenderer $htmlRenderer,
     ) {
     }
 
     function handle(httpRequests $httpRequest): ResponseInterface
     {
         $valid = $this->payloadValidator->validate($httpRequest->getPayload());
-
         if (!$valid) {
-            $errors = $this->payloadValidator->getMessages();
-            $html = $this->htmlRenderer->render('login.phtml', [
-                'errors' => $errors
-            ]);
+            $allErrors = $this->payloadValidator->getMessages();
 
-            return new HtmlResponse($html);
+            foreach ($allErrors as $field => $messages) {
+                foreach ($messages as $message) {
+                    $_SESSION['flashMessages'][$field][] = $message;
+                }
+            }
+
+            return new RedirectResponse("/login");
         }
         $isLoggedin = $this->loginService->login(
             $httpRequest->getPayload()['email'],
