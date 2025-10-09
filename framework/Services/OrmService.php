@@ -4,11 +4,12 @@ namespace Framework\Services;
 
 use App\Entities\UserEntity;
 use Framework\Interfaces\EntityInterface;
+use Framework\Services\QueryBuilder\DeleteQueryBuilder;
 use PDO;
 
 class OrmService
 {
-    public function __construct(private PDO $pdo)
+    public function __construct(private PDO $pdo, private DeleteQueryBuilder $deleteQueryBuilder)
     {
     }
 
@@ -98,12 +99,16 @@ class OrmService
 
     function delete(EntityInterface $entity): bool
     {
-        $stmt = $this->pdo->prepare('DELETE FROM ' . $entity::getTable() . ' WHERE id = :id');
-        $stmt->execute([
-            'id' => $entity->getId()
-        ]);
+        $qb = (new DeleteQueryBuilder())
+            ->from($entity->getTable())
+            ->where('id', '=', $entity->getId());
+
+
+        $sql = $qb->build();
+        $stmt = $this->pdo->prepare($sql);
+        $ok = $stmt->execute();
         unset($entity);
-        return true;
+        return $ok;
     }
 
     public function save(EntityInterface $entity): bool
