@@ -110,8 +110,18 @@ class OrmService
     }
 
     //sollte funktionieren; noch nicht getestet
-    public function delete(EntityInterface $entity): bool
+    public function delete(EntityInterface|array $entity): bool
     {
+        if(is_Array($entity)){
+            $ok = true;
+            foreach($entity as $item){
+                if($item instanceof EntityInterface){
+                    $ok = $this->delete($item) && $ok;
+                }
+            }
+            return $ok;
+        }
+
         $tableName = $entity::getTable();
 
         $id = $entity->getId();
@@ -121,7 +131,7 @@ class OrmService
         $sql = $this->queryBuilder
             ->delete()
             ->from($tableName)
-            ->where('id', '=', (string)$id)
+            ->where(['id' => (string)$id])
             ->build();
 
         $stmt = $this->pdo->prepare($sql);

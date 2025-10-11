@@ -14,9 +14,13 @@ class DeleteQueryBuilder
         return $this;
     }
 
-    public function where(string $column, string $operator, mixed $value): self
+    public function where(array $conditions): self
     {
-        $this->conditions[] = sprintf("%s %s '%s'", $column, $operator, addslashes($value));
+        $groupParts = [];
+        foreach ($conditions as $key => $val) {
+            $groupParts[] = sprintf("%s = '%s'", $key, addslashes((string)$val));
+        }
+        $this->conditions[] = '(' . implode(' AND ', $groupParts) . ')';
         return $this;
     }
 
@@ -24,7 +28,7 @@ class DeleteQueryBuilder
     {
         $sql = "DELETE FROM {$this->tableName}";
         if ($this->conditions) {
-            $sql .= " WHERE " . implode(" AND ", $this->conditions);
+            $sql .= " WHERE " . implode(" OR ", $this->conditions);
         }
         return $sql . ';';
     }

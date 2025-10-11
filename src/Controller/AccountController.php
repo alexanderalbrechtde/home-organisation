@@ -54,17 +54,13 @@ class AccountController implements ControllerInterface
         $users = $this->ormService->findBy(
             [
                 [
-                    'first_Name' => 'Alexander',
-                    'last_Name' => 'Albrecht'
+                    'first_Name' => 'Lenny',
                 ],
                 [
                     'first_Name' => 'Jens'
                 ]
             ]
-            , UserEntity::class,
-            4, [
-                'first_Name' => 'ASC'
-            ]
+            , UserEntity::class, 4 , []
         );
 
         //FindOneBy
@@ -72,16 +68,14 @@ class AccountController implements ControllerInterface
         //    'first_Name' => 'Alexander'
         //], UserEntity::class);
 
-
-
-        dd($users);
+        //dd($users);
 
         //Delete funktioniert
         //$user = $this->ormService->findById(8, UserEntity::class);
-        //$deleted = $this->ormService->delete($user);
+        //$deleted = $this->ormService->delete($users);
         //$this->ormService->delete($user);
 
-        //dd($user);
+        //dd($deleted);
 
         return new HtmlResponse($this->htmlRenderer->render('account.phtml', [
             'user' => $user,
