@@ -37,7 +37,6 @@ class SelectQueryBuilder
 
     public function limit(int $limit): self
     {
-
         return $this;
     }
 

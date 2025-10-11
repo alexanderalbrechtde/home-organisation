@@ -5,11 +5,12 @@ namespace Framework\Services;
 use App\Entities\UserEntity;
 use Framework\Interfaces\EntityInterface;
 use Framework\Services\QueryBuilder\DeleteQueryBuilder;
+use Framework\Services\QueryBuilder\QueryBuilder;
 use PDO;
 
 class OrmService
 {
-    public function __construct(private PDO $pdo, private DeleteQueryBuilder $deleteQueryBuilder)
+    public function __construct(private PDO $pdo, private QueryBuilder $queryBuilder)
     {
     }
 
@@ -97,21 +98,27 @@ class OrmService
         return $this->findBy($filter, $entityClass, 1)[0] ?? null;
     }
 
-    function delete(EntityInterface $entity): bool
+    //sollte funktionieren; noch nicht getestet
+    public function delete(EntityInterface $entity): bool
     {
-        $qb = (new DeleteQueryBuilder())
-            ->from($entity->getTable())
-            ->where('id', '=', $entity->getId());
+        $tableName = $entity::getTable();
 
+        $id = $entity->getId();
+        if($id === null){
+            return false;
+        }
+        $sql = $this->queryBuilder
+            ->delete()
+            ->from($tableName)
+            ->where('id', '=', (string)$id)
+            ->build();
 
-        $sql = $qb->build();
         $stmt = $this->pdo->prepare($sql);
-        $ok = $stmt->execute();
-        unset($entity);
-        return $ok;
+        return $stmt->execute();
     }
 
-    public function save(EntityInterface $entity): bool
+
+    private function save(EntityInterface $entity): bool
     {
         if ($entity->getId() == 0) {
             return $this->create($entity);
@@ -119,10 +126,11 @@ class OrmService
         return $this->update($entity);
     }
 
-    public function update(EntityInterface $entity): bool
+    private function update(EntityInterface $entity): bool
     {
         // alle Daten; Ausgabe als Array
         $data = get_object_vars($entity);
+        $tableName = $entity::getTable();
         //id wird nicht geupdated (Counter)
         if (array_key_exists('id', $data)) {
             unset($data['id']);
@@ -132,7 +140,7 @@ class OrmService
         foreach (array_keys($data) as $col) {
             $assignments[] = $col . ' = :' . $col;
         }
-        $sql = 'UPDATE ' . $entity::getTable() . ' SET ' . implode(', ', $assignments) . ' WHERE id = :id';
+        $sql = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $assignments) . ' WHERE id = :id';
         $stmt = $this->pdo->prepare($sql);
         $params = $data;
         $params['id'] = $entity->getId();
@@ -140,8 +148,7 @@ class OrmService
         return $stmt->execute($params);
     }
 
-    //von private auf public ändern, wenn save funktioniert
-    public function create(EntityInterface $entity): bool
+    private function create(EntityInterface $entity): bool
     {
         $data = get_object_vars($entity);
         if (array_key_exists('id', $data)) {
