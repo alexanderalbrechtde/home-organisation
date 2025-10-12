@@ -171,28 +171,26 @@ class OrmService
         return $stmt->execute();
     }
 
-    private function create(EntityInterface $entity): bool
+    public function create(EntityInterface $entity): bool
     {
         $data = get_object_vars($entity);
+        $tableName = $entity::getTable();
+
         if (array_key_exists('id', $data)) {
             unset($data['id']);
         }
-        $sql = sprintf(
-            'INSERT INTO %s (%s) VALUES (%s)',
-            $entity::getTable(),
-            implode(',', array_keys($data)),
-            ':' . implode(',:', array_keys($data))
-        );
-
+        $sql = $this->queryBuilder
+            ->insert()
+            ->into($tableName)
+            ->values($data)
+            ->build();
+        //dd($sql);
         $stmt = $this->pdo->prepare($sql);
-        $ok = $stmt->execute($data);
-        if (!$ok) {
-            return false;
-        }
+        $ok = $stmt->execute();
 
-        if (method_exists($entity, 'setId')) {
+        if ($ok && method_exists($entity, 'setId')) {
             $entity->setId((int)$this->pdo->lastInsertId());
         }
-        return true;
+        return $ok;
     }
 }

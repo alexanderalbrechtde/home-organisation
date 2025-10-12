@@ -19,8 +19,8 @@ class QueryBuilder
         return new DeleteQueryBuilder();
     }
 
-    public function insert(array $columns): InsertQueryBuilder
+    public function insert(): InsertQueryBuilder
     {
-        return new InsertQueryBuilder($columns);
+        return new InsertQueryBuilder();
     }
 }

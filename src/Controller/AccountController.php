@@ -91,12 +91,21 @@ class AccountController implements ControllerInterface
 
         //dd($users);
 
-        //Delete funktioniert
+        //Delete
         //$user = $this->ormService->findById(8, UserEntity::class);
         //$deleted = $this->ormService->delete($users);
         //$this->ormService->delete($user);
 
         //dd($deleted);
+
+        //create
+        //$user = new UserEntity();
+        //$user->first_Name = 'Jens';
+        //$user->last_Name = 'Prangenberg';
+        //$user->email = 'jp@check.de';
+        //$user->password = '1234567';
+        //$insert = $this->ormService->create($user);
+        //dd($insert);
 
         return new HtmlResponse($this->htmlRenderer->render('account.phtml', [
             'user' => $user,
