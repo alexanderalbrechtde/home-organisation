@@ -142,7 +142,7 @@ class OrmService
     }
 
 
-    private function save(EntityInterface $entity): bool
+    public function save(EntityInterface $entity): bool
     {
         if ($entity->getId() == 0) {
             return $this->create($entity);
@@ -150,7 +150,7 @@ class OrmService
         return $this->update($entity);
     }
 
-    private function update(EntityInterface $entity): bool
+    public function update(EntityInterface $entity): bool
     {
         // alle Daten; Ausgabe als Array
         $data = get_object_vars($entity);
@@ -159,17 +159,16 @@ class OrmService
         if (array_key_exists('id', $data)) {
             unset($data['id']);
         }
-        // dynamisches Erstellen der Query
-        $assignments = [];
-        foreach (array_keys($data) as $col) {
-            $assignments[] = $col . ' = :' . $col;
-        }
-        $sql = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $assignments) . ' WHERE id = :id';
+        $sql = $this->queryBuilder
+            ->update()
+            ->from($tableName)
+            ->set($data)
+            ->where(['id' => (string)$entity->getId()])
+            ->build();
+        //dd($sql);
         $stmt = $this->pdo->prepare($sql);
-        $params = $data;
-        $params['id'] = $entity->getId();
-        //Ausführung
-        return $stmt->execute($params);
+
+        return $stmt->execute();
     }
 
     private function create(EntityInterface $entity): bool
