@@ -18,10 +18,15 @@ class OrmService
      */
     function findById(int $id, string $entityClass): ?object
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM ' . $entityClass::getTable() . ' WHERE id = :id');
-        $stmt->execute(['id' => $id]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? new $entityClass(...$row) : null;
+        $table = $entityClass::getTable();
+
+        $this->queryBuilder->select()
+            ->select()
+            ->from($table)
+            ->where(['id' => $id])
+            ->build();
+
+        //return $entities;
     }
 
     /**
@@ -42,30 +47,6 @@ class OrmService
         ?array $orderBy = null
     ): array {
         $table = $entityClass::getTable();
-        $where = [];
-        $parameters = [];
-
-        if (array_is_list($filters)) {
-            $groupIndex = 0;
-            foreach ($filters as $filter) {
-                $groupParts = [];
-                foreach ($filter as $key => $val) {
-                    $paramKey = $key . '_' . $groupIndex;
-                    $groupParts[] = "$key = :$paramKey";
-                    $parameters[$paramKey] = $val;
-                }
-                if (!empty($groupParts)) {
-                    $where[] = '(' . implode(' AND ', $groupParts) . ')';
-                }
-                $groupIndex++;
-            }
-        } else {
-            foreach ($filters as $key => $val) {
-                $paramKey = $key . '_0';
-                $where[] = "$key = :$paramKey";
-                $parameters[$paramKey] = $val;
-            }
-        }
 
         $qb = $this->queryBuilder->select();
 
@@ -111,7 +92,6 @@ class OrmService
         return $this->findBy($filter, $entityClass, 1)[0] ?? null;
     }
 
-    //sollte funktionieren; noch nicht getestet
     public function delete(EntityInterface|array $entity): bool
     {
         if (is_Array($entity)) {
@@ -135,6 +115,7 @@ class OrmService
             ->from($tableName)
             ->where(['id' => (string)$id])
             ->build();
+        //dd($result);
 
         $stmt = $this->pdo->prepare($result['sql']);
         return $stmt->execute($result['params']);

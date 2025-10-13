@@ -2,12 +2,10 @@
 
 namespace Framework\Services\QueryBuilder;
 
-class InsertQueryBuilder
+final class InsertQueryBuilder
 {
-    private ?string $tableName = null;
     private array $columns = [];
     private array $placeholders = [];
-    private array $params = [];
 
     public function into(string $tableName): self
     {

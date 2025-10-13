@@ -4,30 +4,25 @@ namespace App\Entities;
 
 use Framework\Interfaces\EntityInterface;
 
-class UserEntity implements EntityInterface
+class RoomEntity implements EntityInterface
 {
     public function __construct(
         public int $id = 0,
-        public string $first_Name,
-        public string $last_Name,
-        public string $email,
-        public string $password
+        public string $name,
+        public string $description,
+        public UserEntity $created_by,
+        public string $created_at
+
     ) {
     }
 
     public static function getTable(): string
     {
-        return 'user';
+        return 'room';
     }
 
     public function getId(): int
     {
         return $this->id;
     }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
 }

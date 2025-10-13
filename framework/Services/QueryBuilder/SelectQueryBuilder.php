@@ -2,37 +2,16 @@
 
 namespace Framework\Services\QueryBuilder;
 
-class SelectQueryBuilder
+final class SelectQueryBuilder extends AbstractQueryBuilder
 {
     private array $columns = [];
-    private string $tableName;
     private array $orderParts = [];
-    private array $conditions = [];
     private ?int $limitVal = null;
-    private array $params = [];
 
 
     public function select(string ...$columns): self
     {
         $this->columns = $columns;
-        return $this;
-    }
-
-    public function from(string $tableName): self
-    {
-        $this->tableName = $tableName;
-        return $this;
-    }
-
-    public function where(array $conditions): self
-    {
-        $groupParts = [];
-        foreach ($conditions as $column => $value) {
-            $placeholder = 'where_' . count($this->params);
-            $groupParts[] = sprintf('%s = :%s', $column, $placeholder);
-            $this->params[$placeholder] = $value;
-        }
-        $this->conditions[] = '(' . implode(' AND ', $groupParts) . ')';
         return $this;
     }
 
