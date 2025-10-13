@@ -89,12 +89,11 @@ class OrmService
         if ($limit !== null && $limit > 0) {
             $select->limit($limit);
         }
-        $sql = $select->build();
-        //dd($sql);
+        $result = $select->build();
+        //dd($result);
 
-
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
+        $stmt = $this->pdo->prepare($result['sql']);
+        $stmt->execute($result['params']);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $entities = [];
@@ -131,14 +130,14 @@ class OrmService
         if ($id === null) {
             return false;
         }
-        $sql = $this->queryBuilder
+        $result = $this->queryBuilder
             ->delete()
             ->from($tableName)
             ->where(['id' => (string)$id])
             ->build();
 
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute();
+        $stmt = $this->pdo->prepare($result['sql']);
+        return $stmt->execute($result['params']);
     }
 
 
@@ -159,16 +158,16 @@ class OrmService
         if (array_key_exists('id', $data)) {
             unset($data['id']);
         }
-        $sql = $this->queryBuilder
+        $result = $this->queryBuilder
             ->update()
             ->from($tableName)
             ->set($data)
             ->where(['id' => (string)$entity->getId()])
             ->build();
-        //dd($sql);
-        $stmt = $this->pdo->prepare($sql);
+        //dd($result);
+        $stmt = $this->pdo->prepare($result['sql']);
 
-        return $stmt->execute();
+        return $stmt->execute($result['params']);
     }
 
     private function create(EntityInterface $entity): bool

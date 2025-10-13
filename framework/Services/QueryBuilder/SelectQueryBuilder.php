@@ -9,6 +9,7 @@ class SelectQueryBuilder
     private array $orderParts = [];
     private array $conditions = [];
     private ?int $limitVal = null;
+    private array $params = [];
 
 
     public function select(string ...$columns): self
@@ -26,8 +27,10 @@ class SelectQueryBuilder
     public function where(array $conditions): self
     {
         $groupParts = [];
-        foreach ($conditions as $key => $val) {
-            $groupParts[] = sprintf("%s = '%s'", $key, addslashes((string)$val));
+        foreach ($conditions as $column => $value) {
+            $placeholder = 'where_' . count($this->params);
+            $groupParts[] = sprintf('%s = :%s', $column, $placeholder);
+            $this->params[$placeholder] = $value;
         }
         $this->conditions[] = '(' . implode(' AND ', $groupParts) . ')';
         return $this;
@@ -49,7 +52,7 @@ class SelectQueryBuilder
         return $this;
     }
 
-    public function build(): string
+    public function build(): array
     {
         $columnName = !empty($this->columns) ? implode(', ', $this->columns) : '*';
         $sql = 'SELECT ' . $columnName . ' FROM ' . $this->tableName;
@@ -63,6 +66,7 @@ class SelectQueryBuilder
         if ($this->limitVal !== null) {
             $sql .= ' LIMIT ' . $this->limitVal;
         }
-        return $sql . ';';
+
+        return ['sql' => $sql . ';', 'params' => $this->params];
     }
 }
