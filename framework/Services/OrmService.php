@@ -67,14 +67,16 @@ class OrmService
         //dd($result);
 
         $this->loggerService->log($result->query);
-        $stmt = $this->pdo->prepare($result['sql']);
+        $stmt = $this->pdo->prepare($result->query);
         $stmt->execute($result->parameters);
+
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $reflection = new \ReflectionClass($entityClass);
         $constructor = $reflection->getConstructor();
 
         $entityParams = [];
+        $enteties = [];
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
                 $type = $parameter->getType();
@@ -83,6 +85,11 @@ class OrmService
                     if (class_exists($typeName) && (new \ReflectionClass($typeName))->isSubclassOf(
                             EntityInterface::class
                         )) {
+
+                        //gibt die Userentity der RoomEntity zurück
+                        //$enteties[] = $parameter;
+                        //dd($enteties);
+
                         $entityParams[] = [
                             'name' => $parameter->getName(),
                             'type' => $typeName,
@@ -95,12 +102,29 @@ class OrmService
         $entities = [];
 
         foreach ($rows as $row) {
+            //dd($row);
             foreach ($entityParams as $ep) {
                 $name = $ep['name'];
                 $type = $ep['type'];
-                $row[$name] = $this->findById((int)$row[$name . '_id'], $type);
-                //statt findBy einen Join
-                unset($row[$name . '_id']);
+                //dd($name);
+
+                //$row[$name] = $this->findById((int)$row[$name . '_id'], $type);
+                //dd($row[$name]);
+
+                $tableNames = $name;
+                $id = [$row[$name .'_id']];
+                //dd($id);
+
+                $qa = $this->queryBuilder->select();
+                $select = $qa
+                    ->from($tableNames)
+                    ->where([$name . '_id' =>$id]);
+                $result = $select->build();
+                dd($result);
+
+
+
+                //unset($row[$name . '_id']);
             }
             $entities[] = new $entityClass(...$row);
         }

@@ -45,9 +45,9 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
         $columnName = !empty($this->columns) ? implode(', ', $this->columns) : '*';
         $sql = 'SELECT ' . $columnName . ' FROM ' . $this->tableName;
 
-        if (!empty($this->join)) {
-            $sql .= ' INNER JOIN ' . implode(', ', $this->join);
-        }
+        //if (!empty($this->join)) {
+        //    $sql .= ' INNER JOIN ' . implode(', ', $this->join);
+        //}
 
         if (!empty($this->conditions)) {
             $sql .= ' WHERE ' . implode(' OR ', $this->conditions);
