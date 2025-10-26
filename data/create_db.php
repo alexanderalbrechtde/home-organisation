@@ -17,7 +17,7 @@ $pdo->exec("DROP TABLE IF EXISTS item_to_room");
 
 $pdo->exec("
     CREATE TABLE user(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
        first_Name TEXT(30) NOT NULL,
        last_Name TEXT(30) NOT NULL,
        email TEXT(30) NOT NULL,

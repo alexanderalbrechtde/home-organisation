@@ -9,8 +9,11 @@ use PDO;
 
 class OrmService
 {
-    public function __construct(private PDO $pdo, private QueryBuilder $queryBuilder, private LoggerService $loggerService)
-    {
+    public function __construct(
+        private PDO $pdo,
+        private QueryBuilder $queryBuilder,
+        private LoggerService $loggerService
+    ) {
     }
 
     /**
@@ -18,7 +21,19 @@ class OrmService
      */
     function findById(int $id, string $entityClass): ?object
     {
-        return $this->findBy(['id' => $id], $entityClass, 1)[0] ?? null;
+        $table = $entityClass::getTable();
+
+        $select = $this->queryBuilder
+            ->select()
+            ->from($table)
+            ->where([$table . '_id' => $id]);
+        $result = $select->build();
+
+        $this->loggerService->log($result->query);
+        $stmt = $this->pdo->prepare($result->query);
+        $stmt->execute($result->parameters);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return new $entityClass(...$row);
     }
 
     /**
@@ -76,7 +91,7 @@ class OrmService
         $constructor = $reflection->getConstructor();
 
         $entityParams = [];
-        $enteties = [];
+        //$enteties = [];
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
                 $type = $parameter->getType();
@@ -85,7 +100,6 @@ class OrmService
                     if (class_exists($typeName) && (new \ReflectionClass($typeName))->isSubclassOf(
                             EntityInterface::class
                         )) {
-
                         //gibt die Userentity der RoomEntity zurück
                         //$enteties[] = $parameter;
                         //dd($enteties);
@@ -112,19 +126,18 @@ class OrmService
                 //dd($row[$name]);
 
                 $tableNames = $name;
-                $id = [$row[$name .'_id']];
+                $id = [$row[$name . '_id']];
                 //dd($id);
 
                 $qa = $this->queryBuilder->select();
                 $select = $qa
                     ->from($tableNames)
-                    ->where([$name . '_id' =>$id]);
+                    ->where([$name . '_id' => $id]);
                 $result = $select->build();
-                dd($result);
+                //dd($result);
 
 
-
-                //unset($row[$name . '_id']);
+                unset($row[$name . '_id']);
             }
             $entities[] = new $entityClass(...$row);
         }

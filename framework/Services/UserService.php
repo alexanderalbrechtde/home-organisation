@@ -50,7 +50,7 @@ class UserService
     private function createUserDto(array $user): UserDto
     {
         return new UserDto(
-            $user['id'],
+            $user['user_id'],
             $user['first_Name'],
             $user['last_Name'],
             $user['email'],
@@ -58,12 +58,12 @@ class UserService
         );
     }
 
-    public function getUserbyId(int $id): ?UserDto
+    public function getUserbyId(int $user_id): ?UserDto
     {
         $stmt = $this->pdo->prepare(
-            'SELECT *  FROM user WHERE id = :id LIMIT 1'
+            'SELECT *  FROM user WHERE user_id = :user_id LIMIT 1'
         );
-        $stmt->execute(['id' => $id]);
+        $stmt->execute(['user_id' => $user_id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$row) {

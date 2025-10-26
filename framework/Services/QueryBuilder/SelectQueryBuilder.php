@@ -18,11 +18,11 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
         return $this;
     }
 
-    public function join(array $join): self
-    {
-        $this->join = $join;
-        return $this;
-    }
+    //public function join(array $join): self
+    //{
+    //    $this->join = $join;
+    //    return $this;
+    //}
 
     public function orderBy(string $column, string $direction = 'ASC'): self
     {
