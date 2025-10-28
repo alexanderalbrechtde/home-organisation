@@ -52,12 +52,29 @@ class OrmService
         string $entityClass,
         ?int $limit = null,
         ?array $orderBy = null,
-        ?array $join = null
 
     ): array {
         $table = $entityClass::getTable();
         //dd($table);
         $tableMap = $this->getEntityParams($entityClass);
+
+        $entityParams = [];
+        $reference = new \ReflectionClass($entityClass);
+        $constructor = $reference->getConstructor();
+        if ($constructor) {
+            foreach ($constructor->getParameters() as $parameter) {
+                $types = $parameter->getType();
+                if ($types instanceof \ReflectionNamedType) {
+                    $t = $types->getName();
+                    if (class_exists($t) && (new \ReflectionClass($t))->isSubclassOf(EntityInterface::class)) {
+                        $entityParams[] = [
+                            'name' => $parameter->getName(),
+                            'type' => $t,
+                        ];
+                    }
+                }
+            }
+        }
 
         $qb = $this->queryBuilder->select();
 
@@ -94,26 +111,40 @@ class OrmService
         }
 
         $result = $select->build();
-        dd($result);
+        //dd($result);
 
         $this->loggerService->log($result->query);
         $stmt = $this->pdo->prepare($result->query);
         $stmt->execute($result->parameters);
 
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        //dd($rows);
         $entities = [];
 
         foreach ($rows as $row) {
-            //dd($rows);
-            //dd($row);
+            $groupes = [];
+
+            foreach ($row as $key => $value) {
+                [$prefix, $suffix] = explode('_', $key, 2);
+                $groupes[$prefix][$suffix] = $value;
+            }
+            //dd($groupes);
+
             foreach ($entityParams as $ep) {
                 $name = $ep['name'];
+                $type = $ep['type'];
 
-                unset($row[$name . '_id']);
+                $relatedTable = $type::getTable();
+                //dd($table, $relatedTable);
+
+                unset($groupes[$table][$relatedTable . '_id']);
+
+                $relatedPayload = $groupes[$relatedTable];
+                $groupes[$table][$name] = new $type(...$relatedPayload);
             }
-            dd($row);
-            $entities[] = new $entityClass(...$row);
+
+            $entities[] = new $entityClass(...($groupes[$table]));
+            //dd($groupes[$table]);
         }
         return $entities;
     }
@@ -137,6 +168,7 @@ class OrmService
         $tableMap = [
             $table => $columns
         ];
+        //dd($tableMap);
 
         $entityParams = [];
 
@@ -161,7 +193,6 @@ class OrmService
 
         return $tableMap;
     }
-
 
     /**
      * @param class-string<EntityInterface> $entityClass

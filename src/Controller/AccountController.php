@@ -66,7 +66,6 @@ class AccountController implements ControllerInterface
                [
                    'name' => 'Bad',
                ],
-
            ],
            RoomEntity::class,
            5,

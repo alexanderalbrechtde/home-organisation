@@ -51,10 +51,12 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
         foreach ($this->columns as $tableGroup) {
             foreach ($tableGroup as $table => $columns) {
                 foreach ($columns as $column) {
-                    $columnList[] = "$table.$column";
+                    $aliase = $table . '_' . $column;
+                    $columnList[] = "$table.$column AS $aliase";
                 }
             }
         }
+        //dd($columnList);
 
         $columnName = !empty($columnList) ? implode(', ', $columnList) : '*';
         $sql = 'SELECT ' . $columnName . ' FROM ' . $this->tableName;
@@ -62,7 +64,6 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
         if (!empty($this->join)) {
             $sql .= ' ' . implode(' ', $this->join);
         }
-
         if (!empty($this->conditions)) {
             $sql .= ' WHERE ' . implode(' OR ', $this->conditions);
         }
