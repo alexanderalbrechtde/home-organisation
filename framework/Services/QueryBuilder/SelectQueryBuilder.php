@@ -73,7 +73,6 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
         if ($this->limitVal !== null) {
             $sql .= ' LIMIT ' . $this->limitVal;
         }
-
         return new QueryDto($sql, $this->params);
     }
 }

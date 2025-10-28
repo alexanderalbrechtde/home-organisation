@@ -21,7 +21,7 @@ class OrmService
      */
     function findById(int $id, string $entityClass): ?object
     {
-        $table = $entityClass::getTable();
+        $table = $this->getTableName($entityClass);
 
         $select = $this->queryBuilder
             ->select()
@@ -54,8 +54,7 @@ class OrmService
         ?array $orderBy = null,
 
     ): array {
-        $table = $entityClass::getTable();
-        //dd($table);
+        $table = $this->getTableName($entityClass);
         $tableMap = $this->getEntityParams($entityClass);
 
         $entityParams = [];
@@ -63,6 +62,14 @@ class OrmService
         $constructor = $reference->getConstructor();
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
+                dd($constructor->getParameters());
+                $attributes = $parameter->getAttributes();
+                foreach ($attributes as $attribute) {
+                    $attrName = $attribute->getName();
+                    if ($attrName === \Framework\Attributes\OrmColumn::class) {
+                        $instance = $attribute->newInstance();
+                    }
+                }
                 $types = $parameter->getType();
                 if ($types instanceof \ReflectionNamedType) {
                     $t = $types->getName();
@@ -114,11 +121,13 @@ class OrmService
         //dd($result);
 
         $this->loggerService->log($result->query);
+        //hier krachts...
+        //todo: OrmColumns an Datenbank anpassen
         $stmt = $this->pdo->prepare($result->query);
+        //dd($stmt);
         $stmt->execute($result->parameters);
 
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        //dd($rows);
         $entities = [];
 
         foreach ($rows as $row) {
@@ -135,6 +144,7 @@ class OrmService
                 $type = $ep['type'];
 
                 $relatedTable = $type::getTable();
+
                 //dd($table, $relatedTable);
 
                 unset($groupes[$table][$relatedTable . '_id']);
@@ -147,6 +157,15 @@ class OrmService
             //dd($groupes[$table]);
         }
         return $entities;
+    }
+
+    private function getTableName(string $entityClass)
+    {
+        $reflection = new \ReflectionClass($entityClass);
+        $attributes = $reflection->getAttributes(\Framework\Attributes\OrmTable::class);
+
+        $instance = $attributes[0]->newInstance();
+        return $instance->tableName;
     }
 
     /**

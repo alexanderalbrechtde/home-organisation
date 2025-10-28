@@ -2,14 +2,21 @@
 
 namespace App\Entities;
 
+use Framework\Attributes\OrmColumn;
+use Framework\Attributes\OrmFk;
+use Framework\Attributes\OrmTable;
 use Framework\Interfaces\EntityInterface;
 
+#[OrmTable('user')]
 class UserEntity implements EntityInterface
 {
     public function __construct(
-        public int $user_id = 0,
-        public string $first_name,
-        public string $last_name,
+        #[OrmColumn('user_id')]
+        public int $user = 0,
+        #[OrmColumn('first_name')]
+        public string $firstName,
+        #[OrmColumn('last_name')]
+        public string $lastName,
         public string $email,
         public string $password,
     ) {
@@ -18,16 +25,6 @@ class UserEntity implements EntityInterface
     public static function getTable(): string
     {
         return 'user';
-    }
-
-    public function getId(): int
-    {
-        return $this->user_id;
-    }
-
-    public function setId(int $user_id): void
-    {
-        $this->user_id = $user_id;
     }
 
 }
