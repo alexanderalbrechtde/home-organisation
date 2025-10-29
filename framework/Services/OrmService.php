@@ -76,7 +76,7 @@ class OrmService
                             'name' => $parameter->getName(),
                             'type' => $t,
                         ];
-                        dd($entityParams);
+                        //dd($entityParams);
                     }
                 }
             }
@@ -120,8 +120,6 @@ class OrmService
         //dd($result);
 
         $this->loggerService->log($result->query);
-        //hier krachts...
-        //todo: OrmColumns an Datenbank anpassen
         $stmt = $this->pdo->prepare($result->query);
         //dd($stmt);
         $stmt->execute($result->parameters);
@@ -193,7 +191,6 @@ class OrmService
                 }
             }
 
-            // In Liste aufnehmen (egal ob ersetzt oder nicht)
             $columns[] = $columnName;
             //dd($columns);
         }
@@ -207,7 +204,7 @@ class OrmService
 
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
-                dd($constructor);
+                //dd($constructor);
                 $type = $parameter->getType();
                 if ($type instanceof \ReflectionNamedType) {
                     $typeName = $type->getName();
