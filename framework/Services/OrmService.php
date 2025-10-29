@@ -3,6 +3,7 @@
 namespace Framework\Services;
 
 use App\Entities\UserEntity;
+use Framework\Attributes\OrmColumn;
 use Framework\Interfaces\EntityInterface;
 use Framework\Services\QueryBuilder\QueryBuilder;
 use PDO;
@@ -56,28 +57,26 @@ class OrmService
     ): array {
         $table = $this->getTableName($entityClass);
         $tableMap = $this->getEntityParams($entityClass);
+        //dd($tableMap);
 
         $entityParams = [];
         $reference = new \ReflectionClass($entityClass);
         $constructor = $reference->getConstructor();
+
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
-                dd($constructor->getParameters());
-                $attributes = $parameter->getAttributes();
-                foreach ($attributes as $attribute) {
-                    $attrName = $attribute->getName();
-                    if ($attrName === \Framework\Attributes\OrmColumn::class) {
-                        $instance = $attribute->newInstance();
-                    }
-                }
                 $types = $parameter->getType();
+                //dd($types);
+
                 if ($types instanceof \ReflectionNamedType) {
                     $t = $types->getName();
+                    //dd($t);
                     if (class_exists($t) && (new \ReflectionClass($t))->isSubclassOf(EntityInterface::class)) {
                         $entityParams[] = [
                             'name' => $parameter->getName(),
                             'type' => $t,
                         ];
+                        dd($entityParams);
                     }
                 }
             }
@@ -181,7 +180,22 @@ class OrmService
         $columns = [];
 
         foreach ($properties as $property) {
-            $columns[] = $property->getName();
+            $columnName = $property->getName();
+
+            $attributes = $property->getAttributes(\Framework\Attributes\OrmColumn::class);
+
+            if (!empty($attributes)) {
+                /** @var \Framework\Attributes\OrmColumn $instance */
+                $instance = $attributes[0]->newInstance();
+
+                if (!empty($instance->columnName)) {
+                    $columnName = $instance->columnName;
+                }
+            }
+
+            // In Liste aufnehmen (egal ob ersetzt oder nicht)
+            $columns[] = $columnName;
+            //dd($columns);
         }
 
         $tableMap = [
@@ -193,6 +207,7 @@ class OrmService
 
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
+                dd($constructor);
                 $type = $parameter->getType();
                 if ($type instanceof \ReflectionNamedType) {
                     $typeName = $type->getName();

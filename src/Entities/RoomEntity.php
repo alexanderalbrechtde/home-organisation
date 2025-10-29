@@ -11,7 +11,6 @@ use Framework\Interfaces\EntityInterface;
 class RoomEntity implements EntityInterface
 {
     public function __construct(
-        #[OrmFk()]
         public int $id,
         public string $name,
         public string $description,
