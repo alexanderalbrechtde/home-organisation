@@ -17,7 +17,7 @@ $pdo->exec("DROP TABLE IF EXISTS item_to_room");
 
 $pdo->exec("
     CREATE TABLE user(
-        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
        first_name TEXT(30) NOT NULL,
        last_name TEXT(30) NOT NULL,
        email TEXT(30) NOT NULL,
@@ -29,7 +29,7 @@ $pdo->exec("
         description TEXT,
         user_id INTEGER NOT NULL,
         created_at TEXT NOT NULL DEFAULT (datetime('now')),
-        FOREIGN KEY (user_id) REFERENCES user(user_id)
+        FOREIGN KEY (user_id) REFERENCES user(id)
 );
     CREATE TABLE task(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,7 +44,7 @@ $pdo->exec("
         checked BOOLEAN NOT NULL DEFAULT false,
         created_by INTEGER NOT NULL,
         created_for INTEGER NOT NULL,
-        FOREIGN KEY (created_by) REFERENCES user(user_id),
+        FOREIGN KEY (created_by) REFERENCES user(id),
         FOREIGN KEY (created_for) REFERENCES room(id)
 );
     CREATE TABLE item(
@@ -54,7 +54,7 @@ $pdo->exec("
         amount INTEGER NOT NULL CHECk(amount >=0),
         created_by INTEGER NOT NULL,
         room_id INTEGER NOT NULL,
-        FOREIGN KEY (created_by) REFERENCES user(user_id),
+        FOREIGN KEY (created_by) REFERENCES user(id),
         FOREIGN KEY (room_id) REFERENCES room(id)
 );
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_item_name_category
@@ -62,16 +62,16 @@ CREATE UNIQUE INDEX IF NOT EXISTS uniq_item_name_category
 
     CREATE TABLE user_to_room(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        owner_user_id INTEGER NOT NULL,
+        owner_id INTEGER NOT NULL,
         room_id INTEGER NOT NULL,
-        FOREIGN KEY (owner_user_id) REFERENCES user(user_id),
+        FOREIGN KEY (owner_id) REFERENCES user(id),
         FOREIGN KEY (room_id) REFERENCES room(id)
 );
     CREATE TABLE user_to_task(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        owner_user_id INTEGER NOT NULL,
+        owner_id INTEGER NOT NULL,
         task_id INTEGER NOT NULL,
-        FOREIGN KEY (owner_user_id) REFERENCES user(user_id),
+        FOREIGN KEY (owner_id) REFERENCES user(id),
         FOREIGN KEY (task_id) REFERENCES task(id)
 );
     CREATE TABLE room_to_task(
@@ -93,7 +93,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS uniq_item_name_category
         item_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
         FOREIGN KEY (item_id) REFERENCES item(id),
-        FOREIGN KEY (user_id) REFERENCES user(user_id)
+        FOREIGN KEY (user_id) REFERENCES user(id)
     );
 "
 );

@@ -19,9 +19,9 @@ class AccountService
     public function showParameters(int $userId): array
     {
         $stmt = $this->pdo->prepare(
-            'SELECT user_id, first_Name, last_Name, email 
+            'SELECT id, first_Name, last_Name, email 
                     FROM user 
-                    WHERE user_id = :userId'
+                    WHERE id = :userId'
         );
         $stmt->execute(['userId' => $userId]);
 

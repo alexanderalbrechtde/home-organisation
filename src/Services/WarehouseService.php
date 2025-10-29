@@ -39,12 +39,12 @@ class WarehouseService
 
         $itemId = $this->pdo->lastInsertId();
         $statement = $this->pdo->prepare(
-            'INSERT INTO item_to_user(item_id, user_id) 
-                    VALUES(:item_id, :user_id)'
+            'INSERT INTO item_to_user(item_id, id) 
+                    VALUES(:item_id, :id)'
         );
         $statement->execute([
             ':item_id' => $itemId,
-            ':user_id' => $userId,
+            ':id' => $userId,
         ]);
 
         $statement2 = $this->pdo->prepare(
@@ -65,10 +65,10 @@ class WarehouseService
             "SELECT i.name, i.category, i.amount, r.name AS room_name
            FROM item i
            LEFT JOIN room r ON r.id = i.room_id
-          WHERE i.created_by = :user_id
+          WHERE i.created_by = :id
        ORDER BY i.name COLLATE NOCASE, i.category COLLATE NOCASE"
         );
-        $stmt->execute([':user_id' => $userId]);
+        $stmt->execute([':id' => $userId]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
@@ -78,10 +78,10 @@ class WarehouseService
         $stmt = $this->pdo->prepare(
             "SELECT name, id
          FROM room
-         WHERE created_by = :user_id;"
+         WHERE created_by = :id;"
         );
 
-        $stmt->execute([':user_id' => $userId]);
+        $stmt->execute([':id' => $userId]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }

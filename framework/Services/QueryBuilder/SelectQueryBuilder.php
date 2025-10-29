@@ -42,10 +42,6 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
 
     public function build(): QueryDto
     {
-        //dd($this->columns);
-        //foreach($this->columns as $column){
-        //    dd($column);
-        //}
         $columnList = [];
 
         foreach ($this->columns as $tableGroup) {

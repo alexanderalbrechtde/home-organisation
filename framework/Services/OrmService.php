@@ -4,9 +4,11 @@ namespace Framework\Services;
 
 use App\Entities\UserEntity;
 use Framework\Attributes\OrmColumn;
+use Framework\Attributes\OrmTable;
 use Framework\Interfaces\EntityInterface;
 use Framework\Services\QueryBuilder\QueryBuilder;
 use PDO;
+use PhpParser\Node\Expr\Instanceof_;
 
 class OrmService
 {
@@ -45,36 +47,76 @@ class OrmService
         return $this->findBy([], $entityClass);
     }
 
-    public function getEntityData(string $entityClass): array
+    public function getEntityData(string $entityClass, array &$visited = []): array
     {
-        $reflection = new \ReflectionClass($entityClass);
-        $parameters = $reflection->getConstructor()->getParameters();
-        $table = $this->getTableName($entityClass);
+        if (in_array($entityClass, $visited, true)) {
+            return [];
+        }
+        $visited[] = $entityClass;
 
-        $entityData[$entityClass]['tableName'][] = $table;
+        $reflection = new \ReflectionClass($entityClass);
+        $tableAttributes = $reflection->getAttributes(OrmTable::class);
+        $tableName = null;
+        if ($tableAttributes !== []) {
+            $tableName = $tableAttributes[0]->newInstance()->tableName;
+        }
+        if (!$tableName) {
+            $tableName = $this->getTableName($entityClass);
+        }
+
+        $parameters = $reflection->getConstructor()->getParameters();
+
+        $columns = [];
+        $aliases = [];
+        $relations = [];
 
         foreach ($parameters as $parameter) {
-            $parameterType = $parameter->getType()->getName();
+            $paramName = $parameter->getName();
+            $type = $parameter->getType();
+            $parameterType = $type ? $type->getName() : null;
             $attributes = $parameter->getAttributes(\Framework\Attributes\OrmColumn::class)[0] ?? null;
 
-            $entityData[$entityClass]['columns'][] = $parameter->getName();
-            $columnName = $attributes ? $attributes->newInstance()->columnName : $parameter->getName();
+            $columnName = $attributes ? $attributes->newInstance()->columnName : $paramName;
 
-            if ($columnName !== $parameter->getName()) {
-                $entityData[$entityClass]['aliases'][$columnName] = $parameter->getName();
+            if ($columnName !== $paramName) {
+                $aliases[$columnName] = $paramName;
             }
 
-            if (class_exists($parameterType) && (new \ReflectionClass($parameterType))->isSubclassOf(
+            if ($parameterType && class_exists($parameterType) && (new \ReflectionClass($parameterType))->isSubclassOf(
                     EntityInterface::class
                 )) {
-                $entityData[$entityClass]['relations'][$parameter->getName()] = [
-                    'entity' => $parameterType,
-                    'join' => $parameterType::getTable() . '_id',
-                    ];
+                $relations[$tableName . '.' . $columnName] = [
+                    'entityClass' => $parameterType,
+                    'joinColumn' => $parameterType::getTable() . '.id',
+                ];
 
+                $relatedMeta = $this->getEntityData($parameterType, $visited);
+                if (!isset($relatedEntities)) {
+                    $relatedEntities = [];
+                }
+                $relatedEntities[] = $relatedMeta;
+            } else {
+                $columns[] = $tableName . '.' . $columnName;
             }
         }
-        dd($entityData);
+
+        $entityData = [
+            $entityClass => [
+                'tableName' => $tableName,
+                'columns' => $columns,
+                'aliases' => $aliases,
+                'relations' => $relations,
+            ],
+        ];
+
+        if (!empty($relatedEntities)) {
+            foreach ($relatedEntities as $relMeta) {
+                if (is_array($relMeta)) {
+                    $entityData = array_merge($entityData, $relMeta);
+                }
+            }
+        }
+
         return $entityData;
     }
 
@@ -88,33 +130,30 @@ class OrmService
         ?array $orderBy = null,
 
     ): array {
+        $allEntityData = $this->getEntityData($entityClass);
+        $singleEntityData = $allEntityData[$entityClass];
+        $useTable = $singleEntityData['tableName'];
+        $reversAliases = array_flip($singleEntityData['aliases'] ?? []);
 
-        //$dd []= $this->getEntityParams($entityClass);
-
-        $entityData[] = $this->getEntityData($entityClass);
-
-
-        $tableMap = $this->getEntityParams($entityClass);
-        //dd($tableMap);
-
-        $entityParams = [];
-
+        $tableMap = [];
+        foreach ($allEntityData as $data) {
+            $tableName = $data['tableName'];
+            $tableMap[$tableName] = [];
+            foreach ($data['columns'] as $dataColumn) {
+                $tableMap[$tableName][] = substr($dataColumn, strlen($tableName) + 1);
+            }
+        }
 
         $qb = $this->queryBuilder->select();
 
         $select = $qb
             ->select($tableMap)
-            ->from($table);
-        //dd($select);
+            ->from($useTable);
 
-        //$return = $this->getEntityParams($entityClass);
-        //dd($return);
-
-        foreach ($tableMap as $joinTable => $columns) {
-            if ($joinTable === $table) {
-                continue;
-            }
-            $select->join($joinTable, "$table.{$joinTable}_id", "$joinTable.{$joinTable}_id");
+        foreach ($singleEntityData['relations'] as $fkKey => $relation) {
+            [$ownerTable, $fkColumn] = explode('.', $fkKey, 2);
+            [$joinTable, $joinColumn] = explode('.', $relation['joinColumn'], 2);
+            $select->join($joinTable, "$ownerTable.$fkColumn", "$joinTable.$joinColumn");
         }
 
         if (array_is_list($filters)) {
@@ -131,7 +170,7 @@ class OrmService
             }
         }
 
-        if ($limit !== null && $limit > 0) {
+        if ($limit) {
             $select->limit($limit);
         }
 
@@ -140,12 +179,10 @@ class OrmService
 
         $this->loggerService->log($result->query);
         $stmt = $this->pdo->prepare($result->query);
-        //dd($stmt);
         $stmt->execute($result->parameters);
 
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $entities = [];
-        $columns = [];
 
         foreach ($rows as $row) {
             $groupes = [];
@@ -153,66 +190,38 @@ class OrmService
             foreach ($row as $key => $value) {
                 [$prefix, $suffix] = explode('_', $key, 2);
                 $groupes[$prefix][$suffix] = $value;
-                //dd([$prefix, $suffix]);
             }
-            //dd($groupes);
 
-            foreach ($entityParams as $ep) {
-                $name = $ep['name'];
-                $type = $ep['type'];
+            $reflection = new \ReflectionClass($entityClass);
+            $constructor = $reflection->getConstructor();
+            $parameters = $constructor->getParameters();
+            $arguments = [];
 
-                //hier Logik für Arrayswitch von _ zu ohne
+            foreach ($parameters as $parameter) {
+                $parameterName = $parameter->getName();
+                $type = $parameter->getType();
+                //dd($type);
+                $parameterType = $type ? $type->getName() : null;
 
-                $reflection = new \ReflectionClass($entityClass);
-                $constructor = $reflection->getConstructor();
-                //dd($constructor);
-                $parameterss = $constructor->getParameters();
-                //dump($parameterss);
-                foreach ($parameterss as $para) {
-                    foreach ($para as $item) {
-                        $paraName = $item;
-                        //dump($paraName);
-
-                        $columns[] = $paraName;
-                        //dump($columns);
-                        //$columns jetzt für Ausgabe benutzen
+                if ($parameterType && class_exists($parameterType) && (new \ReflectionClass(
+                        $parameterType
+                    ))->isSubclassOf(EntityInterface::class)) {
+                    $useTable = $parameterType::getTable();
+                    $useColumns = $tableMap[$useTable] ?? [];
+                    $useValues = [];
+                    foreach ($useColumns as $columnName) {
+                        $useValues[] = $groupes[$useTable][$columnName] ?? null;
                     }
+                    $arguments[] = new $parameterType(...$useValues);
+                } else {
+                    $reversedKey = $reversAliases[$parameterName] ?? $parameterName;
+                    //dd($reversedKey);
+                    $arguments[] = $groupes[$useTable][$reversedKey] ?? null;
+                    //dd($arguments);
                 }
-
-                //room =>
-                    //'id,
-                    //'name,
-                //user =>
-                    //'user_id'
-
-
-                //$array = array_replace($tableMap[$entityClass::getTable()], $columns);
-                $relatedTable = $type::getTable();
-                $array = array_values(array_combine($tableMap[$relatedTable], $groupes[$relatedTable]));
-
-                //dd($groupes, $relatedTable);
-
-                //dd($tableMap, $columns, $groupes[$table], $array);
-
-
-                //dd($table, $relatedTable);
-                unset($groupes[$table][$relatedTable . '_id']);
-
-                $relatedPayload = $groupes[$relatedTable];
-                //dd($relatedPayload);
-                //$relatedPayload = array_values($relatedPayload);
-                //dd($relatedPayload);
-                //dd($type, $array);
-
-                $groupes[$table][$name] = new $type(...$array);
             }
-
-            //dd(get_class_vars($entityClass), $groupes[$table]);
-            $array2 = array_combine(get_class_vars($entityClass), $groupes[$table]);
-            //dd($array2);
-
-            //dd($entityClass, $groupes[$table]);
-            $entities[] = new $entityClass(...$array2);
+            $entities[] = new $entityClass(...$arguments);
+            //dd($entities);
         }
         return $entities;
     }
@@ -226,58 +235,21 @@ class OrmService
         return $instance->tableName;
     }
 
-    /**
-     * @param class-string<EntityInterface> $entityClass
-     */
-    public function getEntityParams(string $entityClass): array
-    {
-        $reflection = new \ReflectionClass($entityClass);
-        $properties = $reflection->getProperties();
-        $constructor = $reflection->getConstructor();
-
-        $table = $this->getTableName($entityClass);
-        $columns = [];
-
-        $tableMap = [
-            $table => $columns
-        ];
-        //dd($tableMap);
-
-        $entityParams = [];
-
-        if ($constructor) {
-            foreach ($constructor->getParameters() as $parameter) {
-                //dd($constructor);
-                $type = $parameter->getType();
-                if ($type instanceof \ReflectionNamedType) {
-                    $typeName = $type->getName();
-                    if (class_exists($typeName) && (new \ReflectionClass($typeName))->isSubclassOf(
-                            EntityInterface::class
-                        )) {
-                        $entity = $this->getEntityParams($typeName);
-                        $tableMap = array_merge($tableMap, $entity);
-                        $entityParams[] = [
-                            'name' => $parameter->getName(),
-                            'type' => $typeName,
-                        ];
-                    }
-                }
-            }
-        }
-        dd($tableMap);
-        return $tableMap;
-    }
 
     /**
      * @param class-string<EntityInterface> $entityClass
      */
-    public function findOneBy(array $filter, string $entityClass, ?array $orderBy = null): ?object
-    {
+    public function findOneBy(
+        array $filter,
+        string $entityClass,
+        ?array $orderBy = null
+    ): ?object {
         return $this->findBy($filter, $entityClass, 1)[0] ?? null;
     }
 
-    public function delete(EntityInterface|array $entity): bool
-    {
+    public function delete(
+        EntityInterface|array $entity
+    ): bool {
         if (is_Array($entity)) {
             $ok = true;
             foreach ($entity as $item) {
@@ -306,16 +278,18 @@ class OrmService
     }
 
 
-    public function save(EntityInterface $entity): bool
-    {
+    public function save(
+        EntityInterface $entity
+    ): bool {
         if ($entity->id <= 0) {
             return $this->create($entity);
         }
         return $this->update($entity);
     }
 
-    private function update(EntityInterface $entity): bool
-    {
+    private function update(
+        EntityInterface $entity
+    ): bool {
         $data = get_object_vars($entity);
         $tableName = $entity::getTable();
         if (array_key_exists('id', $data)) {
@@ -333,8 +307,9 @@ class OrmService
         return $stmt->execute($result['params']);
     }
 
-    private function create(EntityInterface $entity): bool
-    {
+    private function create(
+        EntityInterface $entity
+    ): bool {
         $data = get_object_vars($entity);
         $tableName = $entity::getTable();
 

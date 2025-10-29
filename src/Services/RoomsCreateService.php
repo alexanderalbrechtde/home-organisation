@@ -16,10 +16,10 @@ class RoomsCreateService
         }
 
         $statement = $this->pdo->prepare(
-            'INSERT INTO room (user_id, name, description) VALUES (:user_id, :name, :description)'
+            'INSERT INTO room (id, name, description) VALUES (:id, :name, :description)'
         );
         $statement->execute([
-            'user_id' => $userId,
+            'id' => $userId,
             'name' => $name,
             'description' => $description
         ]);
@@ -27,10 +27,10 @@ class RoomsCreateService
         $roomId = $this->pdo->lastInsertId();
 
         $statement = $this->pdo->prepare(
-            'INSERT INTO user_to_room (owner_user_id, room_id) VALUES (:owner_user_id, :room_id)'
+            'INSERT INTO user_to_room (owner_user_id, room_id) VALUES (:owner_id, :room_id)'
         );
         $statement->execute([
-            'owner_user_id' => $userId,
+            'owner_id' => $userId,
             'room_id' => $roomId,
         ]);
 

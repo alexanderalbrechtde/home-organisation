@@ -40,10 +40,10 @@ class TaskCreateService
         $taskId = $this->pdo->lastInsertId();
 
         $statement = $this->pdo->prepare(
-            'INSERT INTO user_to_task (owner_user_id, task_id) VALUES (:owner_user_id, :task_id)'
+            'INSERT INTO user_to_task (owner_id, task_id) VALUES (:owner_id, :task_id)'
         );
         $statement->execute([
-            'owner_user_id' => $userId,
+            'owner_id' => $userId,
             'task_id' => $taskId,
         ]);
         $stmt2 = $this->pdo->prepare(
