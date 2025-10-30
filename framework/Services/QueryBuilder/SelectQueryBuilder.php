@@ -2,7 +2,10 @@
 
 namespace Framework\Services\QueryBuilder;
 
+use Exception;
 use Framework\Dtos\QueryDto;
+
+use function PHPUnit\Framework\throwException;
 
 final class SelectQueryBuilder extends AbstractQueryBuilder
 {
@@ -42,6 +45,11 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
 
     public function build(): QueryDto
     {
+        if ($this->limitVal <= 0 && $this->limitVal !== null) {
+            throw new Exception("Not valid limit");
+        }
+
+
         $columnList = [];
 
         foreach ($this->columns as $tableGroup) {
@@ -52,7 +60,6 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
                 }
             }
         }
-        //dd($columnList);
 
         $columnName = !empty($columnList) ? implode(', ', $columnList) : '*';
         $sql = 'SELECT ' . $columnName . ' FROM ' . $this->tableName;
