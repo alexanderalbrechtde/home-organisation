@@ -2,6 +2,8 @@
 
 namespace Framework\Services\QueryBuilder;
 
+use Framework\Dtos\QueryDto;
+
 final class UpdateQueryBuilder extends AbstractQueryBuilder
 {
     private array $setValues = [];
@@ -14,7 +16,7 @@ final class UpdateQueryBuilder extends AbstractQueryBuilder
         return $this;
     }
 
-    public function build(): array
+    public function build(): QueryDto
     {
         $sql = sprintf(
             'UPDATE %s SET %s',
@@ -26,6 +28,7 @@ final class UpdateQueryBuilder extends AbstractQueryBuilder
             $sql .= ' WHERE ' . implode(' AND ', $this->conditions);
         }
 
-        return ['sql' => $sql . ';', 'params' => $this->params];
+        //return ['sql' => $sql . ';', 'params' => $this->params];
+        return new QueryDto($sql, $this->params);
     }
 }

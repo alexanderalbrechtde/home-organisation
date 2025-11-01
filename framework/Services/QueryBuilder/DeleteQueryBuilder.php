@@ -2,10 +2,12 @@
 
 namespace Framework\Services\QueryBuilder;
 
+use Framework\Dtos\QueryDto;
+
 final class DeleteQueryBuilder extends AbstractQueryBuilder
 {
 
-    public function build(): array
+    public function build(): QueryDto
     {
         $sql = sprintf('DELETE FROM %s', $this->tableName);
 
@@ -13,6 +15,7 @@ final class DeleteQueryBuilder extends AbstractQueryBuilder
             $sql .= ' WHERE ' . implode(' OR ', $this->conditions);
         }
 
-        return ['sql' => $sql . ';', 'params' => $this->params];
+        //return ['sql' => $sql . ';', 'params' => $this->params];
+        return new QueryDto($sql, $this->params);
     }
 }

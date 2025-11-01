@@ -2,6 +2,8 @@
 
 namespace Framework\Services\QueryBuilder;
 
+use Framework\Dtos\QueryDto;
+
 final class InsertQueryBuilder
 {
     private array $columns = [];
@@ -24,7 +26,7 @@ final class InsertQueryBuilder
         return $this;
     }
 
-    public function build(): array
+    public function build(): QueryDto
     {
         $sql = sprintf(
             'INSERT INTO %s (%s) VALUES (%s);',
@@ -33,7 +35,8 @@ final class InsertQueryBuilder
             implode(', ', $this->placeholders)
         );
 
-        return ['sql' => $sql, 'params' => $this->params];
+        //return ['sql' => $sql, 'params' => $this->params];
+        return new QueryDto($sql, $this->params);
     }
 
 }
