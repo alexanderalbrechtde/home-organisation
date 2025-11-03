@@ -7,9 +7,12 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteQueryBuilderTest extends TestCase
 {
-    public function testEmptyFrom(): void
+    public function testQuery(): void
     {
         $qb = new DeleteQueryBuilder();
-        $result = $qb->from('')->where()->build();
+        $result = $qb->from('user')->where([])->build();
+        $expected = 'DELETE FROM '. 'user';
+
+        $this->assertNotEquals($expected, $result->query);
     }
 }
