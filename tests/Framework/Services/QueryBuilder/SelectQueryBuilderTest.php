@@ -39,29 +39,6 @@ class SelectQueryBuilderTest extends TestCase
         $this->assertNotEquals($expectedSql, $result->query);
     }
 
-    #[DataProvider('limitProvider')]
-    public function testMinusLimit(int $limit): void
-    {
-        $qb = new SelectQueryBuilder();
-        $this->expectException(Exception::class);
-        $result = $qb->select()->limit($limit)->build();
-    }
-
-    public function testOrderBy(): void
-    {
-        $qb = new SelectQueryBuilder();
-        $this->expectException(Exception::class);
-        $result = $qb->select()->orderBy('id', 'FOO')->build();
-    }
-
-    public static function limitProvider(): array
-    {
-        return [
-            [-1],
-            [0],
-        ];
-    }
-
     public static function queryProvider(): array
     {
         return [
@@ -73,5 +50,40 @@ class SelectQueryBuilderTest extends TestCase
         ];
     }
 
+    #[DataProvider('limitProvider')]
+    public function testMinusLimit(int $limit): void
+    {
+        $qb = new SelectQueryBuilder();
+        $this->expectException(Exception::class);
+        $result = $qb->select()->limit($limit)->build();
+    }
 
+    public static function limitProvider(): array
+    {
+        return [
+            [-1],
+            [0],
+        ];
+    }
+
+    public function testOrderBy(): void
+    {
+        $qb = new SelectQueryBuilder();
+        $this->expectException(Exception::class);
+        $result = $qb->select()->orderBy('id', 'FOO')->build();
+    }
+
+    public function testSameJoinTable(): void
+    {
+        $qb = new SelectQueryBuilder();
+        $this->expectException(Exception::class);
+        $result = $qb->select()->join('user', 'user', 'user')->build();
+    }
+
+    public function testEmptyJoinQuerry(): void
+    {
+        $qb = new SelectQueryBuilder();
+        $result = $qb->select()->join('user', 'user', '')->build();
+        $this->assertEmpty($result->parameters);
+    }
 }

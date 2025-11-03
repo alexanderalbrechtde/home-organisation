@@ -23,6 +23,9 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
 
     public function join(string $table, string $left, string $right): self
     {
+        if($left == $right){
+            throw new Exception("Join-Table are the same");
+        }
         $this->join[] = "INNER JOIN $table ON $left = $right";
         return $this;
     }
@@ -37,12 +40,12 @@ final class SelectQueryBuilder extends AbstractQueryBuilder
         return $this;
     }
 
-    public function limit(int $limit): self
+    public function limit(?int $limit): self
     {
-        if ($this->limitVal <= 0 && $this->limitVal !== null) {
+        if ($limit <= 0 && $limit !== null) {
             throw new Exception("Not valid limit");
         }
-        $this->limitVal = max(0, $limit);
+        $this->limitVal = $limit;
         return $this;
     }
 
