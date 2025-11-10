@@ -3,6 +3,7 @@
 namespace Test\Framework\Services\QueryBuilder;
 
 use Exception;
+use Framework\Services\QueryBuilder\QueryBuilder;
 use Framework\Services\QueryBuilder\SelectQueryBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -14,8 +15,8 @@ class SelectQueryBuilderTest extends TestCase
     #[Test]
     public function testEmptySelectArray(): void
     {
-        $qb = new SelectQueryBuilder();
-        $result = $qb->select([])->from('user')->build();
+        $qb = new QueryBuilder();
+        $result = $qb->select()->select([])->from('user')->build();
 
         $this->assertInstanceOf(\Framework\Dtos\QueryDto::class, $result);
         $this->assertEquals('SELECT * FROM user', $result->query);

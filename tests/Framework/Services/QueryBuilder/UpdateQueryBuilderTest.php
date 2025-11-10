@@ -2,6 +2,7 @@
 
 namespace Test\Framework\Services\QueryBuilder;
 
+use Framework\Services\QueryBuilder\QueryBuilder;
 use Framework\Services\QueryBuilder\UpdateQueryBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -9,8 +10,8 @@ class UpdateQueryBuilderTest extends TestCase
 {
     public function testSet(): void
     {
-        $qb = new UpdateQueryBuilder();
-        $result = $qb->from('user')->set([
+        $qb = new QueryBuilder();
+        $result = $qb->update()->from('user')->set([
             'email' => 'test@test'
         ])->where([
             'email' => 'check@check'

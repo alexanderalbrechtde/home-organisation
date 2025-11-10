@@ -4,15 +4,16 @@ namespace Test\Framework\Services\QueryBuilder;
 
 use Framework\Services\QueryBuilder\InsertQueryBuilder;
 use Exception;
+use Framework\Services\QueryBuilder\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 
 class InsertQueryBuildertest extends TestCase
 {
     public function testEmptyInto(): void
     {
-        $qb = new InsertQueryBuilder();
+        $qb = new QueryBuilder();
         $this->expectException(Exception::class);
-        $result = $qb->into('')->values([''])->build();
+        $result = $qb->insert()->into('')->values([''])->build();
     }
 
     public function testTable(): void
