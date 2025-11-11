@@ -3,7 +3,8 @@
 require_once(__DIR__ . '/header.phtml');
 ?>
 <?php
-$user = is_array($user ?? null) ? $user : []; ?>
+$user = ($user ?? null) ? $user : [];
+?>
 <div class="container">
     <div class="card">
         <div class="card__header">
@@ -13,15 +14,15 @@ $user = is_array($user ?? null) ? $user : []; ?>
             <div class="form-grid">
                 <div class="field">
                     <label for="fName">Vorname</label>
-                    <input type="text" id="fName" value="<?= htmlspecialchars($user['first_name'] ?? '') ?>" readonly>
+                    <input type="text" id="fName" value="<?= htmlspecialchars($user->firstName ?? '') ?>" readonly>
                 </div>
                 <div class="field">
                     <label for="lName">Nachname</label>
-                    <input type="text" id="lName" value="<?= htmlspecialchars($user['last_name'] ?? '') ?>" readonly>
+                    <input type="text" id="lName" value="<?= htmlspecialchars($user->lastName ?? '') ?>" readonly>
                 </div>
                 <div class="field">
                     <label for="email_current">Aktuelle E‑Mail</label>
-                    <input type="email" id="email_current" value="<?= htmlspecialchars($user['email'] ?? '') ?>" readonly>
+                    <input type="email" id="email_current" value="<?= htmlspecialchars($user->email ?? '') ?>" readonly>
                 </div>
             </div>
         </div>

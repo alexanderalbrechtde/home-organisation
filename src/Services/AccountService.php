@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Entities\UserEntity;
+use Framework\Interfaces\EntityInterface;
 use Framework\Services\OrmService;
 use Framework\Services\UserService;
 use PDO;
@@ -10,22 +12,28 @@ class AccountService
 {
 
     public function __construct(
-        private PDO $pdo,
         private UserService $userService,
         private OrmService $ormService
     ) {
     }
 
-    public function showParameters(int $userId): array
+    public function showParameters(int $userId): EntityInterface
     {
-        $stmt = $this->pdo->prepare(
-            'SELECT id, first_Name, last_Name, email 
-                    FROM user 
-                    WHERE id = :userId'
-        );
-        $stmt->execute(['userId' => $userId]);
+        //$stmt = $this->pdo->prepare(
+        //    'SELECT id, first_Name, last_Name, email
+        //            FROM user
+        //            WHERE id = :userId'
+        //);
+        //$stmt->execute(['userId' => $userId]);
+        //return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+        $userParams = $this->ormService->findOneBy(
+            ['id' => $userId],
+            UserEntity::class
+        );
+            //dd($userParams);
+
+        return $userParams;
     }
 
     public function setEmail(
