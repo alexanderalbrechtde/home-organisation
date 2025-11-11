@@ -13,11 +13,11 @@ $user = is_array($user ?? null) ? $user : []; ?>
             <div class="form-grid">
                 <div class="field">
                     <label for="fName">Vorname</label>
-                    <input type="text" id="fName" value="<?= htmlspecialchars($user['first_Name'] ?? '') ?>" readonly>
+                    <input type="text" id="fName" value="<?= htmlspecialchars($user['first_name'] ?? '') ?>" readonly>
                 </div>
                 <div class="field">
                     <label for="lName">Nachname</label>
-                    <input type="text" id="lName" value="<?= htmlspecialchars($user['last_Name'] ?? '') ?>" readonly>
+                    <input type="text" id="lName" value="<?= htmlspecialchars($user['last_name'] ?? '') ?>" readonly>
                 </div>
                 <div class="field">
                     <label for="email_current">Aktuelle E‑Mail</label>
