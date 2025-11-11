@@ -12,7 +12,8 @@ class RedirectResponse implements ResponseInterface
 
     public function send(): void
     {
-        http_response_code(204);
+        //vorübergehend deaktiviert um Fehler beim Login zu beheben
+        //http_response_code(204);
         header('Location: ' . $this->location);
     }
 }
