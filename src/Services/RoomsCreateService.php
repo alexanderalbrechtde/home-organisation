@@ -6,7 +6,6 @@ use App\Entities\RoomEntity;
 use App\Entities\UserEntity;
 use App\Entities\UserToRoomEntity;
 use Framework\Services\OrmService;
-use PDO;
 
 class RoomsCreateService
 {
@@ -27,7 +26,7 @@ class RoomsCreateService
             UserEntity::class
         );
 
-        $room = new RoomEntity($name, $description, $user, date('Y-m-d H:i:s'));
+        $room = new RoomEntity(null, $name, $description, $user, date('Y-m-d H:i:s'));
 
         $this->ormService->save($room);
 

@@ -10,6 +10,7 @@ use Framework\Interfaces\EntityInterface;
 #[OrmTable('user')]
 class UserEntity implements EntityInterface
 {
+
     public function __construct(
         public ?int $id = null,
         #[OrmColumn('first_name')]
@@ -25,6 +26,7 @@ class UserEntity implements EntityInterface
     {
         return 'user';
     }
+
     public function setId(int $id): void
     {
         $this->id = $id;

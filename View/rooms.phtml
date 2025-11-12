@@ -47,13 +47,13 @@ require_once(__DIR__ . '/header.phtml');
                     foreach ($rooms as $room): ?>
                         <article class="room-card">
                             <h2>
-                                <a href="/room/<?= urlencode($room['id']) ?>">
-                                    <?= htmlspecialchars($room['name'] ?? '') ?>
+                                <a href="/room/<?= urlencode($room->id ?? '') ?>">
+                                    <?= htmlspecialchars($room->name) ?>
                                 </a>
                             </h2>
                             <p><?= nl2br(
                                         htmlspecialchars(
-                                                $room['description'] ?? '',
+                                                $room->description,
                                         )
                                 ) ?></p>
                         </article>

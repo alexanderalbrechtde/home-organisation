@@ -8,7 +8,8 @@ use Attribute;
 readonly class OrmColumn
 {
     public function __construct(
-        public string $columnName
+        public ?string $columnName = null,
+        public ?string $type = null
     ) {
     }
 }

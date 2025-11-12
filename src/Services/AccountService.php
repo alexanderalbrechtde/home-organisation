@@ -6,7 +6,6 @@ use App\Entities\UserEntity;
 use Framework\Interfaces\EntityInterface;
 use Framework\Services\OrmService;
 use Framework\Services\UserService;
-use PDO;
 
 class AccountService
 {

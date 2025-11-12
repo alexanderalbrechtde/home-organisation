@@ -3,16 +3,15 @@
 namespace App\Entities;
 
 use Framework\Attributes\OrmColumn;
-use Framework\Attributes\OrmFk;
 use Framework\Attributes\OrmTable;
 use Framework\Interfaces\EntityInterface;
 
 #[OrmTable('room')]
 class RoomEntity implements EntityInterface
 {
-    //setter Methode
-        public ?int $id = null;
+
     public function __construct(
+        public ?int $id = null,
         public string $name,
         public string $description,
         #[OrmColumn('user_id')]
