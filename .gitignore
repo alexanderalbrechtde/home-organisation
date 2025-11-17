@@ -14,7 +14,7 @@ data/logs/*.txt
 !data/logs/.gitkeep
 
 /coverage/
-.phpunit.result.cache
+.phpunit.cache
 
 composer.phar
 
