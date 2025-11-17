@@ -49,7 +49,6 @@ class CommandFinder
         if (!$class || !class_exists($class)) {
             return false;
         }
-        //dump(is_subclass_of($class, CommandInterface::class));
         return is_subclass_of($class, CommandInterface::class);
     }
 

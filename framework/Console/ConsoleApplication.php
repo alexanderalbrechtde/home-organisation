@@ -2,15 +2,11 @@
 
 namespace Framework\Console;
 
-use App\Commands\TestCommand;
 use Framework\Enums\ExitCode;
 use Framework\Interfaces\CommandInterface;
 
 class ConsoleApplication
 {
-    public function __construct()
-    {
-    }
 
     public array $commands = [] ?? null;
 
@@ -36,6 +32,7 @@ class ConsoleApplication
     {
         $output = new Output();
         $commandName = $_SERVER['argv'][1] ?? null;
+        //dd($commandName);
 
 
         if (!$commandName) {
@@ -50,7 +47,7 @@ class ConsoleApplication
             return ExitCode::Error;
         }
 
-        $command = new $this->commands[$commandName];
+        $command = new $this->commands[$commandName]($this->commands);
         return $command($output);
     }
 }
