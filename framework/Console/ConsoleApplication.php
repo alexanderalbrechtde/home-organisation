@@ -8,7 +8,6 @@ use Framework\Interfaces\CommandInterface;
 
 class ConsoleApplication
 {
-
     public array $commands = [] ?? null;
 
     public function boot(DirectoryLocationDto ...$directories): self
@@ -19,10 +18,13 @@ class ConsoleApplication
         return $this;
     }
 
-    public function run(): ExitCode
+    public function run(array $arguments): ExitCode
     {
         $output = new Output();
-        $commandName = $_SERVER['argv'][1] ?? null;
+        $inputParser = new InputParser();
+
+        $input = $inputParser->parse($arguments);
+        $commandName = $input->getCommandName();
 
         if (!$commandName) {
             $output->writeLine("Fehler: Kein Befehl angegeben.");
@@ -36,7 +38,8 @@ class ConsoleApplication
             return ExitCode::Error;
         }
 
-        $command = new $this->commands[$commandName]($this->commands);
-        return $command($output);
+        $command = new $this->commands[$commandName]['path'];
+
+        return $command($input, $output);
     }
 }
