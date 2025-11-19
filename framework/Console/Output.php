@@ -3,6 +3,7 @@
 namespace Framework\Console;
 
 use Framework\Enums\Color;
+use Framework\Enums\Location;
 
 class Output
 {
@@ -27,5 +28,9 @@ class Output
         echo "\e[" . $color->value . 'm';
     }
 
+    public function getLocation(Location $location): void
+    {
+        echo "$location->name";
+    }
 
 }

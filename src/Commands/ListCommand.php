@@ -10,6 +10,7 @@ use Framework\Dtos\InputArgumentDto;
 use Framework\Dtos\InputDefinitionDto;
 use Framework\Dtos\InputOptionDto;
 use Framework\Enums\ExitCode;
+use Framework\Enums\Location;
 use Framework\Interfaces\CommandInterface;
 
 class ListCommand implements CommandInterface
@@ -25,19 +26,31 @@ class ListCommand implements CommandInterface
 
     public function __invoke(Input $input, Output $output): ExitCode
     {
-        $output->writeLine('Alle verfügbaren Commands:');
+        $output->writeLine('--Alle verfügbaren Commands:--');
         $output->writeNewLine();
 
+        $options = $input->getOptions();
+
         $finder = new CommandFinder();
-        $this->commands = $finder->find(
-            [
+
+        if (isset($options['app'])) {
+            $this->commands = $finder->find([
+                new DirectoryLocationDto(__DIR__ . '/../../src', 'App')
+            ]);
+        }
+        elseif (isset($options['framework'])) {
+            $this->commands = $finder->find([
+                new DirectoryLocationDto(__DIR__ . '/../../framework', 'Framework')
+            ]);
+        }
+        else {
+            $this->commands = $finder->find([
                 new DirectoryLocationDto(__DIR__ . '/../../src', 'App'),
-                new DirectoryLocationDto(__DIR__ . '/../../src', 'Framework')
-            ]
-        );
+                new DirectoryLocationDto(__DIR__ . '/../../framework', 'Framework')
+            ]);
+        }
 
         $commands = array_keys($this->commands);
-        //dd($commands);
 
         foreach ($commands as $commandName) {
             $output->writeLine(" - " . $commandName . "  =>\t" . $this->commands[$commandName]['description']);
@@ -52,16 +65,25 @@ class ListCommand implements CommandInterface
         return new InputDefinitionDto()->addArgument(
             new InputArgumentDto(
                 'list',
-                'a list of all commands',
+                'a list of the commands in the location',
                 true
             )
         )
             ->addOption(
                 new InputOptionDto(
-                    'test2',
-                    'another test',
+                    'framework',
+                    'framework data',
                     null,
-                    'list',
+                    '-sf',
+                    null
+                )
+            )
+            ->addOption(
+                new InputOptionDto(
+                    'app',
+                    'app data',
+                    null,
+                    '-af',
                     null
                 )
             );

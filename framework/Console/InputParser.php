@@ -4,7 +4,6 @@ namespace Framework\Console;
 
 use Framework\Dtos\InputArgumentDto;
 use Framework\Dtos\InputOptionDto;
-use http\Exception\RuntimeException;
 
 class  InputParser
 {
@@ -14,15 +13,10 @@ class  InputParser
         array_shift($arguments);
         $commandName = array_shift($arguments);
 
-        if (!$commandName) {
-            throw new RuntimeException("Kein Befehl angegeben");
-        }
-
         $inputArguments = [];
         $options = [];
 
         foreach ($arguments as $argument) {
-            //Option
             if (str_starts_with($argument, '--')) {
                 $name = substr($argument, 2);
                 if (str_contains($argument, '=')) {
@@ -38,8 +32,7 @@ class  InputParser
                     null,
                     null
                 );
-            } //Aliasoption
-            elseif (str_starts_with($argument, '-')) {
+            } elseif (str_starts_with($argument, '-')) {
                 $name = substr($argument, 1);
                 if (str_contains($argument, '=')) {
                     [$name, $val] = explode('=', $name, 2);
@@ -54,8 +47,7 @@ class  InputParser
                     $name,
                     null
                 );
-            } //Argument
-            else {
+            } else {
                 $inputArguments[$argument] = new InputArgumentDto(
                     $argument,
                     '',

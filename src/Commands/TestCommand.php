@@ -21,9 +21,7 @@ class TestCommand implements CommandInterface
 
     public function __invoke(Input $input, Output $output): ExitCode
     {
-
         $format = $input->getOptions('format');
-        //dd($format);
 
         $text = 'Das ist ein Test!';
 
