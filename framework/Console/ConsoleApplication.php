@@ -13,6 +13,7 @@ class ConsoleApplication
     {
         $finder = new CommandFinder();
         $this->commands = $finder->find($directories);
+        //dd($this->commands);
 
         return $this;
     }

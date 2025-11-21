@@ -7,7 +7,6 @@ use Framework\Console\ConsoleApplication;
 use Framework\Console\Input;
 use Framework\Console\Output;
 use Framework\Dtos\DirectoryLocationDto;
-use Framework\Dtos\InputArgumentDto;
 use Framework\Dtos\InputDefinitionDto;
 use Framework\Dtos\InputOptionDto;
 use Framework\Enums\ExitCode;
@@ -17,8 +16,6 @@ use Framework\Interfaces\RequireCommandInterface;
 class ListCommand implements CommandInterface, RequireCommandInterface
 {
     public array $commands = [];
-
-
 
     public static function name(): string
     {
@@ -33,7 +30,6 @@ class ListCommand implements CommandInterface, RequireCommandInterface
         $options = $input->getOptions() ?? null;
         $filter = $options[0] ?? null;
         $filterValue = $filter->value ?? null;
-        $commandName = $input->getCommandName();
         $finder = new CommandFinder();
 
         $return_value = match ($filterValue) {
@@ -44,7 +40,6 @@ class ListCommand implements CommandInterface, RequireCommandInterface
                 new DirectoryLocationDto(__DIR__ . '/../../framework', 'Framework')
             ])
         };
-        //dd($return_value);
 
         foreach ($return_value as $commandName => $command) {
             $output->writeLine(
