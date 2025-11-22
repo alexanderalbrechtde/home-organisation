@@ -18,16 +18,11 @@ class  InputParser
 
         $this->commandName = array_shift($argument);
         $this->parameters = $argument;
-        //dd($this->parameters, $this->commandName);
-        //dd($this->commandName);
     }
 
     public function parse(array $arguments, InputDefinitionDto $definition): Input
     {
         $input = new Input;
-        $inputArguments = [];
-        $options = [];
-        //dd($definition);
 
         foreach ($arguments as $argument) {
             if (str_starts_with($argument, '--')) {
@@ -54,8 +49,6 @@ class  InputParser
             }
         }
         $input->setCommandName($this->commandName);
-        //$input->setArguments($inputArguments);
-        //$input->setOptions($options);
 
         return $input;
     }

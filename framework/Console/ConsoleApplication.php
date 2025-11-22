@@ -13,7 +13,6 @@ class ConsoleApplication
     {
         $finder = new CommandFinder();
         $this->commands = $finder->find($directories);
-        //dd($this->commands);
 
         return $this;
     }
@@ -22,7 +21,11 @@ class ConsoleApplication
     {
         $output = new Output();
         $inputParser = new InputParser();
-        //dd($this->commands);
+
+        if (in_array('--help', $inputParser->parameters) || in_array('-h', $inputParser->parameters)) {
+            return $this->showHelp($inputParser->commandName, $output);
+        }
+
         $command = new $this->commands[$inputParser->commandName]['path'];
 
         $definition = $command->getDefinition();
@@ -30,6 +33,13 @@ class ConsoleApplication
         $input = $inputParser->parse($arguments, $definition);
         $commandName = $input->getCommandName();
 
+        $command = new $this->commands[$commandName]['path'];
+
+        return $command($input, $output);
+    }
+
+    private function showHelp(string $commandName, Output $output): ExitCode
+    {
         if (!$commandName) {
             $output->writeLine("Fehler: Kein Befehl angegeben.");
             $output->writeNewLine();
@@ -37,14 +47,16 @@ class ConsoleApplication
         }
 
         if (!isset($this->commands[$commandName])) {
-            $output->writeLine("Fehler: Befehl '$commandName' nicht gefunden.");
+            $output->writeLine("Fehler: Command '$commandName' nicht gefunden.");
             $output->writeNewLine();
             return ExitCode::Error;
         }
 
-        $command = new $this->commands[$commandName]['path'];
-        //Command hat Interface: ja, dann ConsoleAppication mitgeben
+        $output->writeLine("Command: " . $commandName);
+        $output->writeNewLine();
+        $output->writeLine("Beschreibung: " . $this->commands[$commandName]['description']);
+        $output->writeNewLine();
 
-        return $command($input, $output);
+        return ExitCode::Success;
     }
 }
