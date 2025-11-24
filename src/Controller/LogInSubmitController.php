@@ -32,6 +32,7 @@ class LogInSubmitController implements ControllerInterface
 
             return new RedirectResponse("/login");
         }
+        //hier Observer
         $isLoggedin = $this->loginService->login(
             $httpRequest->getPayload()['email'],
             $httpRequest->getPayload()['password']
