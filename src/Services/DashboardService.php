@@ -11,27 +11,28 @@ class DashboardService
 
     public function __construct(
         private TaskService $taskService,
-        private OrmService $ormService
-    ) {
+        private OrmService  $ormService
+    )
+    {
     }
 
     public function getTaskItems(int $limit = 3): array
     {
-        $rawItems = $this->taskService->getTask($limit, true);
-        if (empty($rawItems) || !is_array($rawItems)) {
+        $rawItems = $this->taskService->getDashboardTasks($limit, true);
+        if (empty($rawItems)) {
             return [];
         }
         $result = [];
         foreach ($rawItems as $t) {
-            $title = $t['title'] ?? '';
+            $title = $t->title ?? '';
 
-            $rooms = trim((string)($t['rooms'] ?? ''));
+            $rooms = trim((string)($t->room_id ?? ''));
             $roomTagHtml = '';
             if ($rooms !== '') {
                 $roomTagHtml = '<small class="tag">(Raum: ' . $rooms . ')</small>';
             }
 
-            $dueAt = $t['due_at'] ?? null;
+            $dueAt = $t->due ?? null;
             $dueTs = $dueAt ? strtotime((string)$dueAt) : null;
             $now = time();
             $status = 'ok';
@@ -44,13 +45,13 @@ class DashboardService
             }
 
             $dueTextRaw = $this->taskService->showTimer($dueAt);
-            $dueText = (string)$dueTextRaw;
+            $dueText = $dueTextRaw;
 
-            $notes = (string)($t['notes'] ?? '');
+            $notes = ($t->notes ?? '');
             $notesHtml = nl2br($notes);
 
             $result[] = [
-                'id' => $t['id'] ?? $t['task_id'],
+                'id' => $t->id,
                 'title' => $title,
                 'roomTagHtml' => $roomTagHtml,
                 'dueText' => $dueText,

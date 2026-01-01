@@ -51,26 +51,20 @@ class TaskService
         return $task;
     }
 
-    public function getTask(int $limit = 3, bool $descending = true): array
+    public function getDashboardTasks(bool $descending = true): array
     {
-        $stmt = $this->pdo->prepare(
-            "SELECT t.id, t.title, t.notes, t.due_at, t.priority, t.repeat, t.repeat_rule, t.created_at, t.deleted
-             FROM task t
-             LEFT JOIN room_to_task rt ON rt.task_id = t.id
-             LEFT JOIN room ro ON ro.id = rt.room_id
-             WHERE t.due_at IS NOT NULL AND t.deleted = ''
-             GROUP BY t.id
-             ORDER BY t.due_at ASC
-             LIMIT :limit"
+        $tasks = $this->ormService->findBy(
+            [
+                'deleted' => ''
+            ],
+            TaskEntity::class,
+            3
         );
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $task = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
         if ($descending) {
-            $task = array_reverse($task);
+            $tasks = array_reverse($tasks);
         }
-        return $task;
+
+        return $tasks;
     }
 
     public function showTimer($dueAt): string
