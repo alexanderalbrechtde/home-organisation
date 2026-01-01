@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entities\TaskEntity;
 use DateTime;
 use DateTimeInterface;
+use Framework\Interfaces\EntityInterface;
 use Framework\Services\OrmService;
 use PDO;
 
@@ -16,21 +17,38 @@ class TaskService
 
     public function getTaskByRoomId(int $roomId): array
     {
-
         $tasks = $this->ormService->findBy(
             [
-                'room_id' => $roomId
+                'room_id' => $roomId,
+                'deleted' => ''
             ],
             TaskEntity::class
         );
         return $tasks;
-
     }
 
-    public function deleteTaskById(int $id): bool
+    //not   work at all; same id error
+    public function deleteTaskById(int $taskId): bool
     {
-        $stmt = $this->pdo->prepare('UPDATE task SET deleted = 1 WHERE id = :id');
-        return $stmt->execute(['id' => $id]);
+        $task = $this->getTaskById($taskId);
+        //dd($task);
+
+        $task->deleted = 1;
+        return $this->ormService->save($task);
+
+//        $stmt = $this->pdo->prepare('UPDATE task SET deleted = 1 WHERE id = :id');
+//        return $stmt->execute(['id' => $id]);
+    }
+
+    public function getTaskById($taskId): EntityInterface
+    {
+        $task = $this->ormService->findOneBy(
+            [
+                'id' => $taskId
+            ],
+            TaskEntity::class
+        );
+        return $task;
     }
 
     public function getTask(int $limit = 3, bool $descending = true): array

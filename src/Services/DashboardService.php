@@ -61,10 +61,10 @@ class DashboardService
         return $result;
     }
 
-    public function checkTask(int $id): bool
+    public function checkTask(int $taskId): bool
     {
-        $tasks = $this->ormService->findOneBy(['id' => $id], TaskEntity::class);
-        $tasks->checked = 1;
-        return $this->ormService->save($tasks);
+        $task = $this->ormService->findOneBy(['id' => $taskId], TaskEntity::class);
+        $task->checked = 1;
+        return $this->ormService->save($task);
     }
 }

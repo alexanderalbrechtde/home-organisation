@@ -15,8 +15,7 @@ class AccountController implements ControllerInterface
 {
     public function __construct(
         private HtmlRenderer   $htmlRenderer,
-        private AccountService $accountService,
-        private OrmService     $ormService
+        private AccountService $accountService
     )
     {
     }

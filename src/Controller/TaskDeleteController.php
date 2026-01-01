@@ -8,45 +8,28 @@ use Framework\Interfaces\ControllerInterface;
 use Framework\Interfaces\ResponseInterface;
 use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
+use Framework\Responses\RedirectResponse;
 use Framework\Services\HtmlRenderer;
 
 class TaskDeleteController implements ControllerInterface
 {
     public function __construct(
-        private TaskService $taskService,
-        private HtmlRenderer $htmlRenderer,
-        private RoomsService $roomsService
+        private TaskService $taskService
     ) {
     }
 
     function handle(httpRequests $httpRequest): ResponseInterface
     {
-        $taskId = (int)$httpRequest->getPayload()['task_id'];
+        $taskId = (int)$httpRequest->getPayload()['task_id'] ?? null;
+        $roomId = (int)$httpRequest->getPayload()['room_id'] ?? null;
 
-        $roomId = (int)$httpRequest->getPayload()['room_id'];
+       $deleted = $this->taskService->deleteTaskById($taskId);
 
-        if ($taskId === null || $roomId === null) {
-            $rooms = $this->roomsService->getRooms($httpRequest->getSession()['user_id']);
-
-            return new HtmlResponse($this->htmlRenderer->render('rooms.phtml', [
-                'rooms' => $rooms,
-                'error' => 'missing_parameters'
-            ]));
-        }
-        $this->taskService->deleteTaskById($taskId);
-
-        $room = $this->roomsService->getRoom($roomId);
-
-        if (!$room) {
-            return new HtmlResponse($this->htmlRenderer->render('404.phtml', []));
+        if($deleted){
+            return new RedirectResponse('/room/' . $roomId . '?delete_succeed');
+        }else{
+            return new RedirectResponse('/room/' . $roomId . '?delete_failed');
         }
 
-        $task = $this->taskService->getTaskByRoomId($roomId);
-
-        return new HtmlResponse($this->htmlRenderer->render('room.phtml', [
-            'room' => $room,
-            'task' => $task,
-            'timers' => $task,
-        ]));
     }
 }

@@ -133,7 +133,6 @@ class OrmService
     ): array
     {
         $allEntityData = $this->getEntityData($entityClass);
-        //dd($allEntityData);
         $singleEntityData = $allEntityData[$entityClass];
         $useTable = $singleEntityData['tableName'];
         $reversAliases = array_flip($singleEntityData['aliases'] ?? []);
@@ -202,7 +201,7 @@ class OrmService
         return $entities;
     }
 
-    private function hydrate(string $class, array $groupes, array $allMeta): object
+    private function hydrate(string $class, array $groups, array $allMeta): object
     {
         $meta = $allMeta[$class];
         $tableName = $meta['tableName'];
@@ -217,11 +216,11 @@ class OrmService
 
 
             if ($typeName && class_exists($typeName) && is_subclass_of($typeName, EntityInterface::class)) {
-                $arguments[] = $this->hydrate($typeName, $groupes, $allMeta);
+                $arguments[] = $this->hydrate($typeName, $groups, $allMeta);
             } else {
 
                 $col = $reversAliases[$parameter->getName()] ?? $parameter->getName();
-                $val = $groupes[$tableName][$col] ?? null;
+                $val = $groups[$tableName][$col] ?? null;
 
                 $arguments[] = ($val === null && $type && !$type->allowsNull()) ? '' : $val;
             }
@@ -245,8 +244,7 @@ class OrmService
      */
     public function findOneBy(
         array  $filter,
-        string $entityClass,
-        ?array $orderBy = null
+        string $entityClass
     ): ?object
     {
         return $this->findBy($filter, $entityClass, 1)[0] ?? null;
