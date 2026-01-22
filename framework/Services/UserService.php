@@ -2,9 +2,11 @@
 
 namespace Framework\Services;
 
+use _PHPStan_1c270d899\Nette\Neon\Exception;
 use App\Dtos\UserDto;
 use App\Entities\UserEntity;
 use Framework\Interfaces\EntityInterface;
+use function PHPUnit\Framework\throwException;
 
 class UserService
 {
@@ -21,8 +23,21 @@ class UserService
             ],
             UserEntity::class
         );
+
+        $this->validateUser($user);
+
         return $user;
     }
+
+    //nicht perfekt aber handelt erstmal das Nichtfinden der Mail
+    public function validateUser($user): bool
+    {
+        if(!$user){
+           throw new \Exception("Benutzer mit dieser E-Mail wurde nicht gefunden.");
+        }
+        return true;
+    }
+
 
     private function getUsers(): array
     {

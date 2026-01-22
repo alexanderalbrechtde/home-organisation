@@ -10,7 +10,7 @@ class LoginService
 {
     public function __construct(
         private UserService $userService,
-        private EventManager $eventManager
+        //private EventManager $eventManager
     ) {
     }
 

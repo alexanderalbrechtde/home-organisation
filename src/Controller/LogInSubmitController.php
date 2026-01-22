@@ -13,9 +13,10 @@ class LogInSubmitController implements ControllerInterface
 {
 
     public function __construct(
-        private LoginService $loginService,
+        private LoginService         $loginService,
         private LogInSubmitValidator $payloadValidator,
-    ) {
+    )
+    {
     }
 
     function handle(httpRequests $httpRequest): ResponseInterface
@@ -32,16 +33,15 @@ class LogInSubmitController implements ControllerInterface
 
             return new RedirectResponse("/login");
         }
-        //hier Observer
         $isLoggedin = $this->loginService->login(
             $httpRequest->getPayload()['email'],
             $httpRequest->getPayload()['password']
         );
 
-
         if ($isLoggedin) {
             return new RedirectResponse('/');
         }
+
         return new RedirectResponse('/login');
     }
 }
