@@ -5,10 +5,14 @@ date_default_timezone_set('Europe/Berlin');
 
 ?>
 
+<?php
+$userName = $_SESSION['user_name'];
+?>
+
     <section class="hero">
         <div class="container hero__content">
             <div class="hero__text">
-                <h1>Dashboard</h1>
+                <h1>Dashboard von <?= $userName?></h1>
                 <p>Behalte Tasks, Kategorien und FAQs im Blick.</p>
             </div>
         </div>

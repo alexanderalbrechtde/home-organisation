@@ -8,6 +8,7 @@ use Framework\Interfaces\ResponseInterface;
 use Framework\Requests\httpRequests;
 use Framework\Responses\HtmlResponse;
 use Framework\Services\HtmlRenderer;
+use Framework\Services\UserService;
 
 class DashboardController implements ControllerInterface
 {

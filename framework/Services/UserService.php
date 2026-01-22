@@ -38,16 +38,6 @@ class UserService
         return true;
     }
 
-
-    private function getUsers(): array
-    {
-        $users = $this->ormService->findOneBy(
-            [],
-            UserEntity::class
-        );
-        return $users;
-    }
-
     private function createUserDto(array $user): UserDto
     {
         return new UserDto(
