@@ -22,6 +22,7 @@ class RegisterService
         if ($password !== $password2) {
             return false;
         }
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
         $user = new UserEntity(null, $first_Name, $last_Name, $email, $password);
 

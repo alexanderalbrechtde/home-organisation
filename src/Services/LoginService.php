@@ -10,7 +10,6 @@ class LoginService
 {
     public function __construct(
         private UserService $userService,
-        //private EventManager $eventManager
     ) {
     }
 
@@ -28,7 +27,7 @@ class LoginService
 
         $userPassword = $user->password;
 
-        if ($userPassword != $password) {
+        if(!password_verify($password, $userPassword)){
             return false;
         }
 
@@ -36,8 +35,6 @@ class LoginService
         $_SESSION['user_id'] = $user->id;
         $_SESSION['user_email'] = $user->email;
         $_SESSION['user_name'] = $user->firstName . ' ' . $user->lastName;
-
-        //$this->eventManager->notify(new LoginObservable($user->id, $user->email, $password));
 
         return true;
     }
